@@ -1,4 +1,4 @@
 {
   "title": "ADR",
-  "pages": ["0001-agent-skill-packaging"]
+  "pages": ["0001-agent-skill-packaging", "0002-scaffold-repo-deviations"]
 }

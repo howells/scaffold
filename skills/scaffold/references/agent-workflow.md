@@ -1,6 +1,6 @@
 # Agent Workflow
 
-This is the baseline for repos that will be worked on with coding assistants, Arc, and reusable specialist skills. Supported assistants should include Codex, Claude Code, and Cursor through platform-specific wrappers or commands.
+This is the baseline for repos that will be worked on with coding assistants, Arc, and reusable specialist skills. Claude Code is served natively by the skill directory itself, Codex through a platform wrapper (`agents/openai.yaml`), and a Cursor surface is deferred future work rather than something that ships today.
 
 ## AGENTS.md
 
