@@ -11,7 +11,8 @@
     "lint:fix": "howells-oxlint src next.config.mjs source.config.ts --fix",
     "format": "howells-oxfmt --write AGENTS.md README.md package.json pnpm-workspace.yaml next.config.mjs source.config.ts postcss.config.mjs tsconfig.json src",
     "typecheck": "pnpm run source && tsc --noEmit",
-    "check": "pnpm lint && pnpm typecheck && pnpm build"
+    "sync:skill": "node scripts/sync-skill.ts",
+    "check": "pnpm lint && pnpm typecheck && pnpm build && pnpm sync:skill --check"
   },
   "dependencies": {
     "@tailwindcss/postcss": "4.3.1",
