@@ -30,6 +30,7 @@
 
 - `pnpm dev` - run the Next.js docs surface.
 - `pnpm lint` - run Oxlint through the Scaffold baseline.
+- `pnpm format` - format tracked files with oxfmt through the Scaffold baseline.
 - `pnpm typecheck` - run TypeScript checks.
 - `pnpm build` - build the Next.js docs surface.
 - `pnpm check` - lint, typecheck, and build.

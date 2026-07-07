@@ -39,6 +39,9 @@ export const docs = defineDocs({
   dir: "docs",
   docs: {
     files: markdownFiles,
+    postprocess: {
+      includeProcessedMarkdown: true,
+    },
   },
   meta: {
     files: metaFiles,

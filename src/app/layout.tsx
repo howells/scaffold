@@ -1,9 +1,14 @@
+import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import type { ReactNode } from "react";
-import { RootProvider } from "fumadocs-ui/provider/next";
+
+import { siteUrl } from "@/lib/site-url";
 
 import "./globals.css";
+
+const description =
+  "The Howells baseline for project shape, tooling, package boundaries, agent workflow, deployment expectations, and launch readiness.";
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -16,11 +21,23 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  description:
-    "The Howells baseline for project shape, tooling, package boundaries, agent workflow, deployment expectations, and launch readiness.",
+  description,
+  metadataBase: new URL(siteUrl()),
+  openGraph: {
+    description,
+    locale: "en_US",
+    siteName: "Scaffold",
+    title: "Scaffold",
+    type: "website",
+  },
   title: {
     default: "Scaffold",
     template: "%s | Scaffold",
+  },
+  twitter: {
+    card: "summary_large_image",
+    description,
+    title: "Scaffold",
   },
 };
 
