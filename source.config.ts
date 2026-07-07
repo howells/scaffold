@@ -1,5 +1,7 @@
 import { defineConfig, defineDocs } from "fumadocs-mdx/config";
 
+import { remarkMdLinks } from "@/lib/remark-md-links";
+
 const markdownFiles = [
   "README.md",
   "getting-started.md",
@@ -25,7 +27,10 @@ const descriptionFromSource = (source: string): string | undefined => {
   const paragraph = source
     .split(/\n{2,}/u)
     .map((block) => block.trim())
-    .find((block) => block.length > 0 && !block.startsWith("#") && !block.startsWith("```"));
+    .find(
+      (block) =>
+        block.length > 0 && !block.startsWith("#") && !block.startsWith("```")
+    );
 
   return paragraph?.replaceAll(/\s+/gu, " ");
 };
@@ -41,6 +46,9 @@ export const docs = defineDocs({
 });
 
 export default defineConfig({
+  mdxOptions: {
+    remarkPlugins: (plugins) => [...plugins, remarkMdLinks],
+  },
   plugins: [
     {
       name: "scaffold-doc-frontmatter",
@@ -52,7 +60,10 @@ export default defineConfig({
               typeof data.description === "string"
                 ? data.description
                 : descriptionFromSource(this.source),
-            title: typeof data.title === "string" ? data.title : titleFromSource(this.source),
+            title:
+              typeof data.title === "string"
+                ? data.title
+                : titleFromSource(this.source),
           };
         },
       },

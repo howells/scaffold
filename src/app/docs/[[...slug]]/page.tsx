@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
 import { DocsBody, DocsPage } from "fumadocs-ui/layouts/docs/page";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 import { getMDXComponents } from "@/components/mdx";
 import { source } from "@/lib/source";
@@ -13,7 +13,9 @@ interface DocPageProps {
 
 export const generateStaticParams = () => source.generateParams();
 
-export const generateMetadata = async ({ params }: DocPageProps): Promise<Metadata> => {
+export const generateMetadata = async ({
+  params,
+}: DocPageProps): Promise<Metadata> => {
   const { slug } = await params;
   const page = source.getPage(slug);
 
@@ -29,11 +31,6 @@ export const generateMetadata = async ({ params }: DocPageProps): Promise<Metada
 
 const DocPage = async ({ params }: DocPageProps) => {
   const { slug } = await params;
-
-  if (!slug) {
-    redirect("/docs/overview");
-  }
-
   const page = source.getPage(slug);
 
   if (!page) {
