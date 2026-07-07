@@ -1,6 +1,6 @@
 "use client";
 
-import * as Dialog from "@radix-ui/react-dialog";
+import { Dialog } from "@base-ui/react/dialog";
 import { motion } from "motion/react";
 import { type ComponentPropsWithoutRef, forwardRef } from "react";
 
@@ -29,18 +29,22 @@ const TransitionTrigger = forwardRef<HTMLButtonElement, TransitionTriggerProps>(
     );
 
     return (
-      <Dialog.Trigger asChild ref={ref} {...props}>
-        <motion.button
-          data-slot="transition-trigger"
-          layout
-          layoutCrossfade={false}
-          layoutId={`${ctx.layoutId}-shared`}
-          style={{ zIndex: ctx.open ? 0 : 1 }}
-          transition={resolved.transition}
-          type="button"
-        >
-          {children}
-        </motion.button>
+      <Dialog.Trigger
+        ref={ref}
+        render={
+          <motion.button
+            data-slot="transition-trigger"
+            layout
+            layoutCrossfade={false}
+            layoutId={`${ctx.layoutId}-shared`}
+            style={{ zIndex: ctx.open ? 0 : 1 }}
+            transition={resolved.transition}
+            type="button"
+          />
+        }
+        {...props}
+      >
+        {children}
       </Dialog.Trigger>
     );
   },

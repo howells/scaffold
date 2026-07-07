@@ -19,6 +19,12 @@ Use Vercel for:
 - Storybook deployments
 - preview and production web releases
 
+### Current Vercel platform defaults
+
+- Use `vercel.ts` via `@vercel/config` for project configuration. Prefer it over `vercel.json` — typed config catches mistakes at author time.
+- Fluid Compute is the default runtime. Do not reach for Edge Functions; they are no longer the recommended default.
+- The default function timeout is 300s. Set `maxDuration` per function in `vercel.ts` only when a route needs a shorter or longer bound.
+
 ## Default Docs Deployment
 
 If the repo has a real docs site:

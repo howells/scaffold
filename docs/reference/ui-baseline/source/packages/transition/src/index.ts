@@ -2,7 +2,7 @@
  * @patternmode/transition
  *
  * Shared element transitions with physics-based drag dismissal.
- * Built on Radix Dialog + Motion.
+ * Built on Base UI Dialog + Motion.
  *
  * Inspired by Cambio (https://github.com/raphaelsalaja/cambio)
  * by Raphael Salaja.

@@ -68,16 +68,15 @@ If the repo exports shared UI, also include:
 
 When building a shared UI package, these keep recurring:
 
-- `@radix-ui/react-slot`
-- `@radix-ui/react-dialog`
-- `@radix-ui/react-scroll-area`
-- `@radix-ui/react-tabs`
+- `@base-ui/react`
 - `class-variance-authority`
 - `embla-carousel-react`
 - `react-day-picker`
 - `vaul`
 
 These are not mandatory in every package, but they recur enough that they should be the first options rather than random alternatives.
+
+`@base-ui/react` is the default primitive layer, following shadcn's July 2026 switch to Base UI. Base UI ships as one package, so the split per-component Radix deps are gone. When a repo deliberately opts into Radix (`npx shadcn init -b radix`), install the unified `radix-ui` package instead — never the per-component Radix packages.
 
 ## Recurring Turborepo Packages
 
@@ -192,7 +191,9 @@ When the repo exposes model tools or resources to other agents, also consider:
 
 - `@modelcontextprotocol/sdk`
 
-Provider packages should be chosen only when needed:
+Default model access on `ai` (AI SDK v6) is the AI Gateway: pass a `"provider/model"` string and requests route through the Vercel AI Gateway with no per-provider client in app code.
+
+Provider packages are the escape hatch for direct-provider needs, chosen only when required and kept behind `@howells/ai`:
 
 - `@ai-sdk/openai`
 - `@ai-sdk/anthropic`

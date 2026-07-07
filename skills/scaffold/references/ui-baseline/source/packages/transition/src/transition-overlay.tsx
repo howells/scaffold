@@ -1,6 +1,6 @@
 "use client";
 
-import * as Dialog from "@radix-ui/react-dialog";
+import { Dialog } from "@base-ui/react/dialog";
 import { motion } from "motion/react";
 import { forwardRef } from "react";
 
@@ -27,18 +27,20 @@ const TransitionOverlay = forwardRef<HTMLDivElement, TransitionOverlayProps>(
     );
 
     return (
-      <Dialog.Overlay asChild forceMount>
-        <motion.div
-          animate={{ opacity: 1 }}
-          className={className}
-          data-slot="transition-overlay"
-          exit={{ opacity: 0 }}
-          initial={{ opacity: 0 }}
-          ref={ref}
-          style={style}
-          transition={resolved.transition}
-        />
-      </Dialog.Overlay>
+      <Dialog.Backdrop
+        ref={ref}
+        render={
+          <motion.div
+            animate={{ opacity: 1 }}
+            className={className}
+            data-slot="transition-overlay"
+            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            style={style}
+            transition={resolved.transition}
+          />
+        }
+      />
     );
   },
 );

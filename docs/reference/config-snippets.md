@@ -15,14 +15,14 @@ Adjust names and filters, but do not casually change the overall contract.
 {
   "name": "my-project",
   "private": true,
-  "packageManager": "pnpm@11.5.1",
+  "packageManager": "pnpm@11.10.0",
   "scripts": {
     "dev": "turbo run dev --filter=web",
     "dev:all": "turbo run dev",
     "build": "turbo run build",
     "lint": "turbo run lint && howells-workspace-check",
     "lint:fix": "turbo run lint:fix && howells-workspace-fix",
-    "format": "howells-ox-fix .",
+    "format": "howells-fix .",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "check": "pnpm lint && pnpm typecheck && pnpm test",
@@ -31,21 +31,21 @@ Adjust names and filters, but do not casually change the overall contract.
     "prepare": "husky"
   },
   "devDependencies": {
-    "@howells/lint": "^0.2.1",
+    "@howells/lint": "^1.0.0",
     "@howells/typescript-config": "^0.1.6",
     "husky": "9.1.7",
-    "lint-staged": "17.0.7",
+    "lint-staged": "17.0.8",
     "tsx": "^4.22.4",
-    "turbo": "2.9.16",
+    "turbo": "2.10.4",
     "typescript": "6.0.3",
     "vitest": "^4.1.8"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": "howells-ox-fix",
+    "*.{js,ts,jsx,tsx}": "howells-fix",
     "*.{json,jsonc,css,md}": "howells-oxfmt --write"
   },
   "engines": {
-    "node": ">=24.16.0 <25"
+    "node": ">=24.18.0 <25"
   }
 }
 ```
@@ -54,13 +54,13 @@ Notes:
 
 - replace `web` with the primary app package when needed
 - if `test` is expensive, keep `check` light and create a heavier CI-only job
-- `pnpm@11.5.1` is the current house baseline
+- `pnpm@11.10.0` is the current house baseline
 - for published packages that can support Node 22, use `"node": ">=22.22.3"` in the package itself while keeping repo tooling on Node 24
 
 ## `.node-version`
 
 ```text
-24.16.0
+24.18.0
 ```
 
 Keep local development, CI, and deployment runtimes on Node 24 LTS. Do not use Node 26 for the house baseline until it reaches LTS.
@@ -166,12 +166,11 @@ Only add task-level `env` when a task actually needs it.
 For a Next.js monorepo:
 
 ```ts
-import { defineConfig } from "oxlint";
 import next from "@howells/lint/oxlint/next";
 
-export default defineConfig({
+export default {
   extends: [next],
-});
+};
 ```
 
 For a non-UI or mixed repo, start with `@howells/lint/oxlint/core` or add targeted overrides.
@@ -179,12 +178,9 @@ For a non-UI or mixed repo, start with `@howells/lint/oxlint/core` or add target
 ## Root `oxfmt.config.ts`
 
 ```ts
-import { defineConfig } from "oxfmt";
 import howells from "@howells/lint/oxfmt";
 
-export default defineConfig({
-  extends: [howells],
-});
+export default howells;
 ```
 
 ## Root `tsconfig.json`

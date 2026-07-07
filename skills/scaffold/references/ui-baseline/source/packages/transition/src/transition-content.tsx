@@ -1,6 +1,6 @@
 "use client";
 
-import * as Dialog from "@radix-ui/react-dialog";
+import { Dialog } from "@base-ui/react/dialog";
 import {
   type MotionStyle,
   motion,
@@ -109,24 +109,26 @@ const TransitionContent = forwardRef<HTMLDivElement, TransitionContentProps>(
     );
 
     return (
-      <Dialog.Content asChild forceMount>
-        <motion.div
-          className={className}
-          data-slot="transition-content"
-          drag={isDismissible}
-          dragConstraints={{ bottom: 0, left: 0, right: 0, top: 0 }}
-          dragElastic={0}
-          layout
-          layoutId={`${ctx.layoutId}-shared`}
-          onDrag={isDismissible ? handleDrag : undefined}
-          onDragEnd={isDismissible ? handleDragEnd : undefined}
-          ref={ref}
-          style={motionStyle}
-          transition={resolved.transition}
-        >
-          {children}
-        </motion.div>
-      </Dialog.Content>
+      <Dialog.Popup
+        ref={ref}
+        render={
+          <motion.div
+            className={className}
+            data-slot="transition-content"
+            drag={isDismissible}
+            dragConstraints={{ bottom: 0, left: 0, right: 0, top: 0 }}
+            dragElastic={0}
+            layout
+            layoutId={`${ctx.layoutId}-shared`}
+            onDrag={isDismissible ? handleDrag : undefined}
+            onDragEnd={isDismissible ? handleDragEnd : undefined}
+            style={motionStyle}
+            transition={resolved.transition}
+          />
+        }
+      >
+        {children}
+      </Dialog.Popup>
     );
   },
 );

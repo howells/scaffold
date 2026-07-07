@@ -64,10 +64,12 @@ For a new UI repo, prefer:
 - Next.js 16.2 App Router
 - React 19.2
 - Tailwind CSS 4.3
-- Radix primitives
+- Base UI primitives (`@base-ui/react`)
 - `motion`
 - `lucide-react`
 - Storybook for reusable exported components
+
+Base UI is the house default primitive layer. shadcn scaffolds Base UI-backed components by default as of July 2026 (`npx shadcn init`), and Base UI ships as one package — `@base-ui/react`. Radix is a supported opt-out via `npx shadcn init -b radix`; on Radix, use the unified `radix-ui` package, never the split per-component Radix packages.
 
 ## Reusable Howells UI Packages
 

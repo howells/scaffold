@@ -13,22 +13,22 @@ Pin these unless there is a deliberate repo-specific reason not to:
 
 | Tool | Baseline |
 |------|----------|
-| `pnpm` | `11.5.1` |
-| `turbo` | `2.9.16` |
+| `pnpm` | `11.10.0` |
+| `turbo` | `2.10.4` |
 | `typescript` | `6.0.3` |
 | `husky` | `9.1.7` |
-| `lint-staged` | `17.0.7` |
-| `@howells/lint` | `0.2.1` |
+| `lint-staged` | `17.0.8` |
+| `@howells/lint` | `1.0.0` |
 | `@howells/typescript-config` | `0.1.6` |
 | `@howells/envy` | `0.3.7` |
-| Node | `24.16.0` LTS for new repos |
+| Node | latest Node 24 LTS patch (currently `24.18.0`) |
 
 ## Package Manager
 
 - Use `pnpm`.
 - Pin `packageManager` in the root `package.json`.
 - Prefer one lockfile at the repo root.
-- Treat `pnpm@11.5.1` as the settled baseline.
+- Treat `pnpm@11.10.0` as the settled baseline.
 - Use Node 24 LTS for development, CI, apps, and services.
 - Default workspace layout is:
 
@@ -44,7 +44,7 @@ Use Node 24 LTS as the Howells stack baseline.
 
 Defaults:
 
-- app and service repos: `"node": ">=24.16.0 <25"`
+- app and service repos: `"node": ">=24.18.0 <25"`
 - CI: Node `24.x`
 - local version files: pin the latest Node 24 LTS patch
 - published packages: keep runtime support at `>=22.22.3` when the package does not need Node 24 APIs, but build and test on Node 24
@@ -95,7 +95,7 @@ Rules:
 
 - avoid repo-local lint wrappers unless the repo has a genuinely unique constraint
 - do not install direct `oxlint`, `oxfmt`, Biome, Prettier, or ESLint dependencies in consumer repos
-- use `howells-ox-check`, `howells-ox-fix`, `howells-oxlint`, and `howells-oxfmt` instead of raw tool binaries
+- use `howells-check`, `howells-fix`, `howells-oxlint`, and `howells-oxfmt` instead of raw tool binaries
 - prefer inline suppressions over broad config weakening
 - keep format and lint behavior consistent across repos
 
@@ -135,12 +135,22 @@ For new UI repos:
 - Next.js 16.2 App Router
 - React 19.2
 - Tailwind CSS 4.3
-- Radix primitives
+- Base UI primitives (`@base-ui/react`)
 - `motion` for animation, imported from `motion/react` in React code
 - Storybook for reusable exported components
 - the bundled UI baseline as the starting point for shared UI packages
 
+Use Base UI as the primitive layer for new repos. shadcn defaults to Base UI as of July 2026, so `npx shadcn init` scaffolds Base UI-backed components. Base UI ships as a single package, `@base-ui/react` — do not split it into per-component packages.
+
+Radix stays a supported deliberate opt-out. Choose it with `npx shadcn init -b radix` when a repo has a concrete reason. On Radix, use the unified `radix-ui` package. Do not install the split per-component Radix packages.
+
 This does not mean every product should look the same. It means structural decisions should be shared while brand and product expression stay local.
+
+### Next 16 baseline
+
+- Turbopack is the default bundler.
+- Adopt Cache Components (`use cache`) as the caching model.
+- Use `proxy.ts` for request interception. `middleware.ts` is deprecated. This repo ships a `proxy.ts` example itself — markdown content negotiation on the docs routes.
 
 ## Client Data Fetching
 
@@ -216,8 +226,7 @@ The packages that recur most often in UI work are:
 - `date-fns`
 - `@tanstack/react-query`
 - `usehooks-ts`
-- `@radix-ui/react-slot`
-- `@radix-ui/react-dialog`
+- `@base-ui/react`
 - `@howells/envy`
 
 The repeated package names across your Turborepos are also clear enough to treat as default boundaries, not accidental patterns:
@@ -248,13 +257,19 @@ AI-capable repos are now common enough that they should have a standard starting
 
 Default package choices:
 
-- `ai` for the Vercel AI SDK surface
+- `ai` (AI SDK v6) for the Vercel AI SDK surface
 - `@howells/ai` for shared provider defaults and house wrappers
 - `howells/motif` packages when image generation, image editing, media utilities, CLI automation, or MCP image tools are part of the product
 - `zod` for structured model IO and tool schemas
 - `@mastra/core` and `mastra` when the repo needs agent orchestration, memory, observability, or workflow structure
 - `@modelcontextprotocol/sdk` when the repo exposes MCP tools, resources, or transports
-- provider packages such as `@ai-sdk/openai`, `@ai-sdk/anthropic`, `@ai-sdk/google`, and `@openrouter/ai-sdk-provider` only when that provider is actually needed
+- provider packages such as `@ai-sdk/openai`, `@ai-sdk/anthropic`, `@ai-sdk/google`, and `@openrouter/ai-sdk-provider` only when a direct-provider need justifies them
+
+### Model access
+
+Default model access is the AI Gateway. On AI SDK v6 the global provider is the Vercel AI Gateway, so pass a `"provider/model"` string straight into AI SDK calls and requests route through the Gateway. This is the default surface — one credential, provider switching without new SDK wiring, and no per-provider client in app code.
+
+Per-provider `@ai-sdk/*` packages are the escape hatch for direct-provider needs, and they still sit behind `@howells/ai`. Keep model-string selection behind that boundary rather than hardcoding provider strings across app routes.
 
 Default boundaries:
 

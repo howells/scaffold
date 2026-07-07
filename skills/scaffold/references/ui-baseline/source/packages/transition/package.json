@@ -7,17 +7,17 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "lint": "howells-ox-check src",
-    "lint:fix": "howells-ox-fix src",
+    "lint": "howells-check src",
+    "lint:fix": "howells-fix src",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@radix-ui/react-dialog": "^1.1.15",
+    "@base-ui/react": "^1.6.0",
     "motion": "^12.40.0"
   },
   "devDependencies": {
     "@howells/typescript-config": "^0.1.6",
-    "@howells/lint": "^0.2.1",
+    "@howells/lint": "^1.0.0",
     "@types/react": "^19.2.16",
     "@types/react-dom": "^19.2.3",
     "typescript": "^6.0.3"

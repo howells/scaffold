@@ -1,6 +1,6 @@
 # Bundled UI Baseline
 
-This directory vendors the deleted UI-system files recovered from the old `~/Sites/patternmode` history at commit `1ffeb6ddb9d5d449a3618f3b73f79b93590cd463^`.
+This directory is the scaffold's maintained UI baseline. It originated as UI-system files recovered from the old `~/Sites/patternmode` history at commit `1ffeb6ddb9d5d449a3618f3b73f79b93590cd463^`, but it is no longer a frozen snapshot. It tracks current scaffold guidance and is migrated as the baseline moves — the primitive layer is now Base UI (`@base-ui/react`), following the scaffold default, and lint scripts and shared dependencies are kept on current versions.
 
 Treat this as scaffold-owned reference material, not as an external upstream dependency. When creating a new UI repo, copy and adapt the relevant package shapes into that repo, then rename package scopes and imports to the target project.
 
@@ -23,4 +23,4 @@ For a new UI repo:
 4. Keep shared primitives in `packages/ui`; keep page-specific or domain-specific compositions in the app.
 5. Use Storybook when the repo exports reusable UI.
 
-The old files are intentionally preserved with their original names and package strings for provenance. The scaffold guidance should point at this bundled baseline, not at a live Patternmode package.
+The original `@patternmode/*` package names are kept as workspace-local identifiers to rename per repo, but the code and dependencies are maintained against current scaffold guidance rather than frozen for provenance. Because this is vendored reference material, it is not built by this repo — build it inside a bootstrapped repo before trusting it. The scaffold guidance should point at this bundled baseline, not at a live Patternmode package.

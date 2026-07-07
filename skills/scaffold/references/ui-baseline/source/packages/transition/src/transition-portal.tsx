@@ -1,6 +1,6 @@
 "use client";
 
-import * as Dialog from "@radix-ui/react-dialog";
+import { Dialog } from "@base-ui/react/dialog";
 import { AnimatePresence } from "motion/react";
 import type { ReactNode } from "react";
 
@@ -18,7 +18,7 @@ function TransitionPortal({ children, container }: TransitionPortalProps) {
   return (
     <AnimatePresence>
       {open && (
-        <Dialog.Portal container={container} forceMount>
+        <Dialog.Portal container={container} keepMounted>
           {children}
         </Dialog.Portal>
       )}

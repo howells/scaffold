@@ -1,6 +1,6 @@
 "use client";
 
-import * as Dialog from "@radix-ui/react-dialog";
+import { Dialog } from "@base-ui/react/dialog";
 import { type ComponentPropsWithoutRef, forwardRef } from "react";
 
 const TransitionClose = forwardRef<

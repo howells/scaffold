@@ -51,6 +51,8 @@ Do not force `tRPC` into:
 - tiny apps with only one or two trivial endpoints
 - repos where the API must be intentionally language-agnostic from day one
 
+When the API must emit OpenAPI or stay language-agnostic, use oRPC as the default alternative. It keeps end-to-end TypeScript inference while producing an OpenAPI contract, so a non-TypeScript client is a first-class consumer. Reach for oRPC in that case rather than hand-rolling REST handlers.
+
 ## Database and Persistence
 
 The clear default is:
@@ -146,6 +148,8 @@ That means:
 - immediately align them to shared tokens, wrappers, and repo conventions
 - fold recurring generic improvements back into the scaffold baseline where appropriate
 
+Scaffold on Base UI. shadcn defaults to Base UI as of July 2026, so `npx shadcn init` generates Base UI-backed components against the single `@base-ui/react` package. Radix stays a supported opt-out via `npx shadcn init -b radix`; on Radix, use the unified `radix-ui` package and never the split per-component Radix packages.
+
 ## Media and Asset Storage
 
 For projects with serious image, vector, or media needs:
@@ -162,10 +166,12 @@ Keep the distinction clear: Motif owns generation, editing, upscaling, backgroun
 
 For apps that genuinely need AI features, the recurring pattern is:
 
-- `ai` for the application-facing AI SDK surface
+- `ai` (AI SDK v6) for the application-facing AI SDK surface
 - `@howells/ai` as the shared AI SDK/provider baseline
 - `howells/motif` for fal.ai image-generation and media-utility surfaces
 - `zod` for structured input and output contracts
+
+Default model access is the AI Gateway. On AI SDK v6 the global provider is the Vercel AI Gateway, so pass a `"provider/model"` string into AI SDK calls and requests route through the Gateway — one credential, provider switching without new SDK wiring. Per-provider `@ai-sdk/*` packages are the escape hatch for direct-provider needs, still behind `@howells/ai`. Keep the model-string boundary in `@howells/ai` or `packages/ai`, not scattered through app routes.
 
 If the repo is doing CLI-model orchestration or needs stricter typed IO around agent calls:
 

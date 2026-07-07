@@ -8,8 +8,8 @@
     "./postcss": "./postcss.config.mjs"
   },
   "scripts": {
-    "lint": "howells-ox-check .",
-    "lint:fix": "howells-ox-fix .",
+    "lint": "howells-check .",
+    "lint:fix": "howells-fix .",
     "typecheck": "echo 'no types'"
   },
   "dependencies": {
@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.0",
-    "@howells/lint": "^0.2.1",
+    "@howells/lint": "^1.0.0",
     "tailwindcss": "^4.3.0"
   }
 }
