@@ -2,9 +2,7 @@ packages: []
 
 allowBuilds:
   esbuild: true
-
-ignoredBuiltDependencies:
-  - sharp
+  sharp: true
 
 minimumReleaseAgeExclude:
   - "@howells/lint@1.0.0"
@@ -55,3 +53,4 @@ minimumReleaseAgeExclude:
 
 onlyBuiltDependencies:
   - esbuild
+  - sharp

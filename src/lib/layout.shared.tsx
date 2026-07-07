@@ -1,7 +1,7 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 
 export const baseOptions = (): BaseLayoutProps => ({
-  githubUrl: "https://github.com/howells/scaffold",
+  githubUrl: "https://github.com/commoninstruments/scaffold",
   nav: {
     title: "Scaffold",
     url: "/",
