@@ -105,7 +105,9 @@ function LinkList({
           <h3 className="text-sm font-medium text-fd-foreground group-hover:text-fd-accent-foreground">
             {item.title}
           </h3>
-          <p className="mt-1 text-xs leading-5 text-fd-muted-foreground">{item.desc}</p>
+          <p className="mt-1 text-xs leading-5 text-fd-muted-foreground">
+            {item.desc}
+          </p>
         </Link>
       ))}
     </div>
@@ -123,8 +125,9 @@ const HomePage = () => {
           A field guide for starting projects with less drift.
         </h1>
         <p className="mt-6 max-w-2xl text-[0.9375rem] leading-7 text-fd-muted-foreground">
-          Scaffold captures the shared defaults for project shape, tooling, package boundaries,
-          agent workflow, deployment expectations, and launch readiness.
+          Scaffold captures the shared defaults for project shape, tooling,
+          package boundaries, agent workflow, deployment expectations, and
+          launch readiness.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
@@ -145,7 +148,9 @@ const HomePage = () => {
       <section className="w-full border-t border-fd-border">
         <div className="mx-auto max-w-5xl px-6 py-14 sm:px-10">
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <h2 className="text-lg font-semibold text-fd-foreground">Start with the repo</h2>
+            <h2 className="text-lg font-semibold text-fd-foreground">
+              Start with the repo
+            </h2>
             <span className="text-xs text-fd-muted-foreground">
               three routes through the baseline
             </span>
@@ -156,10 +161,12 @@ const HomePage = () => {
 
       <section className="w-full border-t border-fd-border">
         <div className="mx-auto max-w-5xl px-6 py-14 sm:px-10">
-          <h2 className="text-lg font-semibold text-fd-foreground">Project shape</h2>
+          <h2 className="text-lg font-semibold text-fd-foreground">
+            Project shape
+          </h2>
           <p className="mt-2 max-w-xl text-sm leading-6 text-fd-muted-foreground">
-            These chapters define how a repo should be organized before implementation details start
-            to sprawl.
+            These chapters define how a repo should be organized before
+            implementation details start to sprawl.
           </p>
           <LinkList items={projectShape} />
         </div>
@@ -167,10 +174,12 @@ const HomePage = () => {
 
       <section className="w-full border-t border-fd-border">
         <div className="mx-auto max-w-5xl px-6 py-14 sm:px-10">
-          <h2 className="text-lg font-semibold text-fd-foreground">Operations</h2>
+          <h2 className="text-lg font-semibold text-fd-foreground">
+            Operations
+          </h2>
           <p className="mt-2 max-w-xl text-sm leading-6 text-fd-muted-foreground">
-            These chapters keep setup, dependency choice, deployment, and launch checks consistent
-            across product work.
+            These chapters keep setup, dependency choice, deployment, and launch
+            checks consistent across product work.
           </p>
           <LinkList items={operations} />
         </div>
@@ -178,10 +187,12 @@ const HomePage = () => {
 
       <section className="w-full border-t border-fd-border">
         <div className="mx-auto max-w-5xl px-6 py-14 sm:px-10">
-          <h2 className="text-lg font-semibold text-fd-foreground">Agent workflow</h2>
+          <h2 className="text-lg font-semibold text-fd-foreground">
+            Agent workflow
+          </h2>
           <p className="mt-2 max-w-xl text-sm leading-6 text-fd-muted-foreground">
-            These chapters explain how Scaffold should guide coding agents without turning every
-            consuming repo into a copy of Scaffold.
+            These chapters explain how Scaffold should guide coding agents
+            without turning every consuming repo into a copy of Scaffold.
           </p>
           <LinkList items={agentWork} />
         </div>
