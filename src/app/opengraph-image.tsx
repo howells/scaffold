@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Scaffold — the Howells project baseline";
+export const alt = "Scaffold — a project baseline, written down";
 export const size = {
   height: 630,
   width: 1200,
@@ -12,8 +12,8 @@ const OpengraphImage = () =>
     <div
       style={{
         alignItems: "flex-start",
-        background: "#0a0a0a",
-        color: "#fafafa",
+        background: "#1d1d1b",
+        color: "#e8e6e1",
         display: "flex",
         flexDirection: "column",
         height: "100%",
@@ -24,13 +24,13 @@ const OpengraphImage = () =>
     >
       <div
         style={{
-          color: "#a1a1aa",
+          color: "#7fa896",
           fontSize: 32,
           letterSpacing: "0.35em",
           textTransform: "uppercase",
         }}
       >
-        Howells Baseline
+        A project baseline
       </div>
       <div
         style={{
@@ -45,15 +45,15 @@ const OpengraphImage = () =>
       </div>
       <div
         style={{
-          color: "#d4d4d8",
+          color: "#a3a199",
           fontSize: 40,
           lineHeight: 1.3,
           marginTop: 32,
           maxWidth: "900px",
         }}
       >
-        Project shape, tooling, package boundaries, and launch readiness for new
-        TypeScript repos.
+        The way I start projects — repo shape, tooling, boundaries, and launch
+        readiness.
       </div>
     </div>,
     { ...size }

@@ -11,6 +11,7 @@ Use this skill to create or standardize a Howells project from the house scaffol
 
 Load only the references needed for the current task:
 
+- `references/principles.md` for the philosophy behind the baseline; load when explaining or challenging a default.
 - `references/getting-started.md` for the default setup sequence.
 - `references/repo-archetypes.md` when choosing repo shape.
 - `references/stack-decisions.md` for pinned baseline tools and versions.

@@ -4,6 +4,7 @@ import { remarkMdLinks } from "@/lib/remark-md-links";
 
 const markdownFiles = [
   "README.md",
+  "principles.md",
   "getting-started.md",
   "adr/*.md",
   "reference/*.md",

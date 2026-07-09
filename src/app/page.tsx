@@ -1,202 +1,328 @@
+import { ThemeSwitch } from "fumadocs-ui/layouts/shared/slots/theme-switch";
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import {
+  Miniature,
+  type MiniatureVariant,
+} from "@/components/homepage/miniatures";
+
 export const metadata: Metadata = {
   description:
-    "Browse the Howells Scaffold baseline for project shape, tooling, package boundaries, agent workflow, and launch readiness.",
+    "How I start projects: the principles, defaults, and docs that keep repos from drifting.",
   title: "Scaffold",
 };
 
-const startHere = [
+const GITHUB_URL = "https://github.com/howells/scaffold";
+
+const focusRing =
+  "rounded-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:var(--sc-accent)]";
+
+const principles = [
   {
-    desc: "Install the baseline, understand the repo shape, and see what should be decided up front.",
-    href: "/docs/getting-started",
-    title: "Getting Started",
+    desc: "Settle toolchain basics at the baseline instead of re-deciding them in every repo.",
+    title: "Decide once, reuse everywhere",
   },
   {
-    desc: "Choose the lightest project shape that fits the work without importing unnecessary machinery.",
-    href: "/docs/reference/repo-archetypes",
-    title: "Repo Archetypes",
+    desc: "Start from the smallest archetype that fits; add machinery only when a repo earns it.",
+    title: "The lightest shape that fits",
   },
   {
-    desc: "Use the current default versions and stack choices without re-litigating every new repo.",
-    href: "/docs/reference/stack-decisions",
-    title: "Stack Decisions",
+    desc: "Prefer the plain, correct implementation to the clever one.",
+    title: "Correctness over cleverness",
+  },
+  {
+    desc: "The Project Docs are canonical; every assistant gets a generated wrapper, not a fork.",
+    title: "Docs are the source of truth",
+  },
+  {
+    desc: "A repo may diverge from the baseline when justified — and writes down why.",
+    title: "Deviations are recorded, not smuggled",
+  },
+  {
+    desc: "A short AGENTS.md that changes behavior without becoming documentation sludge.",
+    title: "Agents are assets, not entropy",
+  },
+  {
+    desc: "If hooks get slow enough that developers bypass them, the hooks are wrong.",
+    title: "Hooks stop breakage, not run CI",
+  },
+  {
+    desc: "Docs describe the current system, not the migration path taken to reach it.",
+    title: "Docs describe the present",
   },
 ];
 
-const projectShape = [
+interface DocLink {
+  readonly href: string;
+  readonly title: string;
+}
+
+interface DocGroup {
+  readonly desc: string;
+  readonly key: string;
+  readonly links: readonly DocLink[];
+  readonly title: string;
+  readonly variant: MiniatureVariant;
+}
+
+const docGroups: readonly DocGroup[] = [
   {
-    desc: "Architecture defaults for Next apps, packages, services, data, AI-capable products, and deployable surfaces.",
-    href: "/docs/reference/architecture-defaults",
-    title: "Architecture Defaults",
+    desc: "Install the baseline, pick a repo shape, and settle the versions up front.",
+    key: "start",
+    links: [
+      { href: "/docs/getting-started", title: "Getting Started" },
+      { href: "/docs/reference/repo-archetypes", title: "Repo Archetypes" },
+      { href: "/docs/reference/stack-decisions", title: "Stack Decisions" },
+    ],
+    title: "Start here",
+    variant: "start",
   },
   {
-    desc: "Where package boundaries should exist, when to split code, and what belongs in shared packages.",
-    href: "/docs/reference/package-boundaries",
-    title: "Package Boundaries",
+    desc: "How a repo is organized before implementation details start to sprawl.",
+    key: "shape",
+    links: [
+      {
+        href: "/docs/reference/architecture-defaults",
+        title: "Architecture Defaults",
+      },
+      {
+        href: "/docs/reference/package-boundaries",
+        title: "Package Boundaries",
+      },
+      {
+        href: "/docs/reference/shared-package-candidates",
+        title: "Shared Package Candidates",
+      },
+      { href: "/docs/reference/ui-projects", title: "UI Projects" },
+    ],
+    title: "Project shape",
+    variant: "shape",
   },
   {
-    desc: "Shared package candidates and the threshold for promoting reusable code out of one product repo.",
-    href: "/docs/reference/shared-package-candidates",
-    title: "Shared Package Candidates",
+    desc: "Setup, dependency choice, deployment, and launch checks kept consistent.",
+    key: "operations",
+    links: [
+      { href: "/docs/reference/config-snippets", title: "Config Snippets" },
+      {
+        href: "/docs/reference/deployment-defaults",
+        title: "Deployment Defaults",
+      },
+      {
+        href: "/docs/reference/default-dependencies",
+        title: "Default Dependencies",
+      },
+      { href: "/docs/reference/launch-checklist", title: "Launch Checklist" },
+    ],
+    title: "Operations",
+    variant: "operations",
   },
   {
-    desc: "UI project defaults, component boundaries, Storybook expectations, and shared design-system rules.",
-    href: "/docs/reference/ui-projects",
-    title: "UI Projects",
+    desc: "How the baseline guides coding agents without turning every repo into a copy of it.",
+    key: "agents",
+    links: [
+      { href: "/docs/reference/agent-workflow", title: "Agent Workflow" },
+      {
+        href: "/docs/reference/agentic-development",
+        title: "Agentic Development",
+      },
+      {
+        href: "/docs/adr/0001-agent-skill-packaging",
+        title: "Agent Skill Packaging",
+      },
+    ],
+    title: "Agent workflow",
+    variant: "agents",
   },
 ];
 
-const operations = [
+const agentSurfaces = [
+  { href: "/llms.txt", title: "llms.txt" },
+  { href: "/llms-full.txt", title: "llms-full.txt" },
   {
-    desc: "Linting, formatting, TypeScript, environment, workspace, and deployment snippets for new repos.",
-    href: "/docs/reference/config-snippets",
-    title: "Config Snippets",
-  },
-  {
-    desc: "Deployment defaults for Vercel, Cloudflare, database-backed products, and environment validation.",
-    href: "/docs/reference/deployment-defaults",
-    title: "Deployment Defaults",
-  },
-  {
-    desc: "Default dependencies to reach for when a repo actually needs UI, data, AI, auth, or testing capability.",
-    href: "/docs/reference/default-dependencies",
-    title: "Default Dependencies",
-  },
-  {
-    desc: "Pre-launch checks for quality, metadata, observability, performance, deployment, and handoff.",
-    href: "/docs/reference/launch-checklist",
-    title: "Launch Checklist",
-  },
-];
-
-const agentWork = [
-  {
-    desc: "What root agent instructions should cover, how to keep them short, and where repo context belongs.",
-    href: "/docs/reference/agent-workflow",
-    title: "Agent Workflow",
-  },
-  {
-    desc: "Guidance for repos that include agent runtimes, orchestration, MCP, tools, or AI-facing product work.",
-    href: "/docs/reference/agentic-development",
-    title: "Agentic Development",
-  },
-  {
-    desc: "The decision record for packaging Scaffold as a skill without forking the canonical project docs.",
     href: "/docs/adr/0001-agent-skill-packaging",
-    title: "Agent Skill Packaging",
+    title: "How the skill is packaged",
   },
 ];
 
-function LinkList({
-  items,
+function PrincipleRow({
+  desc,
+  title,
 }: {
-  readonly items: readonly { desc: string; href: string; title: string }[];
+  readonly desc: string;
+  readonly title: string;
 }) {
   return (
-    <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      {items.map((item) => (
-        <Link
-          className="group rounded-lg border border-fd-border p-4 transition-colors hover:border-fd-ring hover:bg-fd-accent"
-          href={item.href}
-          key={item.title}
-        >
-          <h3 className="text-sm font-medium text-fd-foreground group-hover:text-fd-accent-foreground">
-            {item.title}
-          </h3>
-          <p className="mt-1 text-xs leading-5 text-fd-muted-foreground">
-            {item.desc}
-          </p>
-        </Link>
-      ))}
+    <div className="flex flex-col gap-1 border-t border-[var(--sc-border-soft)] py-3 sm:flex-row sm:gap-6">
+      <h3 className="shrink-0 text-sm font-medium text-fd-foreground sm:w-[220px]">
+        {title}
+      </h3>
+      <p className="text-sm leading-6 text-fd-muted-foreground">{desc}</p>
     </div>
+  );
+}
+
+function DocGroupCard({ group }: { readonly group: DocGroup }) {
+  const titleId = `doc-group-${group.key}`;
+  return (
+    <div
+      aria-labelledby={titleId}
+      className="group rounded-lg border border-[var(--sc-border-soft)] bg-[var(--sc-surface)] transition-shadow duration-200 hover:shadow-[0_4px_16px_rgba(29,29,27,0.06)]"
+      role="group"
+    >
+      <Miniature variant={group.variant} />
+      <div className="p-4">
+        <h3 className="text-sm font-medium text-fd-foreground" id={titleId}>
+          {group.title}
+        </h3>
+        <p className="mt-1 text-xs leading-5 text-fd-muted-foreground">
+          {group.desc}
+        </p>
+        <div className="mt-3 flex flex-col">
+          {group.links.map((link) => (
+            <Link
+              className={`group/row flex items-center justify-between gap-2 border-t border-[var(--sc-border-soft)] py-2 text-sm text-fd-muted-foreground transition-colors hover:text-fd-foreground ${focusRing}`}
+              href={link.href}
+              key={link.href}
+            >
+              <span>{link.title}</span>
+              <span
+                aria-hidden
+                className="text-fd-muted-foreground transition-transform duration-150 group-hover/row:translate-x-[3px]"
+              >
+                →
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InstallBlock() {
+  return (
+    <pre className="overflow-x-auto rounded-lg bg-[var(--sc-ink)] px-4 py-3 font-mono text-sm text-[var(--sc-paper)]">
+      <code className="tabular-nums">
+        npx skills@latest add howells/scaffold
+      </code>
+    </pre>
   );
 }
 
 const HomePage = () => {
   return (
-    <main className="flex flex-col items-center bg-fd-background text-fd-foreground">
-      <section className="w-full max-w-5xl px-6 pb-14 pt-16 sm:px-10">
-        <p className="mb-4 text-xs font-medium uppercase tracking-[0.14em] text-fd-muted-foreground">
-          Howells project baseline
+    <main className="mx-auto flex w-full max-w-[860px] flex-col gap-16 px-6 pb-24 pt-16 sm:gap-[72px] sm:pt-20">
+      <section>
+        <p className="mb-4 text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-fd-muted-foreground">
+          A project baseline
         </p>
-        <h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl lg:text-[3.5rem] lg:leading-[1.1]">
-          A field guide for starting projects with less drift.
+        <h1 className="max-w-2xl text-2xl font-semibold tracking-tight text-fd-foreground sm:text-[1.75rem]">
+          Scaffold
         </h1>
-        <p className="mt-6 max-w-2xl text-[0.9375rem] leading-7 text-fd-muted-foreground">
-          Scaffold captures the shared defaults for project shape, tooling,
-          package boundaries, agent workflow, deployment expectations, and
-          launch readiness.
+        <p className="mt-4 max-w-[62ch] text-sm leading-7 text-fd-muted-foreground">
+          The baseline I start projects from — repo shape, tooling, package
+          boundaries, how coding agents fit in, and what has to be true before
+          launch. Written for my own repos, and open for anyone to read.
         </p>
-        <div className="mt-8 flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm">
           <Link
-            className="inline-flex h-10 items-center rounded-md bg-fd-primary px-5 text-sm font-medium text-fd-primary-foreground transition-colors hover:bg-fd-primary/90"
+            className={`font-medium text-fd-foreground underline decoration-[var(--sc-border)] underline-offset-4 transition-colors hover:decoration-[var(--sc-accent)] ${focusRing}`}
             href="/docs/overview"
           >
             Read the docs
           </Link>
           <Link
-            className="inline-flex h-10 items-center rounded-md border border-fd-border px-5 text-sm font-medium text-fd-muted-foreground transition-colors hover:border-fd-ring hover:text-fd-foreground"
-            href="/docs/getting-started"
+            className={`text-fd-muted-foreground transition-colors hover:text-fd-foreground ${focusRing}`}
+            href="/docs/principles"
           >
-            Start a repo
+            Principles
           </Link>
+          <a
+            className={`text-fd-muted-foreground transition-colors hover:text-fd-foreground ${focusRing}`}
+            href={GITHUB_URL}
+            rel="noreferrer"
+            target="_blank"
+          >
+            GitHub
+          </a>
         </div>
       </section>
 
-      <section className="w-full border-t border-fd-border">
-        <div className="mx-auto max-w-5xl px-6 py-14 sm:px-10">
-          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <h2 className="text-lg font-semibold text-fd-foreground">
-              Start with the repo
-            </h2>
-            <span className="text-xs text-fd-muted-foreground">
-              three routes through the baseline
-            </span>
+      <section>
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <h2 className="text-sm font-medium text-fd-foreground">Principles</h2>
+          <span className="text-xs text-fd-muted-foreground">
+            the reasoning under the defaults
+          </span>
+        </div>
+        <div className="mt-6">
+          {principles.map((item) => (
+            <PrincipleRow
+              desc={item.desc}
+              key={item.title}
+              title={item.title}
+            />
+          ))}
+          <div className="border-t border-[var(--sc-border-soft)] pt-3">
+            <Link
+              className={`inline-flex text-sm font-medium text-[var(--sc-accent)] ${focusRing}`}
+              href="/docs/principles"
+            >
+              All principles →
+            </Link>
           </div>
-          <LinkList items={startHere} />
         </div>
       </section>
 
-      <section className="w-full border-t border-fd-border">
-        <div className="mx-auto max-w-5xl px-6 py-14 sm:px-10">
-          <h2 className="text-lg font-semibold text-fd-foreground">
-            Project shape
-          </h2>
-          <p className="mt-2 max-w-xl text-sm leading-6 text-fd-muted-foreground">
-            These chapters define how a repo should be organized before
-            implementation details start to sprawl.
-          </p>
-          <LinkList items={projectShape} />
+      <section>
+        <h2 className="text-sm font-medium text-fd-foreground">The docs</h2>
+        <p className="mt-2 max-w-xl text-sm leading-6 text-fd-muted-foreground">
+          Thirteen chapters, grouped by the question they answer.
+        </p>
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {docGroups.map((group) => (
+            <DocGroupCard group={group} key={group.key} />
+          ))}
         </div>
       </section>
 
-      <section className="w-full border-t border-fd-border">
-        <div className="mx-auto max-w-5xl px-6 py-14 sm:px-10">
-          <h2 className="text-lg font-semibold text-fd-foreground">
-            Operations
-          </h2>
-          <p className="mt-2 max-w-xl text-sm leading-6 text-fd-muted-foreground">
-            These chapters keep setup, dependency choice, deployment, and launch
-            checks consistent across product work.
-          </p>
-          <LinkList items={operations} />
+      <section>
+        <h2 className="text-sm font-medium text-fd-foreground">For agents</h2>
+        <p className="mt-2 max-w-xl text-sm leading-6 text-fd-muted-foreground">
+          The docs double as an installable Agent Skill and machine-readable
+          surfaces. Install the skill:
+        </p>
+        <div className="mt-4">
+          <InstallBlock />
+        </div>
+        <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm">
+          {agentSurfaces.map((surface) => (
+            <Link
+              className={`text-fd-muted-foreground transition-colors hover:text-fd-foreground ${focusRing}`}
+              href={surface.href}
+              key={surface.href}
+            >
+              {surface.title}
+            </Link>
+          ))}
         </div>
       </section>
 
-      <section className="w-full border-t border-fd-border">
-        <div className="mx-auto max-w-5xl px-6 py-14 sm:px-10">
-          <h2 className="text-lg font-semibold text-fd-foreground">
-            Agent workflow
-          </h2>
-          <p className="mt-2 max-w-xl text-sm leading-6 text-fd-muted-foreground">
-            These chapters explain how Scaffold should guide coding agents
-            without turning every consuming repo into a copy of Scaffold.
-          </p>
-          <LinkList items={agentWork} />
+      <footer className="flex flex-wrap items-center justify-between gap-4 border-t border-[var(--sc-border-soft)] pt-6 text-sm text-fd-muted-foreground">
+        <span>Scaffold · Daniel Howells</span>
+        <div className="flex items-center gap-4">
+          <a
+            className={`transition-colors hover:text-fd-foreground ${focusRing}`}
+            href={GITHUB_URL}
+            rel="noreferrer"
+            target="_blank"
+          >
+            GitHub
+          </a>
+          <ThemeSwitch mode="light-dark-system" />
         </div>
-      </section>
+      </footer>
     </main>
   );
 };

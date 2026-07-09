@@ -14,7 +14,8 @@
  *
  * Transform contract (matched byte-for-byte against the committed skill tree):
  *
- *   Strip pass  — `docs/getting-started.md` and `docs/reference/*.md`
+ *   Strip pass  — every root `docs/*.md` file except `README.md` (which is a
+ *                 site-only index, not shipped in the skill) and `docs/reference/*.md`
  *                 (non-recursive, `.md` only, excluding the `ui-baseline/`
  *                 directory), plus the `ui-baseline/README.md` landing page.
  *                 Removes the leading YAML frontmatter block and the single
@@ -22,11 +23,13 @@
  *                 already carries a body H1); a guarded fallback inserts one
  *                 only if a stripped body does not already start with "# ".
  *
- *   Link flatten — in `docs/getting-started.md` only (it lives one level above
+ *   Link flatten — in the root `docs/*.md` pages (they live one level above
  *                 `reference/`), the literal substring `./reference/` becomes
  *                 `./`. Sibling links inside `reference/*.md` are already flat
  *                 and are left untouched (`./ui-baseline/README.md` passes
- *                 through unchanged).
+ *                 through unchanged). Root pages link ADRs with site-absolute
+ *                 `/docs/adr/...` paths, which are left untouched since ADRs
+ *                 are not shipped into the skill tree.
  *
  *   Verbatim pass — everything under `docs/reference/ui-baseline/source/**` is
  *                 copied byte-identically (including `.mdx` files with their
@@ -154,11 +157,17 @@ function generate(): Map<string, Buffer> {
     tree.set(relPath, content);
   };
 
-  // --- Strip pass: getting-started.md (with link flatten) ---
-  {
-    const src = join(DOCS, "getting-started.md");
-    const stripped = stripFrontmatter(readFileSync(src, "utf8"), "docs/getting-started.md");
-    add("getting-started.md", Buffer.from(flattenReferenceLinks(stripped), "utf8"));
+  // --- Strip pass: root docs/*.md (excludes README.md; with link flatten) ---
+  // Root-level pages sit one level above reference/, so their ./reference/
+  // links are flattened. README.md is a site-only index and is not shipped in
+  // the skill, so it is skipped here.
+  for (const name of listFlatMarkdown(DOCS)) {
+    if (name === "README.md") {
+      continue;
+    }
+    const src = join(DOCS, name);
+    const stripped = stripFrontmatter(readFileSync(src, "utf8"), `docs/${name}`);
+    add(name, Buffer.from(flattenReferenceLinks(stripped), "utf8"));
   }
 
   // --- Strip pass: docs/reference/*.md (non-recursive, excludes ui-baseline/) ---

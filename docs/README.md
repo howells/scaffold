@@ -30,6 +30,7 @@ It is not a generic starter guide. It reflects the conventions that are already 
 
 ## Sections
 
+- [Principles](./principles.md)
 - [Getting Started](./getting-started.md)
 - [Stack Decisions](./reference/stack-decisions.md)
 - [Architecture Defaults](./reference/architecture-defaults.md)
