@@ -35,24 +35,24 @@ A note on LLM access: the model provider is OpenRouter, not the Vercel AI Gatewa
 
 ## Models in use
 
-Model choices live in one place: `@howells/ai` for language and embedding models, `@howells/motif` for fal.ai media. Code asks for a *tier* or a *task* rather than a hardcoded ID, so a better model rolls out everywhere at once. This is a snapshot; the specific versions turn over fast.
+Model choices live in one place: `@howells/ai` for language and embedding models, `@howells/motif` for fal.ai media. Code asks for a *tier* or a *task* rather than a hardcoded ID, so a better model rolls out everywhere at once. The names below are families, not pinned versions — the exact version turns over fast and lives in the registry.
 
 **Language**, by tier:
 
-- **Fast — Gemini 3 Flash-Lite.** The default for high-volume, latency-sensitive work: the cheapest usable tokens, with a large context window.
-- **Standard — Gemini 3.5 Flash.** The everyday balance of quality, speed, and cost, where most general and chat work lands.
-- **Powerful — Gemini 3 Pro.** For when output quality outweighs cost.
-- **Reasoning — Claude Opus 4.8.** The top tier for hard planning and tool-heavy agentic work, where Claude's reliability under complex instructions earns its price.
-- **Agentic and coding — GLM-4.7 and Kimi K2.** Cheaper, sharper alternatives that beat the general-purpose models on tool-use and long-thinking code.
-- **Creative — Claude Sonnet 4.6.** The pick for prose and editorial voice.
+- **Fast — Gemini Flash-Lite.** The default for high-volume, latency-sensitive work: the cheapest usable tokens, with a large context window.
+- **Standard — Gemini Flash.** The everyday balance of quality, speed, and cost, where most general and chat work lands.
+- **Powerful — Gemini Pro.** For when output quality outweighs cost.
+- **Reasoning — Claude Opus.** The top tier for hard planning and tool-heavy agentic work, where Claude's reliability under complex instructions earns its price.
+- **Agentic and coding — GLM and Kimi.** Cheaper, sharper alternatives that beat the general-purpose models on tool-use and long-thinking code.
+- **Creative — Claude Sonnet.** The pick for prose and editorial voice.
 
-**Embeddings.** Voyage 4 for text and Voyage multimodal 3.5 for a shared text-and-image space, both chosen for retrieval quality, with voyage-rerank-2.5 for reranking. Gemini embedding and OpenAI's text-embedding-3-small (cheap, 512-dim) as alternates, and a local Qwen3 embedder for offline work.
+**Embeddings.** Voyage for text and Voyage multimodal for a shared text-and-image space, both chosen for retrieval quality, with a Voyage reranker on top. Gemini embedding and OpenAI's small embedding model (cheap, low-dimension) as alternates, and a local Qwen embedder for offline work.
 
-**Image generation** (fal.ai). nano-banana-pro as the interactive default and gpt-image-1.5 for agent and MCP calls, both picked for instruction-following and clean edits; FLUX schnell when speed and cost matter more than fidelity. A catalog behind them — FLUX.2, Seedream, Recraft, Ideogram, and the Gemini image models — covers different styles and price points.
+**Image generation** (fal.ai). nano-banana as the interactive default and gpt-image for agent and MCP calls, both picked for instruction-following and clean edits; FLUX schnell when speed and cost matter more than fidelity. A catalog behind them — FLUX, Seedream, Recraft, Ideogram, and the Gemini image models — covers different styles and price points.
 
-**Vision and segmentation** (fal.ai). SAM 3 and SAM 2 for segmentation, BiRefNet and Bria for background removal, Depth-Anything and MiDaS for depth, Topaz / Clarity / SeedVR for upscaling, and Kling v3 for image-to-video: the toolkit for turning a generated or uploaded image into a usable asset.
+**Vision and segmentation** (fal.ai). SAM for segmentation, BiRefNet and Bria for background removal, Depth-Anything and MiDaS for depth, Topaz / Clarity / SeedVR for upscaling, and Kling for image-to-video: the toolkit for turning a generated or uploaded image into a usable asset.
 
-**Voice.** ElevenLabs (`eleven_v3`) as the default, Stable Audio for sound effects, and a self-hosted Chatterbox model for offline or cost-controlled synthesis.
+**Voice.** ElevenLabs as the default, Stable Audio for sound effects, and a self-hosted Chatterbox model for offline or cost-controlled synthesis.
 
 ## Packages
 

@@ -7,28 +7,26 @@ description: "These are the current default decisions for new TypeScript product
 
 These are the current default decisions for new TypeScript product work and shared config repos.
 
-## Core Versions
+## Core Tools
 
-Pin these unless there is a deliberate repo-specific reason not to:
+The default toolchain for new TypeScript work:
 
-| Tool | Baseline |
-|------|----------|
-| `pnpm` | `11.10.0` |
-| `turbo` | `2.10.4` |
-| `typescript` | `6.0.3` |
-| `husky` | `9.1.7` |
-| `lint-staged` | `17.0.8` |
-| `@howells/lint` | `1.0.0` |
-| `@howells/typescript-config` | `0.1.6` |
-| `@howells/envy` | `0.3.7` |
-| Node | latest Node 24 LTS patch (currently `24.18.0`) |
+- **Package manager:** `pnpm`
+- **Task runner:** Turborepo
+- **Language:** TypeScript
+- **Lint and format:** `@howells/lint` (Oxlint / Oxfmt)
+- **TypeScript config:** `@howells/typescript-config`
+- **Env parsing:** `@howells/envy`
+- **Git hooks:** `husky` with `lint-staged`
+- **Runtime:** Node 24 LTS
+
+The exact versions are pinned by the shared config packages and the root `package.json`. Consume those rather than restating numbers here, which drift the moment a dependency bumps.
 
 ## Package Manager
 
 - Use `pnpm`.
 - Pin `packageManager` in the root `package.json`.
 - Prefer one lockfile at the repo root.
-- Treat `pnpm@11.10.0` as the settled baseline.
 - Use Node 24 LTS for development, CI, apps, and services.
 - Default workspace layout is:
 
@@ -44,10 +42,10 @@ Use Node 24 LTS as the Howells stack baseline.
 
 Defaults:
 
-- app and service repos: `"node": ">=24.18.0 <25"`
-- CI: Node `24.x`
+- app and service repos: pin `engines.node` to the Node 24 range (`>=24 <25`)
+- CI: Node 24
 - local version files: pin the latest Node 24 LTS patch
-- published packages: keep runtime support at `>=22.22.3` when the package does not need Node 24 APIs, but build and test on Node 24
+- published packages: keep runtime support back to Node 22 when the package does not need Node 24 APIs, but build and test on Node 24
 
 Do not start new work on Node 20. It is end-of-life. Do not standardize on Node 26 until it reaches LTS.
 
@@ -132,21 +130,21 @@ Across recent repos, the stable baseline is small hooks plus standard root scrip
 
 For new UI repos:
 
-- Next.js 16.2 App Router
-- React 19.2
-- Tailwind CSS 4.3
+- Next.js App Router
+- React
+- Tailwind CSS v4
 - Base UI primitives (`@base-ui/react`)
 - `motion` for animation, imported from `motion/react` in React code
 - Storybook for reusable exported components
 - the bundled UI baseline as the starting point for shared UI packages
 
-Use Base UI as the primitive layer for new repos. shadcn defaults to Base UI as of July 2026, so `npx shadcn init` scaffolds Base UI-backed components. Base UI ships as a single package, `@base-ui/react` — do not split it into per-component packages.
+Use Base UI as the primitive layer for new repos. shadcn now defaults to Base UI, so `npx shadcn init` scaffolds Base UI-backed components. Base UI ships as a single package, `@base-ui/react` — do not split it into per-component packages.
 
 Radix stays a supported deliberate opt-out. Choose it with `npx shadcn init -b radix` when a repo has a concrete reason. On Radix, use the unified `radix-ui` package. Do not install the split per-component Radix packages.
 
 This does not mean every product should look the same. It means structural decisions should be shared while brand and product expression stay local.
 
-### Next 16 baseline
+### Next.js baseline
 
 - Turbopack is the default bundler.
 - Adopt Cache Components (`use cache`) as the caching model.
@@ -193,7 +191,7 @@ This replaces `useEffect` + `useState` + `fetch` patterns. React Query handles l
 
 The active repos are not just converging on config. They are also converging on a real dependency baseline.
 
-The strongest direct-dependency signals in the 2026-05 inventory are:
+The strongest direct-dependency signals across a recent inventory of the active repos are:
 
 - `typescript`: 90 projects
 - `react`: 80 projects
@@ -257,7 +255,7 @@ AI-capable repos are now common enough that they should have a standard starting
 
 Default package choices:
 
-- `ai` (AI SDK v6) for the Vercel AI SDK surface
+- `ai` for the Vercel AI SDK surface
 - `@howells/ai` for shared provider defaults and house wrappers
 - `howells/motif` packages when image generation, image editing, media utilities, CLI automation, or MCP image tools are part of the product
 - `zod` for structured model IO and tool schemas

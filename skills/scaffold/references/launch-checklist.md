@@ -4,12 +4,12 @@ Use this when starting a new repo or standardizing an existing one.
 
 ## Baseline
 
-- `packageManager` pinned to the settled house pnpm line, currently `pnpm@11.10.0`
-- Node engine pinned to `>=24.18.0 <25` for apps and services
+- `packageManager` pinned to the settled house pnpm line
+- Node engine pinned to `>=24 <25` for apps and services
 - `.node-version` pins the current Node 24 LTS patch
-- `turbo` pinned to `2.10.4`
-- `typescript` pinned to `6.0.3`
-- `lint-staged` pinned to `17.0.8`
+- `turbo` pinned
+- `typescript` pinned
+- `lint-staged` pinned
 - `@howells/lint` installed
 - `@howells/typescript-config` installed
 - `@howells/envy` installed when runtime env exists

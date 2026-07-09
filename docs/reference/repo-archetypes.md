@@ -22,7 +22,7 @@ Use this for:
 
 Default stack:
 
-- Next.js 16.2 App Router
+- Next.js App Router
 - `tRPC`
 - React Query
 - Drizzle
@@ -129,7 +129,7 @@ Default stack:
 - `tsup` or repo-specific build tooling if needed
 - docs/demo site only if the package benefits from one
 - Node 24 for development and CI
-- Node `>=22.22.3` as the runtime floor only when the library does not need Node 24 APIs
+- Node `>=22` as the runtime floor only when the library does not need Node 24 APIs
 
 Examples in your ecosystem:
 

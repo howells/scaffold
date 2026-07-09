@@ -28,7 +28,7 @@ Before creating files, choose the repo archetype from [Repo Archetypes](./refere
 If the project ships a UI:
 
 - start from the bundled UI baseline in [UI Projects](./reference/ui-projects.md)
-- default to Next.js 16.2 App Router
+- default to Next.js App Router
 - keep shared primitives in a package, not in the app
 - include Storybook when the repo exports reusable UI
 

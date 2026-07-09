@@ -76,7 +76,7 @@ When building a shared UI package, these keep recurring:
 
 These are not mandatory in every package, but they recur enough that they should be the first options rather than random alternatives.
 
-`@base-ui/react` is the default primitive layer, following shadcn's July 2026 switch to Base UI. Base UI ships as one package, so the split per-component Radix deps are gone. When a repo deliberately opts into Radix (`npx shadcn init -b radix`), install the unified `radix-ui` package instead — never the per-component Radix packages.
+`@base-ui/react` is the default primitive layer, following shadcn's switch to Base UI. Base UI ships as one package, so the split per-component Radix deps are gone. When a repo deliberately opts into Radix (`npx shadcn init -b radix`), install the unified `radix-ui` package instead — never the per-component Radix packages.
 
 ## Recurring Turborepo Packages
 
@@ -191,7 +191,7 @@ When the repo exposes model tools or resources to other agents, also consider:
 
 - `@modelcontextprotocol/sdk`
 
-Default model access on `ai` (AI SDK v6) is the AI Gateway: pass a `"provider/model"` string and requests route through the Vercel AI Gateway with no per-provider client in app code.
+Default model access on `ai` (the AI SDK) is the AI Gateway: pass a `"provider/model"` string and requests route through the Vercel AI Gateway with no per-provider client in app code.
 
 Provider packages are the escape hatch for direct-provider needs, chosen only when required and kept behind `@howells/ai`:
 

@@ -10,7 +10,7 @@ Adjust names and filters, but do not casually change the overall contract.
 {
   "name": "my-project",
   "private": true,
-  "packageManager": "pnpm@11.10.0",
+  "packageManager": "pnpm@latest",
   "scripts": {
     "dev": "turbo run dev --filter=web",
     "dev:all": "turbo run dev",
@@ -26,21 +26,21 @@ Adjust names and filters, but do not casually change the overall contract.
     "prepare": "husky"
   },
   "devDependencies": {
-    "@howells/lint": "^1.0.0",
-    "@howells/typescript-config": "^0.1.6",
-    "husky": "9.1.7",
-    "lint-staged": "17.0.8",
-    "tsx": "^4.22.4",
-    "turbo": "2.10.4",
-    "typescript": "6.0.3",
-    "vitest": "^4.1.8"
+    "@howells/lint": "latest",
+    "@howells/typescript-config": "latest",
+    "husky": "latest",
+    "lint-staged": "latest",
+    "tsx": "latest",
+    "turbo": "latest",
+    "typescript": "latest",
+    "vitest": "latest"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": "howells-fix",
     "*.{json,jsonc,css,md}": "howells-oxfmt --write"
   },
   "engines": {
-    "node": ">=24.18.0 <25"
+    "node": ">=24 <25"
   }
 }
 ```
@@ -49,13 +49,13 @@ Notes:
 
 - replace `web` with the primary app package when needed
 - if `test` is expensive, keep `check` light and create a heavier CI-only job
-- `pnpm@11.10.0` is the current house baseline
-- for published packages that can support Node 22, use `"node": ">=22.22.3"` in the package itself while keeping repo tooling on Node 24
+- `pnpm` is the current house baseline
+- for published packages that can support Node 22, use `"node": ">=22"` in the package itself while keeping repo tooling on Node 24
 
 ## `.node-version`
 
 ```text
-24.18.0
+24
 ```
 
 Keep local development, CI, and deployment runtimes on Node 24 LTS. Do not use Node 26 for the house baseline until it reaches LTS.

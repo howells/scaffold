@@ -22,7 +22,7 @@ It is not a generic starter guide. It reflects the conventions that are already 
 ## Defaults
 
 - Default repo shape: `pnpm` monorepo, usually with `apps/*` and `packages/*`
-- Default UI stack: Next.js 16.2 App Router, React 19.2, Tailwind CSS 4.3, Radix, and Storybook when the repo exports reusable UI
+- Default UI stack: Next.js App Router, React, Tailwind CSS v4, Radix, and Storybook when the repo exports reusable UI
 - Default linting and formatting: prefer the `@howells/lint` Oxlint/Oxfmt lane
 - Default task runner: Turborepo with cache disabled until a repo proves it is deterministic
 - Default data stack for product apps: Drizzle, Neon, `tRPC`, and React Query

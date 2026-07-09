@@ -15,7 +15,7 @@ These defaults intentionally ignore PHP/Craft maintenance surfaces. The useful s
 
 For a serious TypeScript product app, the recurring stack is:
 
-- Next.js 16.2 App Router
+- Next.js App Router
 - `tRPC` for the typed API layer
 - `@tanstack/react-query` for client data orchestration
 - Drizzle for the database layer
@@ -79,7 +79,7 @@ Do not mix adapters within one package without a reason, and do not reach for `p
 - **`drizzle-kit push`** is the workflow for syncing schema to the database. Do not hand-author migration files or runtime DDL. For an existing database, bootstrap the schema once with `drizzle-kit pull`, then own it via push.
 - Schema lives in the first-tier `packages/db` boundary.
 
-### Driver notes (GA `@neondatabase/serverless` ≥ 1.0)
+### Driver notes (GA `@neondatabase/serverless`)
 
 - Requires Node ≥ 19 (all current repos are well past this).
 - Call the neon query function as a **template** (`` sql`…` ``) or via `.query(text, params)` — never as a conventional function `sql('…', [])` (the GA breaking change).
@@ -148,7 +148,7 @@ That means:
 - immediately align them to shared tokens, wrappers, and repo conventions
 - fold recurring generic improvements back into the scaffold baseline where appropriate
 
-Scaffold on Base UI. shadcn defaults to Base UI as of July 2026, so `npx shadcn init` generates Base UI-backed components against the single `@base-ui/react` package. Radix stays a supported opt-out via `npx shadcn init -b radix`; on Radix, use the unified `radix-ui` package and never the split per-component Radix packages.
+Scaffold on Base UI. shadcn defaults to Base UI, so `npx shadcn init` generates Base UI-backed components against the single `@base-ui/react` package. Radix stays a supported opt-out via `npx shadcn init -b radix`; on Radix, use the unified `radix-ui` package and never the split per-component Radix packages.
 
 ## Media and Asset Storage
 
@@ -166,12 +166,12 @@ Keep the distinction clear: Motif owns generation, editing, upscaling, backgroun
 
 For apps that genuinely need AI features, the recurring pattern is:
 
-- `ai` (AI SDK v6) for the application-facing AI SDK surface
+- `ai` (the AI SDK) for the application-facing AI SDK surface
 - `@howells/ai` as the shared AI SDK/provider baseline
 - `howells/motif` for fal.ai image-generation and media-utility surfaces
 - `zod` for structured input and output contracts
 
-Default model access is the AI Gateway. On AI SDK v6 the global provider is the Vercel AI Gateway, so pass a `"provider/model"` string into AI SDK calls and requests route through the Gateway — one credential, provider switching without new SDK wiring. Per-provider `@ai-sdk/*` packages are the escape hatch for direct-provider needs, still behind `@howells/ai`. Keep the model-string boundary in `@howells/ai` or `packages/ai`, not scattered through app routes.
+Default model access is the AI Gateway. The AI SDK's global provider is the Vercel AI Gateway, so pass a `"provider/model"` string into AI SDK calls and requests route through the Gateway — one credential, provider switching without new SDK wiring. Per-provider `@ai-sdk/*` packages are the escape hatch for direct-provider needs, still behind `@howells/ai`. Keep the model-string boundary in `@howells/ai` or `packages/ai`, not scattered through app routes.
 
 If the repo is doing CLI-model orchestration or needs stricter typed IO around agent calls:
 
