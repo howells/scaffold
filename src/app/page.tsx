@@ -214,7 +214,6 @@ const HomePage = () => {
   return (
     <main className="mx-auto flex w-full max-w-[860px] flex-col gap-14 px-6 pb-24 pt-16 sm:pt-20">
       <header>
-        <p className={`mb-3 ${eyebrow}`}>A project baseline</p>
         <h1 className="text-sm font-medium text-fd-foreground">Scaffold</h1>
         <p className="mt-2 max-w-[58ch] text-sm leading-[1.65] text-fd-muted-foreground">
           The baseline I start projects from: repo shape, tooling, package
