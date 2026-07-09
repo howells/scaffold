@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { HomeTabs } from "@/components/home-tabs";
+import { Prose } from "@/components/prose";
 import { principleGroups, principlesIntro } from "@/content/principles";
 
 export const metadata: Metadata = {
@@ -14,9 +16,9 @@ const GITHUB_URL = "https://github.com/howells/scaffold";
 const focusRing =
   "rounded-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:var(--sc-accent)]";
 
-const eyebrow =
-  "text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-fd-muted-foreground";
+const eyebrow = "text-xs font-medium text-fd-muted-foreground";
 const hairline = "border-t border-[var(--sc-border-soft)]";
+const linkClass = `text-fd-muted-foreground transition-colors hover:text-fd-foreground ${focusRing}`;
 
 interface DocLink {
   readonly href: string;
@@ -106,33 +108,111 @@ const agentSurfaces = [
   },
 ];
 
-function TextLink({
-  children,
-  external,
-  href,
-}: {
-  readonly children: React.ReactNode;
-  readonly external?: boolean;
-  readonly href: string;
-}) {
-  const className = `text-fd-muted-foreground transition-colors hover:text-fd-foreground ${focusRing}`;
-  if (external) {
-    return (
-      <a className={className} href={href} rel="noreferrer" target="_blank">
-        {children}
-      </a>
-    );
-  }
+function PrinciplesPanel() {
   return (
-    <Link className={className} href={href}>
-      {children}
-    </Link>
+    <div>
+      <div className="flex max-w-[68ch] flex-col gap-3">
+        {principlesIntro.map((paragraph) => (
+          <p
+            className="text-sm leading-[1.7] text-fd-muted-foreground"
+            key={paragraph.slice(0, 40)}
+          >
+            {paragraph}
+          </p>
+        ))}
+      </div>
+
+      <div className="mt-12 flex flex-col gap-10">
+        {principleGroups.map((group) => (
+          <div className={`${hairline} pt-6`} key={group.group}>
+            <h3 className={eyebrow}>{group.group}</h3>
+            <div className="mt-6 flex flex-col gap-9">
+              {group.principles.map((principle) => (
+                <article key={principle.title}>
+                  <h4 className="text-sm font-medium text-fd-foreground">
+                    {principle.title}
+                  </h4>
+                  <Prose body={principle.body} />
+                </article>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DocsPanel() {
+  return (
+    <div>
+      <p className="max-w-[62ch] text-sm leading-[1.6] text-fd-muted-foreground">
+        Reference chapters, grouped by the question they answer. The full
+        write-ups live under{" "}
+        <Link className={linkClass} href="/docs/overview">
+          /docs
+        </Link>
+        .
+      </p>
+      <div className="mt-8 grid gap-x-10 gap-y-10 sm:grid-cols-2">
+        {docGroups.map((group) => (
+          <div key={group.key}>
+            <h3 className="text-sm font-medium text-fd-foreground">
+              {group.title}
+            </h3>
+            <p className="mt-1 text-sm leading-[1.55] text-fd-muted-foreground">
+              {group.desc}
+            </p>
+            <div className="mt-3 flex flex-col">
+              {group.links.map((link) => (
+                <Link
+                  className={`group/row flex items-center justify-between gap-2 py-2 text-sm text-fd-muted-foreground transition-colors hover:text-fd-foreground ${hairline} ${focusRing}`}
+                  href={link.href}
+                  key={link.href}
+                >
+                  <span>{link.title}</span>
+                  <span
+                    aria-hidden
+                    className="text-fd-muted-foreground transition-transform duration-150 group-hover/row:translate-x-[3px]"
+                  >
+                    →
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AgentsPanel() {
+  return (
+    <div>
+      <p className="max-w-[62ch] text-sm leading-[1.6] text-fd-muted-foreground">
+        The docs double as an installable Agent Skill and machine-readable
+        surfaces. Install the skill:
+      </p>
+      <pre className="mt-4 overflow-x-auto rounded-lg bg-[var(--sc-ink)] px-4 py-3 font-mono text-sm text-[var(--sc-paper)]">
+        <code className="tabular-nums">
+          npx skills@latest add howells/scaffold
+        </code>
+      </pre>
+      <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm">
+        {agentSurfaces.map((surface) => (
+          <Link className={linkClass} href={surface.href} key={surface.href}>
+            {surface.title}
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }
 
 const HomePage = () => {
   return (
-    <main className="mx-auto flex w-full max-w-[860px] flex-col gap-16 px-6 pb-24 pt-16 sm:gap-20 sm:pt-20">
+    <main className="mx-auto flex w-full max-w-[860px] flex-col gap-14 px-6 pb-24 pt-16 sm:pt-20">
       <header>
         <p className={`mb-3 ${eyebrow}`}>A project baseline</p>
         <h1 className="text-sm font-medium text-fd-foreground">Scaffold</h1>
@@ -142,120 +222,44 @@ const HomePage = () => {
           launch. Written for my own repos, and open for anyone to read.
         </p>
         <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-          <TextLink href="/docs/overview">Read the docs</TextLink>
-          <TextLink external href={GITHUB_URL}>
+          <Link className={linkClass} href="/docs/overview">
+            Read the docs
+          </Link>
+          <a
+            className={linkClass}
+            href={GITHUB_URL}
+            rel="noreferrer"
+            target="_blank"
+          >
             GitHub
-          </TextLink>
+          </a>
         </div>
       </header>
 
-      <section>
-        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <h2 className="text-sm font-medium text-fd-foreground">Principles</h2>
-          <span className="text-sm text-fd-muted-foreground">
-            how I build software
-          </span>
-        </div>
-        <p className="mt-3 max-w-[62ch] text-sm leading-[1.65] text-fd-muted-foreground">
-          {principlesIntro[0]}
-        </p>
-
-        <div className="mt-10 flex flex-col gap-10">
-          {principleGroups.map((group) => (
-            <div className={`${hairline} pt-5`} key={group.group}>
-              <h3 className={eyebrow}>{group.group}</h3>
-              <dl className="mt-4 flex flex-col">
-                {group.principles.map((principle) => (
-                  <div
-                    className={`grid gap-1 py-3 ${hairline} first:border-t-0 sm:grid-cols-[minmax(0,17rem)_1fr] sm:gap-6`}
-                    key={principle.title}
-                  >
-                    <dt className="text-sm font-medium text-fd-foreground">
-                      {principle.title}
-                    </dt>
-                    <dd className="text-sm leading-[1.6] text-fd-muted-foreground">
-                      {principle.summary}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          ))}
-        </div>
-
-        <div className={`mt-8 ${hairline} pt-5`}>
-          <Link
-            className={`inline-flex text-sm font-medium text-[var(--sc-accent)] ${focusRing}`}
-            href="/docs/principles"
-          >
-            Read the full write-ups →
-          </Link>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="text-sm font-medium text-fd-foreground">The docs</h2>
-        <p className="mt-2 max-w-[62ch] text-sm leading-[1.6] text-fd-muted-foreground">
-          Reference chapters, grouped by the question they answer.
-        </p>
-        <div className="mt-8 grid gap-x-10 gap-y-10 sm:grid-cols-2">
-          {docGroups.map((group) => (
-            <div key={group.key}>
-              <h3 className="text-sm font-medium text-fd-foreground">
-                {group.title}
-              </h3>
-              <p className="mt-1 text-sm leading-[1.55] text-fd-muted-foreground">
-                {group.desc}
-              </p>
-              <div className="mt-3 flex flex-col">
-                {group.links.map((link) => (
-                  <Link
-                    className={`group/row flex items-center justify-between gap-2 py-2 text-sm text-fd-muted-foreground transition-colors hover:text-fd-foreground ${hairline} ${focusRing}`}
-                    href={link.href}
-                    key={link.href}
-                  >
-                    <span>{link.title}</span>
-                    <span
-                      aria-hidden
-                      className="text-fd-muted-foreground transition-transform duration-150 group-hover/row:translate-x-[3px]"
-                    >
-                      →
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section>
-        <h2 className="text-sm font-medium text-fd-foreground">For agents</h2>
-        <p className="mt-2 max-w-[62ch] text-sm leading-[1.6] text-fd-muted-foreground">
-          The docs double as an installable Agent Skill and machine-readable
-          surfaces. Install the skill:
-        </p>
-        <pre className="mt-4 overflow-x-auto rounded-lg bg-[var(--sc-ink)] px-4 py-3 font-mono text-sm text-[var(--sc-paper)]">
-          <code className="tabular-nums">
-            npx skills@latest add howells/scaffold
-          </code>
-        </pre>
-        <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm">
-          {agentSurfaces.map((surface) => (
-            <TextLink href={surface.href} key={surface.href}>
-              {surface.title}
-            </TextLink>
-          ))}
-        </div>
-      </section>
+      <HomeTabs
+        tabs={[
+          {
+            content: <PrinciplesPanel />,
+            id: "principles",
+            label: "Principles",
+          },
+          { content: <DocsPanel />, id: "docs", label: "The docs" },
+          { content: <AgentsPanel />, id: "agents", label: "For agents" },
+        ]}
+      />
 
       <footer
         className={`flex flex-wrap items-center justify-between gap-2 pt-6 text-sm text-fd-muted-foreground ${hairline}`}
       >
         <span>Scaffold · Daniel Howells</span>
-        <TextLink external href={GITHUB_URL}>
+        <a
+          className={linkClass}
+          href={GITHUB_URL}
+          rel="noreferrer"
+          target="_blank"
+        >
           GitHub
-        </TextLink>
+        </a>
       </footer>
     </main>
   );
