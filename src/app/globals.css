@@ -5,10 +5,9 @@
 /* ── Design Tokens ─────────────────────── */
 
 :root {
-  --sc-font-sans: var(--font-geist-sans), "Geist", system-ui, sans-serif;
+  --sc-font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
   --sc-font-mono:
-    var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
-    Consolas, monospace;
+    ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --sc-paper: #fbfbf9;
   --sc-surface: #ffffff;
   --sc-surface-soft: #f6f5f1;

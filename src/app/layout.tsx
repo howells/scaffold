@@ -1,6 +1,6 @@
 import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
 
 import { siteUrl } from "@/lib/site-url";
@@ -10,14 +10,9 @@ import "./globals.css";
 const description =
   "The baseline behind Howells projects: repo shape, tooling, package boundaries, agent workflow, and launch readiness, written down once and open to read.";
 
-const geistSans = Geist({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
-});
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -46,11 +41,7 @@ interface RootLayoutProps {
 }
 
 const RootLayout = ({ children }: RootLayoutProps) => (
-  <html
-    className={`${geistSans.variable} ${geistMono.variable}`}
-    lang="en"
-    suppressHydrationWarning
-  >
+  <html className={inter.variable} lang="en" suppressHydrationWarning>
     <body className="flex min-h-screen flex-col">
       <RootProvider>{children}</RootProvider>
     </body>
