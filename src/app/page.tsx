@@ -194,7 +194,7 @@ function AgentsPanel() {
         The docs double as an installable Agent Skill and machine-readable
         surfaces. Install the skill:
       </p>
-      <pre className="mt-4 overflow-x-auto rounded-lg bg-[var(--sc-ink)] px-4 py-3 font-mono text-sm text-[var(--sc-paper)]">
+      <pre className="mt-4 overflow-x-auto rounded-lg bg-[var(--sc-ink)] px-4 py-3 font-mono text-sm text-[var(--sc-paper)] dark:border dark:border-[var(--sc-border-soft)] dark:bg-[var(--sc-surface-soft)] dark:text-fd-foreground">
         <code className="tabular-nums">
           npx skills@latest add howells/scaffold
         </code>
