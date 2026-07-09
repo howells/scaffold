@@ -52,7 +52,7 @@ const OpengraphImage = () =>
           maxWidth: "900px",
         }}
       >
-        The way I start projects — repo shape, tooling, boundaries, and launch
+        The way I start projects: repo shape, tooling, boundaries, and launch
         readiness.
       </div>
     </div>,

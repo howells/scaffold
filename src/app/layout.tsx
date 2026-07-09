@@ -8,7 +8,7 @@ import { siteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const description =
-  "The baseline behind Howells projects — repo shape, tooling, package boundaries, agent workflow, and launch readiness, written down once and open to read.";
+  "The baseline behind Howells projects: repo shape, tooling, package boundaries, agent workflow, and launch readiness, written down once and open to read.";
 
 const geistSans = Geist({
   subsets: ["latin"],

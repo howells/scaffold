@@ -20,7 +20,7 @@ const focusRing =
 
 const principles = [
   {
-    desc: "Model types so a nonsensical state can't be expressed — strictness is leverage over agents too.",
+    desc: "Model types so a nonsensical state can't be expressed; strictness is leverage over agents too.",
     title: "Make the wrong thing impossible to compile",
   },
   {
@@ -40,7 +40,7 @@ const principles = [
     title: "One source of truth; derive the rest",
   },
   {
-    desc: "A small, enforced menu of choices — coherence by construction, not by review.",
+    desc: "A small, enforced menu of choices; coherence by construction, not by review.",
     title: "Offer a closed set of options and force the choice",
   },
   {
@@ -221,7 +221,7 @@ const HomePage = () => {
           Scaffold
         </h1>
         <p className="mt-4 max-w-[62ch] text-sm leading-7 text-fd-muted-foreground">
-          The baseline I start projects from — repo shape, tooling, package
+          The baseline I start projects from: repo shape, tooling, package
           boundaries, how coding agents fit in, and what has to be true before
           launch. Written for my own repos, and open for anyone to read.
         </p>
