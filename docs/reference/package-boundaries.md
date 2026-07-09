@@ -1,6 +1,6 @@
 ---
 title: "Package Boundaries"
-description: "These are the package boundaries that keep recurring across your serious monorepos."
+description: "The package boundaries my monorepos keep converging on: apps never import apps, shared code crosses explicit seams, direction enforced by tooling."
 ---
 
 # Package Boundaries

@@ -1,6 +1,6 @@
 ---
 title: "Bundled UI Baseline"
-description: "This directory vendors the deleted UI-system files recovered from the old `~/Sites/patternmode` history at commit `1ffeb6ddb9d5d449a3618f3b73f79b93590cd463^`."
+description: "The bundled UI baseline that seeds new UI packages: shared components, design tokens, motion, and Storybook, vendored into the scaffold."
 ---
 
 # Bundled UI Baseline

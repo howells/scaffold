@@ -1,6 +1,6 @@
 ---
 title: "Architecture Defaults"
-description: "These are the recurring architecture choices across your active repos."
+description: "The recurring architecture choices across my active repos: a domain core, thin app clients, typed boundaries, and where orchestration lives."
 ---
 
 # Architecture Defaults

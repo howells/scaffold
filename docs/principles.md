@@ -1,6 +1,6 @@
 ---
 title: "Principles"
-description: "The principles I build software by, drawn from how I actually work rather than an aspirational list."
+description: "The principles I actually build software by, pulled from how I work across active projects: strict types, hard boundaries, one source of truth."
 ---
 
 # Principles

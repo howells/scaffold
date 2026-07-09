@@ -1,6 +1,6 @@
 ---
 title: "Launch Checklist"
-description: "Use this when starting a new repo or standardizing an existing one."
+description: "The checks to clear before a repo ships or gets standardized: config, boundaries, typed env, deployment, and agent surfaces all in place."
 ---
 
 # Launch Checklist

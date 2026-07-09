@@ -1,6 +1,6 @@
 ---
 title: "UI Projects"
-description: "For new UI-based projects, the default is a local UI package seeded from the scaffold's bundled UI baseline."
+description: "The default for new UI projects: a local UI package seeded from the bundled baseline, with Tailwind v4, Radix, design tokens, and Storybook."
 ---
 
 # UI Projects

@@ -1,6 +1,6 @@
 ---
 title: "Agent Workflow"
-description: "This is the baseline for repos that will be worked on with coding assistants, Arc, and reusable specialist skills. Claude Code is served natively by the skill directory, Codex through a platform wrapper, and a Cursor surface is deferred future work."
+description: "The baseline for repos worked on with coding agents, Arc, and reusable skills: Claude Code served natively, Codex via a wrapper, Cursor deferred."
 ---
 
 # Agent Workflow

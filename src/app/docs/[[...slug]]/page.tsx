@@ -24,11 +24,15 @@ export const generateMetadata = async ({
   }
 
   return {
+    alternates: {
+      canonical: page.url,
+    },
     description: page.data.description,
     openGraph: {
       description: page.data.description,
       title: page.data.title,
       type: "article",
+      url: page.url,
     },
     title: page.data.title,
     twitter: {

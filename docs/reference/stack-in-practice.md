@@ -1,6 +1,6 @@
 ---
 title: "Stack in Practice"
-description: "The services, packages, and tools I actually reach for, measured from what runs across my repos rather than an aspirational list."
+description: "The services, packages, and tools I actually reach for, measured from what runs across my repos: hosting, data, AI, and the toolchain."
 ---
 
 # Stack in Practice

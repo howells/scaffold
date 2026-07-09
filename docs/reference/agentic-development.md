@@ -1,6 +1,6 @@
 ---
 title: "Agentic Development"
-description: "Use this reference when a repo is not just calling a model, but exposing agent-facing behavior, agent-owned tools, workflows, memory, traces, MCP, or long-running AI jobs."
+description: "The reference for repos that expose agent-facing behavior: agent-owned tools, workflows, memory, traces, MCP, and long-running AI jobs."
 ---
 
 # Agentic Development

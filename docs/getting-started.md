@@ -1,6 +1,6 @@
 ---
 title: "Getting Started"
-description: "Use this sequence when creating a new repo."
+description: "The ordered setup for a new repo: install the baseline, pick an archetype, wire config, enforce boundaries, and record any deviations."
 ---
 
 # Getting Started

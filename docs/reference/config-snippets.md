@@ -1,6 +1,6 @@
 ---
 title: "Config Snippets"
-description: "These are the canonical starting snippets for a new repo."
+description: "Canonical starting config for a new repo: turbo.json, tsconfig presets, the lint setup, and the small set of root scripts every repo shares."
 ---
 
 # Config Snippets

@@ -1,6 +1,6 @@
 ---
 title: "Default Dependencies"
-description: "This is the package baseline inferred from recent active repos."
+description: "The package baseline for a new repo, taken from what my active repos actually run: framework, data, lint, config, and AI dependencies."
 ---
 
 # Default Dependencies

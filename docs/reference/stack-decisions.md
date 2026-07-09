@@ -1,6 +1,6 @@
 ---
 title: "Stack Decisions"
-description: "These are the current default decisions for new TypeScript product work and shared config repos."
+description: "The current default stack for new TypeScript product and config work: Next.js, Drizzle, Neon, tRPC, React Query, and the pinned toolchain."
 ---
 
 # Stack Decisions

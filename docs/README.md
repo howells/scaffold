@@ -1,6 +1,6 @@
 ---
-title: "New Project Docs"
-description: "This docs set is the canonical starting point for a new Howells project."
+title: "Overview"
+description: "The canonical starting point for a new Howells project: repo shape, default stack, package boundaries, agent workflow, and launch checklist."
 ---
 
 # New Project Docs

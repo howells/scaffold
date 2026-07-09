@@ -1,6 +1,6 @@
 ---
 title: "Agent Skill Packaging"
-description: "Scaffold's Project Docs should remain the source of truth, with one agent skill distribution surface exposed to Codex, Claude Code, and Cursor through platform-specific Skill Wrappers. This keeps the Scaffold Baseline coherent across supported coding assistants while still allowing each platform to use its own metadata, command, rules, or install conventions."
+description: "Why Scaffold's docs stay the single source of truth and ship as one agent skill, wrapped per platform for Claude Code, Codex, and Cursor."
 ---
 
 # Agent Skill Packaging

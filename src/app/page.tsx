@@ -4,11 +4,36 @@ import Link from "next/link";
 import { HomeTabs } from "@/components/home-tabs";
 import { Prose } from "@/components/prose";
 import { principleGroups, principlesIntro } from "@/content/principles";
+import { siteUrl } from "@/lib/site-url";
+
+const description =
+  "The baseline I start every project from: repo shape, tooling, package boundaries, agent workflow, and launch checks, written down and open to read.";
 
 export const metadata: Metadata = {
-  description:
-    "How I start projects: the principles, defaults, and docs that keep repos from drifting.",
+  alternates: {
+    canonical: "/",
+  },
+  description,
+  openGraph: {
+    description,
+    title: "Scaffold",
+    type: "website",
+    url: "/",
+  },
   title: "Scaffold",
+  twitter: {
+    card: "summary_large_image",
+    description,
+    title: "Scaffold",
+  },
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  description,
+  name: "Scaffold",
+  url: siteUrl(),
 };
 
 const GITHUB_URL = "https://github.com/howells/scaffold";
@@ -213,6 +238,10 @@ function AgentsPanel() {
 const HomePage = () => {
   return (
     <main className="mx-auto flex w-full max-w-[860px] flex-col gap-14 px-6 pb-24 pt-16 sm:pt-20">
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        type="application/ld+json"
+      />
       <header>
         <h1 className="text-sm font-medium text-fd-foreground">Scaffold</h1>
         <p className="mt-2 max-w-[58ch] text-sm leading-[1.65] text-fd-muted-foreground">

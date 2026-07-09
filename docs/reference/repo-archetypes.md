@@ -1,6 +1,6 @@
 ---
 title: "Repo Archetypes"
-description: "Most new repos should start from one of these shapes."
+description: "The handful of repo shapes most new projects start from, from a single-purpose tool to a full product monorepo, and how to pick between them."
 ---
 
 # Repo Archetypes

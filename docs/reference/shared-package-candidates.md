@@ -1,6 +1,6 @@
 ---
 title: "Shared Package Candidates"
-description: "This section separates packages that are already real shared assets from patterns that look ready to become them."
+description: "Which packages are already real shared assets versus patterns that only look ready to extract, and the bar a candidate clears before it moves."
 ---
 
 # Shared Package Candidates

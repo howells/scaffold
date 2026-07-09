@@ -1,6 +1,6 @@
 ---
 title: "Scaffold Repo Deviations"
-description: "The scaffold repository deliberately deviates from its own published baseline because it is a single-app documentation site, not a product monorepo. It drops the workspace, orchestration, hook, and test machinery the baseline assumes, and gates on a static build instead of a test suite. Getting Started step 8 asks every repo to record intentional deviations early; this ADR is scaffold's own record."
+description: "Why the scaffold repo deviates from its own baseline: a single-app docs site drops the workspace, hooks, and test gate and ships on a static build."
 ---
 
 # Scaffold Repo Deviations

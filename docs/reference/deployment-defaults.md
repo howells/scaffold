@@ -1,6 +1,6 @@
 ---
 title: "Deployment Defaults"
-description: "This is the default deployment logic inferred from your active repos."
+description: "The default deployment setup across my repos: Vercel targets, the env boundary, preview versus production, and what has to pass before shipping."
 ---
 
 # Deployment Defaults
