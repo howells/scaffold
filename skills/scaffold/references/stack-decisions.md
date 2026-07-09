@@ -262,7 +262,7 @@ Default package choices:
 
 ### Model access
 
-Default model access is the AI Gateway. On AI SDK v6 the global provider is the Vercel AI Gateway, so pass a `"provider/model"` string straight into AI SDK calls and requests route through the Gateway. This is the default surface — one credential, provider switching without new SDK wiring, and no per-provider client in app code.
+Default model access is OpenRouter as the gateway, wrapped by the Vercel AI SDK. Pass a `"provider/model"` string through the AI SDK and requests route through OpenRouter — one credential, provider switching without new SDK wiring, and no per-provider client in app code. The Vercel AI Gateway is not the default here.
 
 Per-provider `@ai-sdk/*` packages are the escape hatch for direct-provider needs, and they still sit behind `@howells/ai`. Keep model-string selection behind that boundary rather than hardcoding provider strings across app routes.
 

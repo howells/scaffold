@@ -3,6 +3,7 @@
   "defaultOpen": true,
   "pages": [
     "stack-decisions",
+    "stack-in-practice",
     "architecture-defaults",
     "repo-archetypes",
     "package-boundaries",

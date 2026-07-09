@@ -15,6 +15,7 @@ Load only the references needed for the current task:
 - `references/getting-started.md` for the default setup sequence.
 - `references/repo-archetypes.md` when choosing repo shape.
 - `references/stack-decisions.md` for pinned baseline tools and versions.
+- `references/stack-in-practice.md` for the services, packages, and skills actually used across active repos.
 - `references/architecture-defaults.md` for app/data/AI architecture defaults.
 - `references/package-boundaries.md` for workspace package layout.
 - `references/default-dependencies.md` for package selection.
