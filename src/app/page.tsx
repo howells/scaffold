@@ -20,36 +20,36 @@ const focusRing =
 
 const principles = [
   {
-    desc: "Settle toolchain basics at the baseline instead of re-deciding them in every repo.",
-    title: "Decide once, reuse everywhere",
+    desc: "Model types so a nonsensical state can't be expressed — strictness is leverage over agents too.",
+    title: "Make the wrong thing impossible to compile",
   },
   {
-    desc: "Start from the smallest archetype that fits; add machinery only when a repo earns it.",
+    desc: "Throw with the real reason; a masked failure is worse than a crash.",
+    title: "Fail loud, never fall back silently",
+  },
+  {
+    desc: "Add machinery only when a real second concern appears. (The one I break most.)",
     title: "The lightest shape that fits",
   },
   {
-    desc: "Prefer the plain, correct implementation to the clever one.",
-    title: "Correctness over cleverness",
+    desc: "Encode dependency direction as a rule a tool enforces, not one people remember.",
+    title: "Boundaries are mechanical, not conventional",
   },
   {
-    desc: "The Project Docs are canonical; every assistant gets a generated wrapper, not a fork.",
-    title: "Docs are the source of truth",
+    desc: "A fact lives in one place; generate the copies so they can't drift.",
+    title: "One source of truth; derive the rest",
   },
   {
-    desc: "A repo may diverge from the baseline when justified — and writes down why.",
-    title: "Deviations are recorded, not smuggled",
+    desc: "A small, enforced menu of choices — coherence by construction, not by review.",
+    title: "Offer a closed set of options and force the choice",
   },
   {
-    desc: "A short AGENTS.md that changes behavior without becoming documentation sludge.",
-    title: "Agents are assets, not entropy",
+    desc: "Pin the words before the code; one glossary, used exactly.",
+    title: "Fix the ubiquitous language first",
   },
   {
-    desc: "If hooks get slow enough that developers bypass them, the hooks are wrong.",
-    title: "Hooks stop breakage, not run CI",
-  },
-  {
-    desc: "Docs describe the current system, not the migration path taken to reach it.",
-    title: "Docs describe the present",
+    desc: "Build for people and agents alike; the agentic surface wins soon.",
+    title: "Build for two audiences",
   },
 ];
 
