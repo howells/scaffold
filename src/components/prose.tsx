@@ -11,7 +11,7 @@ import type { ReactNode } from "react";
 const INLINE = /`([^`]+)`|\[([^\]]+)\]\(([^)]+)\)/g;
 
 const linkClass =
-  "text-fd-foreground underline decoration-[var(--sc-border)] underline-offset-2 transition-colors hover:decoration-[var(--sc-accent)]";
+  "text-fd-foreground underline decoration-border underline-offset-2 transition-colors hover:decoration-ring";
 
 function renderInline(text: string): ReactNode[] {
   const nodes: ReactNode[] = [];
@@ -28,7 +28,7 @@ function renderInline(text: string): ReactNode[] {
     if (code != null) {
       nodes.push(
         <code
-          className="rounded bg-[var(--sc-surface-soft)] px-1 py-0.5 font-mono text-[0.8125rem] text-fd-foreground"
+          className="rounded bg-muted px-1 py-0.5 font-mono text-[0.8125rem] text-fd-foreground"
           key={key}
         >
           {code}

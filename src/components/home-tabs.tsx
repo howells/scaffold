@@ -21,7 +21,7 @@ export function HomeTabs({ tabs }: { readonly tabs: readonly HomeTab[] }) {
     <div>
       <div
         aria-label="Sections"
-        className="flex gap-6 border-b border-[var(--sc-border-soft)]"
+        className="flex gap-6 border-b border-border/55"
         role="tablist"
       >
         {tabs.map((tab) => {
@@ -30,9 +30,9 @@ export function HomeTabs({ tabs }: { readonly tabs: readonly HomeTab[] }) {
             <button
               aria-controls={`panel-${tab.id}`}
               aria-selected={selected}
-              className={`-mb-px border-b-2 pb-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:var(--sc-accent)] ${
+              className={`-mb-px border-b-2 pb-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${
                 selected
-                  ? "border-[var(--sc-accent)] text-fd-foreground"
+                  ? "border-ring text-fd-foreground"
                   : "border-transparent text-fd-muted-foreground hover:text-fd-foreground"
               }`}
               id={`tab-${tab.id}`}
