@@ -39,10 +39,10 @@ const websiteJsonLd = {
 const GITHUB_URL = "https://github.com/howells/scaffold";
 
 const focusRing =
-  "rounded-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:var(--sc-accent)]";
+  "rounded-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
 
 const eyebrow = "text-xs font-medium text-fd-muted-foreground";
-const hairline = "border-t border-[var(--sc-border-soft)]";
+const hairline = "border-t border-border/55";
 const linkClass = `text-fd-muted-foreground transition-colors hover:text-fd-foreground ${focusRing}`;
 
 interface DocLink {
@@ -219,7 +219,7 @@ function AgentsPanel() {
         The docs double as an installable Agent Skill and machine-readable
         surfaces. Install the skill:
       </p>
-      <pre className="mt-4 overflow-x-auto rounded-lg bg-[var(--sc-ink)] px-4 py-3 font-mono text-sm text-[var(--sc-paper)] dark:border dark:border-[var(--sc-border-soft)] dark:bg-[var(--sc-surface-soft)] dark:text-fd-foreground">
+      <pre className="mt-4 overflow-x-auto rounded-lg bg-foreground px-4 py-3 font-mono text-sm text-background dark:border dark:border-border/55 dark:bg-muted dark:text-fd-foreground">
         <code className="tabular-nums">
           npx skills@latest add howells/scaffold
         </code>
