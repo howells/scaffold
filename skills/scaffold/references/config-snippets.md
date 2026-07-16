@@ -308,39 +308,28 @@ For provider checks, prefer Envy's Vercel or Railway adapters over hand-written 
 
 ## Drizzle + Neon db client
 
-Default adapter is `drizzle-orm/neon-http`. The schema lives in `packages/db`; the client is a memoized singleton.
+Use `@howells/neon` — it carries the fleet's hardening (write-safe retries, IPv4-first DNS, cold-start timeouts, HMR-safe caching, endpoint guards) so repos never hand-roll clients. The schema lives in `packages/db`. Full rationale: [Neon](./neon.md).
 
 ```ts
 // packages/db/src/client.ts
-import { drizzle } from "drizzle-orm/neon-http";
-import { neon } from "@neondatabase/serverless";
-import { getDatabaseUrl } from "@your-scope/env";
+import { createHttpDb } from "@howells/neon/http";
+import { getDatabaseUrl } from "@your-scope/env"; // pooled DATABASE_URL
+
 import * as schema from "./schema";
 
-let cached: ReturnType<typeof drizzle<typeof schema>> | null = null;
-
-export const getDb = () => {
-  cached ??= drizzle(neon(getDatabaseUrl()), { schema });
-  return cached;
-};
-export type Db = ReturnType<typeof getDb>;
+export const db = createHttpDb({ schema, url: getDatabaseUrl() });
+export type Db = typeof db;
 ```
 
-Use `drizzle-orm/neon-serverless` (`Pool` over WebSockets) instead **only** for runtimes that need interactive/session transactions (long-running workers/CLIs); set `neonConfig.poolQueryViaFetch = true` on edge.
+Need interactive/session transactions (`db.transaction(async (tx) => ...)`), `LISTEN/NOTIFY`, or a long-running worker? Swap the subpath — `createPooledDb` from `@howells/neon/pool` (hardened `pg`, same call shape). Never `drizzle-orm/neon-serverless`; enforce with `createOxlintConfig()` from `@howells/neon/lint`.
 
 ```ts
-// drizzle.config.ts
-import "dotenv/config"; // or load env via envy before invoking drizzle-kit
-import { defineConfig } from "drizzle-kit";
-import { getDatabaseUrl } from "./packages/env/src";
+// drizzle.config.ts — asserts the DIRECT (non-pooler) endpoint
+import { neonKitConfig } from "@howells/neon/kit";
 
-export default defineConfig({
+export default neonKitConfig({
+  directUrl: process.env.DIRECT_DATABASE_URL ?? "",
   schema: "./packages/db/src/schema.ts",
-  out: "./drizzle",
-  dialect: "postgresql",
-  dbCredentials: { url: getDatabaseUrl() },
-  strict: true,
-  verbose: true,
 });
 ```
 

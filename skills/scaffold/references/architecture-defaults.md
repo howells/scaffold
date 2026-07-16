@@ -55,18 +55,19 @@ The clear default is:
 - Postgres
 - Drizzle (ORM + typed schema)
 - Neon for serverless-hosted Postgres
-- `@neondatabase/serverless` as the driver — never raw `pg`/`node-postgres`, and `postgres.js` only for a concrete long-running-service need
+- **`@howells/neon`** as the client layer — never hand-rolled drivers. It wraps `@neondatabase/serverless` (HTTP) and `pg` (TCP) with the fleet's hardening: write-safe retries, IPv4-first DNS, cold-start timeouts, HMR-safe caching, endpoint guards.
 
 This is one of the strongest repeated patterns in the current portfolio. Use Drizzle from day one — hand-written SQL with manual row typing is not the baseline.
 
 ### Connecting Drizzle to Neon (the rule)
 
-Pick the adapter by runtime, not by habit. Both adapters use the same `@neondatabase/serverless` package:
+Pick the subpath by runtime, not by habit:
 
-- **Default — `drizzle-orm/neon-http`** (`neon(DATABASE_URL)` → `drizzle(sql, { schema })`). Use for all app data access (Server Components, route handlers, serverless/edge functions) and short-lived scripts. HTTP one-shot queries are lowest-latency for request/response work, are edge-safe, and `db.transaction([...])` still gives atomic batched (non-interactive) writes — which covers almost every write path, including multi-table ingestion.
-- **Escape hatch — `drizzle-orm/neon-serverless`** (`Pool` over WebSockets; set `neonConfig.poolQueryViaFetch = true` on edge). Use **only** when a runtime genuinely needs *interactive* (session) transactions — multi-step logic that branches mid-transaction — or node-postgres compatibility. Typically long-running workers/CLIs. Open and close the pool within the request/process.
+- **Default — `@howells/neon/http`** (`createHttpDb({ url, schema })`, neon-http adapter). Use for all app data access (Server Components, route handlers, serverless functions, Workers) and short-lived scripts. HTTP one-shot queries are lowest-latency for request/response work, and `db.batch([...])` gives atomic non-interactive writes — which covers almost every write path.
+- **Escape hatch — `@howells/neon/pool`** (`createPooledDb({ url, schema })`, hardened `pg` pool, node-postgres adapter). Use when a runtime genuinely needs *interactive* (session) transactions — `db.transaction(async (tx) => ...)` with mid-transaction branching — or `LISTEN/NOTIFY`, or long-running batch work. Note: neon-http's `.transaction()` **typechecks but throws at runtime**; if a package calls it, that package belongs on `/pool` (fieldportrait learned this with 12 call sites).
+- **Avoid — `drizzle-orm/neon-serverless`** (the WebSocket `Pool`). It drops idle sockets on autosuspend and leaks pools across HMR; candor migrated off it after documented pain. Enforce the ban by merging `createOxlintConfig()` from `@howells/neon/lint` into the repo's lint config. The one exception is edge runtimes that truly need the WS pool (`neonConfig.poolQueryViaFetch`).
 
-Do not mix adapters within one package without a reason, and do not reach for `postgres.js`/`node-postgres` as a default — that is driver sprawl.
+Do not mix subpaths within one package without a reason, and do not reach for `postgres.js` or hand-rolled `pg` as a default — that is driver sprawl. Full failure-class analysis and per-repo survey: [Neon](./neon.md).
 
 ### Schema and migrations
 
@@ -78,7 +79,7 @@ Do not mix adapters within one package without a reason, and do not reach for `p
 
 - Requires Node ≥ 19 (all current repos are well past this).
 - Call the neon query function as a **template** (`` sql`…` ``) or via `.query(text, params)` — never as a conventional function `sql('…', [])` (the GA breaking change).
-- Over HTTP, wrap reads/writes in **retry-on-transient-drop** logic; connections can blip during maintenance.
+- Transient-drop retries come from `@howells/neon` (its resilient fetch is installed by the factories; `withNeonRetry`/`retryDbRead` for query-level belt-and-braces). Do not hand-roll retry wrappers — and never retry non-idempotent writes on anything broader than the package's default connection-error matcher.
 
 ## Client State
 

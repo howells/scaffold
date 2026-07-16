@@ -4,6 +4,7 @@
   "pages": [
     "stack-decisions",
     "stack-in-practice",
+    "neon",
     "architecture-defaults",
     "repo-archetypes",
     "package-boundaries",
