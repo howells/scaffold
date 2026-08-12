@@ -1,43 +1,41 @@
-# Scaffold - Agent Instructions
+# Scaffold
 
-## Communication Expectations
+The house baseline for starting or standardising a Howells project: repo shape, default stack, package boundaries, agent workflow, deployment and launch readiness. It's a docs-first standard with a Fumadocs site over it, not a template you clone.
 
-- Treat this repo as the source of the Scaffold Baseline, not as a one-off template.
-- State which reference doc or skill packaging surface you are changing.
-- Keep explanations short and operational; this repo exists to reduce ambiguity in other repos.
+`docs/` is the source of truth. `skills/scaffold` is a distribution surface, generated from it.
 
-## How To Work In This Codebase
+## What a new project takes from here
 
-- Start with `CONTEXT.md` for project language and `docs/README.md` for documentation structure.
-- The canonical baseline lives in `docs/reference/`; skill packaging should reflect those docs rather than fork them.
-- `docs/reference/agent-workflow.md` defines what root `AGENTS.md` files should cover.
-- Keep generated or packaged agent-skill material aligned with Project Docs.
+Read `docs/README.md` first: it carries the defaults in one page. Then the reference page for the decision in front of you.
 
-## Editing Constraints
+Defaults a new repo inherits:
 
-- Do not turn scaffold docs into project-specific guidance for one repo.
-- Do not vendor independent skills into product repos; link or install them when needed.
-- Keep `AGENTS.md` guidance short: communication expectations, editing constraints, search preferences, and repo-specific rules.
-- Avoid adding runtime dependencies unless the docs/skill distribution actually needs them.
+- pnpm monorepo, usually `apps/*` and `packages/*`, with Turborepo and cache disabled until the repo proves it's deterministic.
+- Next.js App Router, React, Tailwind v4, Radix, and Storybook when the repo exports reusable UI.
+- `@howells/lint` on the Oxlint/Oxfmt lane, `@howells/typescript-config` for tsconfig presets, `@howells/envy` for typed env parsing and deploy-time env checks.
+- Drizzle, Neon, tRPC and React Query for product data.
+- `@howells/ai` as the provider baseline, `howells/motif` for image work, product orchestration in a repo-local `ai` or `agents` package, MCP in its own package when exposed.
 
-## Search Preferences
+Reference pages: `stack-decisions`, `architecture-defaults`, `repo-archetypes`, `package-boundaries`, `deployment-defaults`, `default-dependencies`, `config-snippets`, `ui-projects`, `shared-package-candidates`, `agent-workflow`, `agentic-development`, `stack-in-practice`, `neon`, `launch-checklist`. `docs/reference/agent-workflow.md` defines what a root `AGENTS.md` should cover. `docs/adr/` records deviations, including this repo's own.
 
-- Search `docs/reference/` before adding new baseline policy.
-- Search `CONTEXT.md` before changing terms like Scaffold Baseline, Project Docs, Agent Skill, or Skill Wrapper.
-- Search existing reference docs before creating a new one.
+## Generated surfaces - never hand-edit
+
+- `docs/principles.md` is generated from `src/content/principles.ts` by `pnpm generate:principles`. The homepage renders the same module, so they can't drift.
+- `skills/scaffold/references/` is generated from `docs/` by `pnpm sync:skill`. Edit docs once, then run the sync.
+- `pnpm check` runs both with `--check` and fails on drift, so a docs edit without a regenerate breaks the gate.
+
+## Editing this repo
+
+- Don't turn scaffold docs into guidance for one repo. If it only applies to one project, it belongs in that project's `AGENTS.md`.
+- Don't vendor independent skills into product repos; link or install them.
+- Search `docs/reference/` before adding new baseline policy, and search existing pages before creating a new one.
+- Search `CONTEXT.md` before changing the terms Scaffold Baseline, Project Docs, Agent Skill, Agent Skill Distribution or Skill Wrapper.
+- Don't add runtime dependencies unless the docs or skill distribution genuinely needs them.
 
 ## Commands
 
-- `pnpm dev` - run the Next.js docs surface.
-- `pnpm lint` - run Oxlint through the Scaffold baseline.
-- `pnpm format` - format tracked files with oxfmt through the Scaffold baseline.
-- `pnpm typecheck` - run TypeScript checks.
-- `pnpm build` - build the Next.js docs surface.
-- `pnpm check` - lint, typecheck, and build.
-- For docs-only edits, still verify with Markdown review and targeted searches when a full build is unnecessary.
-
-## Repo-Specific Rules
-
-- Arc is recommended for structured delivery workflows in consuming repos, but Scaffold should document when to use it rather than embed Arc internals.
-- Mastra guidance belongs in agentic development docs and only applies to repos that need real orchestration.
-- `@howells/lint`, `@howells/envy`, and package-boundary guidance should reflect current shared package standards.
+- `pnpm dev` - Next.js docs site.
+- `pnpm typecheck` - regenerates the Fumadocs source, then `tsc --noEmit`.
+- `pnpm lint` / `pnpm lint:fix` / `pnpm format` - the shared `@howells/lint` lane.
+- `pnpm build` - production build.
+- `pnpm check` - lint, typecheck, build, plus the two generated-surface drift checks.
