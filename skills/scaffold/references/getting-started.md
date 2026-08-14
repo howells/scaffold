@@ -34,10 +34,11 @@ If the project is not UI-first:
 
 If this is a full-stack product app rather than a simple UI shell:
 
-- treat `tRPC`, React Query, Drizzle, and Neon as the default starting architecture
+- treat Drizzle and Neon as the default persistence architecture, and React Query as the default when the client owns server-state
+- choose the narrowest typed API boundary: server composition for app-internal work, `tRPC` for same-workspace consumers, and a versioned OpenAPI/oRPC contract for separately deployed or non-TypeScript consumers
 - split shared infra into packages instead of burying it in one app
 - use `@howells/envy` for typed env parsing and deployment env checks when runtime env exists
-- default package boundaries to `db`, `trpc`, `ui`, `typescript-config`, `tailwind-config`, `env`, and `motion`; add `auth`, repo-local `ai`, `agents`, `mcp`, `assets`, or `upload` only where the repo actually needs them
+- default package boundaries to `db`, `ui`, `typescript-config`, `tailwind-config`, `env`, and `motion`; add `trpc`, `auth`, repo-local `ai`, `agents`, `mcp`, `assets`, or `upload` only where the repo actually needs them
 
 If the repo is AI-capable, agent-heavy, or ingestion-heavy:
 
@@ -107,8 +108,8 @@ Every repo should have a concise `AGENTS.md`. Add platform-specific agent config
 
 - keep `AGENTS.md` short and focused on repo-specific constraints
 - add assistant-specific MCP config only when the repo benefits from project-specific servers
-- rely on Arc for structured delivery workflows such as vision, ideation, implementation, testing, review, audit, launch, refactor planning, and commit preparation
-- keep repo-local rules small; use project-specific instructions only when the repo has conventions Arc and the shared skills cannot infer
+- rely on the coding assistant's native capabilities and Matt Pocock's skills for general planning, implementation, review, testing, and architecture work
+- keep repo-local rules small; use project-specific instructions only when the repo has conventions the model and installed skills cannot infer
 - use independent skills from `~/Sites/skills` for specialist work such as UI polish, browser field testing, package extraction, boundary checks, naming, prose cleanup, and plugin packaging
 
 Do not cargo-cult a full rules or workflow system into every project. Start with `AGENTS.md`, then add only the Codex, Claude Code, Cursor, MCP, or workflow support the repo actually uses.
@@ -133,7 +134,7 @@ If you do not use the default stack, write down the reason early:
 
 - why not Next.js for a UI app
 - why not Drizzle and Neon for persistence
-- why not `tRPC` for a TypeScript product API
+- why the chosen API boundary fits its consumers and deployment shape
 - why not `@howells/ai` for AI provider plumbing
 - why not `@howells/envy` for runtime env
 - why not the bundled UI baseline for shared UI primitives

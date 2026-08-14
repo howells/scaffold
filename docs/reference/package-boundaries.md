@@ -20,7 +20,7 @@ apps/
   web/
 packages/
   db/
-  trpc/
+  trpc/             # only when the app uses tRPC
   ui/
   typescript-config/
   tailwind-config/
@@ -29,6 +29,17 @@ packages/
 ```
 
 Add more only when the product clearly needs them.
+
+## Dependency Direction
+
+The package graph should have an obvious direction:
+
+- apps may depend on packages, but never on other apps
+- packages never import from apps
+- cross-package imports go through deliberate public exports, not another package's internal files
+- lower-level infrastructure does not depend on product-specific UI or route code
+
+Prefer a named domain boundary over a generic `shared` package. Enforce the graph in code with `@howells/boundaries` and the `fenceline` skill when a repo has enough packages for accidental imports to become likely.
 
 ## `packages/db`
 
@@ -258,9 +269,9 @@ If you do nothing else right, get these boundaries right first:
 2. `ui`
 3. `typescript-config`
 4. `tailwind-config`
-5. `trpc`
-6. `motion`
-7. `env`
+5. `motion`
+6. `env`
+7. `trpc` when a same-workspace typed API needs it
 8. `ai` / `mastra` / `agents` / `mcp` when agent behavior is part of the product
 
 That is where the portfolio already shows a durable pattern.

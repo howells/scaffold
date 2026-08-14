@@ -149,7 +149,7 @@ export const principleGroups: readonly PrincipleGroup[] = [
         title: "When you do it three times, build the tool — and publish it",
         summary:
           "The third time you do it by hand, make it repeatable, and publish what helps others.",
-        body: "The moment you catch yourself doing the same thing by hand for the third time, stop and make it repeatable: a script, a package, a skill, a shared component. When the result is good enough to help someone else, publish it. Most of my published work started this way, as a pattern extracted from repetition and given a home: the [`@howells/*`](https://github.com/howells) config and infra packages, the [Arc](https://github.com/howells/arc) workflow, the shared UI in [patternmode](https://patternmode.com). Extraction compounds. Every reusable piece you publish is one that you, and everyone downstream, stop rewriting.",
+        body: "The moment you catch yourself doing the same thing by hand for the third time, stop and make it repeatable: a script, a package, a skill, a shared component. When the result is good enough to help someone else, publish it. Most of my published work started this way, as a pattern extracted from repetition and given a home: the [`@howells/*`](https://github.com/howells) config and infra packages, the reusable skills in [`howells/skills`](https://github.com/howells/skills), the shared UI in [patternmode](https://patternmode.com). Extraction compounds. Every reusable piece you publish is one that you, and everyone downstream, stop rewriting.",
       },
     ],
   },

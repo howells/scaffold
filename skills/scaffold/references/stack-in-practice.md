@@ -10,7 +10,7 @@ The house stack, by category. Counts are rough repo footprints across active wor
 |---|---|---|
 | **Hosting** | Vercel | Docker for containerised services; Cloudflare Workers occasionally |
 | **Database** | Neon (Postgres) + Drizzle ORM | Upstash Redis for caching/rate-limits; Turso once |
-| **LLM access** | **OpenRouter** as the gateway, wrapped by the Vercel AI SDK (`ai`) | direct `@ai-sdk/*` keys (Anthropic, OpenAI, Gemini) as secondary/fallback providers |
+| **LLM access** | Provider access through `@howells/ai` | Choose Gateway, OpenRouter, or a direct `@ai-sdk/*` provider explicitly when the product needs a particular route |
 | **Embeddings** | Voyage | — |
 | **Search / scraping** | Exa + Firecrawl (usually paired) | Tavily, Bright Data, ScrapingBee |
 | **Agent browsing** | Kernel | the `agent-browser` skill for local automation |
@@ -26,28 +26,13 @@ Two I'm standardising on rather than reporting. They're the deliberate defaults 
 - **Errors:** Sentry.
 - **Transactional email:** Resend.
 
-A note on LLM access: the model provider is OpenRouter, not the Vercel AI Gateway. That buys one credential and provider switching without new SDK wiring, and it routes fine through the AI SDK. Keep the model-string selection behind `@howells/ai` rather than hardcoding provider strings across routes.
+A note on LLM access: `@howells/ai` is the authority for provider and model selection. Its current package-level default route is Vercel AI Gateway, selected after an April 2026 benchmark, with OpenRouter and direct providers available behind the same boundary. That is an implementation default inside `@howells/ai`, not a portfolio-wide requirement or evidence that every consuming project explicitly chose Gateway. Revalidate it when models and routing systems materially change.
 
-## Models in use
+## Models and media
 
-Model choices live in one place: `@howells/ai` for language and embedding models, `@howells/motif` for fal.ai media. Code asks for a *tier* or a *task* rather than a hardcoded ID, so a better model rolls out everywhere at once. Exact model versions matter here — the difference between generations is real — so they're named, and the registry is the source that moves them.
+Do not duplicate exact model rosters here. Language and embedding choices live in `@howells/ai`; media-generation and transformation choices live in `howells/motif`. Product code asks those packages for a tier or task instead of scattering fast-decaying model IDs through routes, prompts, and documentation.
 
-**Language**, by tier:
-
-- **Fast — Gemini 3.1 Flash-Lite.** The default for high-volume, latency-sensitive work: the cheapest usable tokens, with a large context window.
-- **Standard — Gemini 3.5 Flash.** The everyday balance of quality, speed, and cost, where most general and chat work lands.
-- **Powerful — Gemini 3.1 Pro.** For when output quality outweighs cost.
-- **Reasoning — Claude Opus 4.8.** The top tier for hard planning and tool-heavy agentic work, where Claude's reliability under complex instructions earns its price.
-- **Agentic and coding — GLM-4.7 and Kimi K2.** Cheaper, sharper alternatives that beat the general-purpose models on tool-use and long-thinking code.
-- **Creative — Claude Sonnet 4.6.** The pick for prose and editorial voice.
-
-**Embeddings.** Voyage 4 for text and Voyage multimodal 3.5 for a shared text-and-image space, both chosen for retrieval quality, with voyage-rerank-2.5 for reranking. Gemini embedding and OpenAI's text-embedding-3-small (cheap, 512-dim) as alternates, and a local Qwen3 embedder for offline work.
-
-**Image generation** (fal.ai). nano-banana-pro as the interactive default and gpt-image-1.5 for agent and MCP calls, both picked for instruction-following and clean edits; FLUX schnell when speed and cost matter more than fidelity. A catalog behind them — FLUX.2, Seedream, Recraft, Ideogram, and the Gemini image models — covers different styles and price points.
-
-**Vision and segmentation** (fal.ai). SAM 3 and SAM 2 for segmentation, BiRefNet and Bria for background removal, Depth-Anything and MiDaS for depth, Topaz / Clarity / SeedVR for upscaling, and Kling v3 for image-to-video: the toolkit for turning a generated or uploaded image into a usable asset.
-
-**Voice.** ElevenLabs (`eleven_v3`) as the default, Stable Audio for sound effects, and a self-hosted Chatterbox model for offline or cost-controlled synthesis.
+New AI work starts on AI SDK 7. Existing AI SDK 6 products migrate deliberately because the provider and tool APIs are a compatibility-significant change, not a fleet-wide cosmetic bump.
 
 ## Packages
 
@@ -64,7 +49,7 @@ The dependency baseline is consistent: the same ~15 packages carry most repos. A
 
 Measured from a month of actual invocations (both slash commands I type and skills invoked mid-task), not from repo mentions. Skills are installed globally and invoked on demand, never vendored into repos, so a repo grep badly undercounts them.
 
-**The backbone: [Arc](https://github.com/howells/arc).** The delivery lifecycle runs through it: `/arc:ideate` → `implement` → `review` → `audit` → `refactor` → `commit`. By invocation volume it's the single most-used system, and `commit`, `review`, and `ideate` are the workhorses.
+**The backbone is now the model itself.** Claude Code and Codex handle the ordinary development loop directly. Matt Pocock's skills are the canonical reusable methods for general development work, while the Howells collection stays deliberately narrower and specialist.
 
 **Most-used specialists**, roughly in order of how often I reach for them:
 

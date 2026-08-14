@@ -26,7 +26,7 @@ Use Vercel for:
 
 ### Current Vercel platform defaults
 
-- Use `vercel.ts` via `@vercel/config` for project configuration. Prefer it over `vercel.json` — typed config catches mistakes at author time.
+- For new work, prefer `vercel.ts` via `@vercel/config` when the project needs checked-in configuration; typed config catches mistakes at author time. This is a prospective default, not yet the measured portfolio norm, which remains `vercel.json`.
 - Fluid Compute is the default runtime. Do not reach for Edge Functions; they are no longer the recommended default.
 - The default function timeout is 300s. Set `maxDuration` per function in `vercel.ts` only when a route needs a shorter or longer bound.
 
@@ -60,7 +60,7 @@ Use this when:
 
 Default order of preference:
 
-1. keep typed app APIs close to the main app via `tRPC`
+1. keep app-internal behavior close to the main app through server composition or a focused typed service
 2. create a separate API surface only when the system actually needs it
 3. split into separate deployable services when runtime constraints justify it
 
@@ -109,6 +109,8 @@ The deploy should fail before it reaches the provider if required env is missing
 ## Deployment Rules
 
 - deployment should match repo archetype
+- expose a non-secret build identity and verify the live surface reports the expected revision after production deployment
+- keep a low-cost scheduled freshness check for products where a missed deployment is operationally material
 - do not deploy worker-heavy systems like they are simple marketing sites
 - do not split runtimes before the system needs it
 - keep local scripts and deployment docs explicit

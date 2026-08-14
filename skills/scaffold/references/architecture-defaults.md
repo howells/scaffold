@@ -11,33 +11,33 @@ These defaults intentionally ignore PHP/Craft maintenance surfaces. The useful s
 For a serious TypeScript product app, the recurring stack is:
 
 - Next.js App Router
-- `tRPC` for the typed API layer
-- `@tanstack/react-query` for client data orchestration
+- the narrowest typed API boundary that fits the actual consumers
+- `@tanstack/react-query` for client data orchestration when client server-state exists
 - Drizzle for the database layer
 - Neon Postgres via `@neondatabase/serverless`
 
 This pattern shows up strongly in current full-stack product apps.
 
-### Default package set
+### Choose the API seam
 
-- `@trpc/server`
-- `@trpc/client`
-- `@trpc/tanstack-react-query`
-- `@tanstack/react-query`
-- `drizzle-orm`
-- `drizzle-kit`
-- `@neondatabase/serverless`
+| Consumer shape | Default seam |
+|---|---|
+| One Next.js app, no reusable external API | Server Components, server actions, or a focused typed service |
+| Same-workspace TypeScript clients | `tRPC`, optionally with React Query |
+| Separate deployables or non-TypeScript clients | A versioned OpenAPI contract, with oRPC as the TypeScript-first option |
 
-### When this is the right default
+Do not create an API layer merely to make the diagram look complete. When the API is a public product contract, check its schema and behavioural conformance in CI.
 
-Use this when:
+### When tRPC is the right seam
+
+Use `tRPC` when:
 
 - the app is TypeScript end to end
 - you want typed procedures across server and client
 - the team is comfortable with a monorepo or shared package boundary
 - the product has real database-backed behavior, not just static pages
 
-### When not to use it
+### When not to use tRPC
 
 Do not force `tRPC` into:
 
@@ -46,7 +46,16 @@ Do not force `tRPC` into:
 - tiny apps with only one or two trivial endpoints
 - repos where the API must be intentionally language-agnostic from day one
 
-When the API must emit OpenAPI or stay language-agnostic, use oRPC as the default alternative. It keeps end-to-end TypeScript inference while producing an OpenAPI contract, so a non-TypeScript client is a first-class consumer. Reach for oRPC in that case rather than hand-rolling REST handlers.
+When the API must emit OpenAPI or stay language-agnostic, use oRPC as the default TypeScript-first alternative. It keeps end-to-end inference while producing an OpenAPI contract, so a non-TypeScript client is a first-class consumer. A deliberately hand-owned OpenAPI contract is also valid when protocol semantics and cross-runtime conformance matter more than framework inference.
+
+### Route composition
+
+Keep App Router route files server-first. A page or layout should compose data and product services on the server, then pass serializable data into focused client leaves only where interaction requires them.
+
+- keep authentication and mutations behind a server boundary
+- start independent data reads together and await them together
+- avoid turning a whole route into a client component for one interactive control
+- move reusable business, agent, and transport contracts into a package or domain module instead of defining them inside route handlers
 
 ## Database and Persistence
 
@@ -72,7 +81,10 @@ Do not mix subpaths within one package without a reason, and do not reach for `p
 ### Schema and migrations
 
 - **Schema-first.** The Drizzle schema (`packages/db/src/schema.ts`) is the source of truth.
-- **`drizzle-kit push`** is the workflow for syncing schema to the database. Do not hand-author migration files or runtime DDL. For an existing database, bootstrap the schema once with `drizzle-kit pull`, then own it via push.
+- **Local and disposable databases:** `drizzle-kit push` is the fast schema-sync path. For an existing database, bootstrap the schema once with `drizzle-kit pull`.
+- **Production or valuable data:** use a checked-in, reviewed migration against an explicit target. Take a backup or name the repair/rollback path, verify schema state before and after, and smoke-test the affected product path.
+- Generated migrations are preferred when they are trustworthy. Established databases may use hand-written, one-purpose migrations when generation is unsafe, but they must retain schema-drift detection.
+- Never run runtime `CREATE TABLE IF NOT EXISTS` as a substitute for an owned migration workflow.
 - Schema lives in the first-tier `packages/db` boundary.
 
 ### Driver notes (GA `@neondatabase/serverless`)
@@ -167,7 +179,7 @@ For apps that genuinely need AI features, the recurring pattern is:
 - `howells/motif` for fal.ai image-generation and media-utility surfaces
 - `zod` for structured input and output contracts
 
-Default model access is the AI Gateway. The AI SDK's global provider is the Vercel AI Gateway, so pass a `"provider/model"` string into AI SDK calls and requests route through the Gateway — one credential, provider switching without new SDK wiring. Per-provider `@ai-sdk/*` packages are the escape hatch for direct-provider needs, still behind `@howells/ai`. Keep the model-string boundary in `@howells/ai` or `packages/ai`, not scattered through app routes.
+Keep model access behind `@howells/ai`. Its current package-level default route is Vercel AI Gateway, but that benchmark-informed default is not an architectural requirement for every product. Choose Gateway, OpenRouter, or a direct provider deliberately when deployment, first-party features, routing policy, credentials, or observability make the distinction material. Keep that choice in `@howells/ai` or `packages/ai`, not scattered through app routes.
 
 If the repo is doing CLI-model orchestration or needs stricter typed IO around agent calls:
 
@@ -229,7 +241,7 @@ This avoids the common mistake of stretching a simple drawer primitive into a mu
 For a new product app, the default answer is usually:
 
 - Next.js
-- `tRPC`
+- the API seam appropriate to the consumers
 - React Query
 - Drizzle
 - Neon

@@ -192,8 +192,7 @@
   --sidepanel-width: 440px; /* Panel width */
   --sidepanel-gap: 24px; /* Gap between sidepanel and viewport edge (1.5rem / right-6) */
   --sidepanel-footprint: calc(
-    var(--sidepanel-width) +
-    var(--sidepanel-gap)
+    var(--sidepanel-width) + var(--sidepanel-gap)
   ); /* Total space from viewport edge to sidepanel left edge: 464px */
 
   /* Header nav layout */
@@ -201,8 +200,7 @@
   --header-nav-buttons-width: 342px; /* Products + Brands + Cart + gaps + gap-3 before Products */
   --header-cart-button-width: 64px; /* Cart button with padding */
   --header-nav-sidepanel-offset: calc(
-    var(--sidepanel-footprint) +
-    12px
+    var(--sidepanel-footprint) + 12px
   ); /* Right position when sidepanel open: 476px (gap-3 from sidepanel) */
 
   /* Shadow definitions (from Figma — tinted with gray-900) */
@@ -436,7 +434,7 @@
     border-color: var(--color-border);
   }
   body {
-    font-feature-settings: "cv01", "cv02", "cv03", "cv04", "cv11";
+    font-feature-settings: "cpsp", "cv01", "cv02", "cv11";
     font-kerning: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
