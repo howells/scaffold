@@ -1,6 +1,6 @@
 # Agent Workflow
 
-This is the baseline for repos that will be worked on with coding assistants, Arc, and reusable specialist skills. Claude Code is served natively by the skill directory itself, Codex through a platform wrapper (`agents/openai.yaml`), and a Cursor surface is deferred future work rather than something that ships today.
+This is the baseline for repos worked on with coding assistants and reusable skills. The model owns the general development loop; repo-local instructions supply only the context it cannot infer, and installed skills add specialist methods when a task benefits from them.
 
 ## AGENTS.md
 
@@ -15,38 +15,13 @@ It should cover:
 
 Keep it short and direct. The best `AGENTS.md` files change behavior without becoming documentation sludge.
 
-## Arc
+## General Development Skills
 
-Use Arc as the higher-level software delivery lifecycle when a task needs structure rather than raw code generation.
+Let Claude Code, Codex, or the current coding assistant handle ordinary investigation, planning, implementation, testing, review, and verification directly. Do not install a second lifecycle runtime around a capable model by default.
 
-Current Arc entry points:
+Use Matt Pocock's skills as the canonical reusable methods for general software-development work when a task needs a more explicit technique, such as domain modelling, grilling a requirement, architecture improvement, or structured technical writing. Install those skills globally rather than copying their instructions into each repo.
 
-- `/arc:vision` for a concise project north star in `docs/vision.md`
-- `/arc:ideate` for turning ideas into concrete feature specs
-- `/arc:implement` for scope-aware implementation with TDD and verification
-- `/arc:testing` for characterization tests around existing code before risky change
-- `/arc:review` for expert review of plans, specs, or implementation approaches
-- `/arc:audit` for verified codebase health reports
-- `/arc:refactor` for structural refactor discovery and RFC-style plans
-- `/arc:launch` for go-live and shareability readiness
-- `/arc:commit` for clean atomic commits, with push or publish only when requested
-
-In some assistants, the same workflows may be available as skills or commands such as `$ideate`, `$implement`, `$review`, `$audit`, `$refactor`, `$testing`, `$launch`, and `$commit`.
-
-Arc's current full runtime is more than prompt text. It includes:
-
-- `skills/` for the lifecycle workflows
-- `commands/` for Claude slash-command stubs
-- `agents/` for specialist research, review, build, and workflow support
-- `disciplines/` for TDD, debugging, verification, branch finishing, and subagent coordination
-- `references/` for Arc-owned architecture, testing, review, platform, and delivery guidance
-- `rules/`, `templates/`, `scripts/`, and tests for workflow support
-
-Prefer the full Arc install for repos where agent workflows are central. Arc should expose the same lifecycle guidance through each supported assistant rather than maintaining separate hand-written workflow forks. Prompt-only installs are acceptable for lightweight routing, but they do not include Arc's bundled agents, references, disciplines, templates, scripts, or rules.
-
-Arc's specialist agents are support machinery. Users should normally start with a lifecycle workflow, not a specialist agent. Completed workflow activity may be logged to `.arc/log.md`; keep that as local operational history rather than product documentation.
-
-Do not route specialist work through Arc just because Arc exists. Arc owns the delivery lifecycle. Brand systems, UI direction, browser QA, package extraction, prose cleanup, boundary enforcement, plugin packaging, and naming should use the independent skills collection when that gives a sharper tool.
+The model and its skills should still leave durable evidence where the work benefits from it: a focused spec, decision record, test, or review document. The absence of a workflow framework is not permission to hide decisions in chat history.
 
 ## Independent Skills
 
@@ -91,7 +66,7 @@ For AI-capable repos, keep the agent surface explicit:
 - use `packages/mcp` or `packages/mcp-server` for MCP contracts and transports
 - validate model IO and tool schemas with `zod`
 
-Do not hide reusable agent or MCP contracts inside a route handler. That makes them harder to test, harder to expose to Codex or Arc, and harder to reuse from CLIs.
+Do not hide reusable agent or MCP contracts inside a route handler. That makes them harder to test, harder to expose to coding assistants, and harder to reuse from CLIs.
 
 When implementing Mastra code, verify the current API before writing against it. Prefer installed package docs under `node_modules/@mastra/*/dist/docs` when packages are present, and keep the TypeScript target/module setup on ES2022-compatible settings.
 
@@ -107,7 +82,7 @@ Use project-local rules or instruction files when:
 - consistency is degrading
 - there are project-specific conventions that should be enforced
 
-Do not add a large project-local rule corpus when the repo is still exploring its basic shape. Prefer a concise `AGENTS.md`, Arc for delivery workflow, and independent skills for specialist depth.
+Do not add a large project-local rule corpus when the repo is still exploring its basic shape. Prefer a concise `AGENTS.md`, the model's native development loop, and installed skills for specialist depth.
 
 ## Root Scripts That Agents Should Expect
 
@@ -155,10 +130,14 @@ It should not default to taste-based nitpicks.
 
 ## Documentation and Progress
 
-When using Arc-style workflows, keep documentation and progress lightweight but real:
+For substantial work, keep documentation and progress lightweight but real:
 
-- plans go in `docs/` when the repo benefits from them
-- progress logs should capture decisions, not every keystroke
+- `AGENTS.md` owns concise operational rules
+- `CONTEXT.md` owns durable product language, invariants, and expensive lessons when the project needs it
+- ADRs and specs own lasting decisions or contracts
+- the issue tracker owns active narrative and handoff state
+- scripts and generated artifacts own executable probes and repeatable evidence
+- temporary plans and handoffs are deleted or folded into a durable home when the task closes
 - docs should describe the current system, not preserve outdated migration stories forever
 
 ## Environment Discipline

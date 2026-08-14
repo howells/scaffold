@@ -10,7 +10,7 @@ This docs set is the canonical starting point for a new Howells project.
 It is not a generic starter guide. It reflects the conventions that are already converging across your recently active repos:
 
 - the bundled UI baseline for shared UI, tokens, motion, and Storybook
-- Arc for the software delivery lifecycle across vision, ideation, implementation, testing, review, audit, launch, and commit workflows
+- native coding-assistant workflows and Matt Pocock's skills for general software development
 - the independent skills collection for specialist work that should not live inside one product repo
 - `@howells/lint` for pinned Oxlint/Oxfmt linting and formatting
 - `@howells/typescript-config` for thin, explicit tsconfig presets
@@ -22,10 +22,10 @@ It is not a generic starter guide. It reflects the conventions that are already 
 ## Defaults
 
 - Default repo shape: `pnpm` monorepo, usually with `apps/*` and `packages/*`
-- Default UI stack: Next.js App Router, React, Tailwind CSS v4, Radix, and Storybook when the repo exports reusable UI
+- Default UI stack: Next.js App Router, React, Tailwind CSS v4, Base UI, and Storybook when the repo exports reusable UI; unified Radix is the deliberate opt-out
 - Default linting and formatting: prefer the `@howells/lint` Oxlint/Oxfmt lane
 - Default task runner: Turborepo with cache disabled until a repo proves it is deterministic
-- Default data stack for product apps: Drizzle, Neon, `tRPC`, and React Query
+- Default data stack for product apps: Drizzle and Neon, with the narrowest typed API boundary that fits and React Query when client server-state exists
 - Default AI-capable shape: shared provider baseline through `@howells/ai`, image generation through `howells/motif`, product orchestration through repo-local `ai` or `agents`, and MCP in its own package when exposed
 
 ## Sections
@@ -55,5 +55,5 @@ The Project Docs are the source of truth. The installable skill at `skills/scaff
 - Fast project setup without re-deciding toolchain basics
 - Correctness over cleverness
 - Shared UI primitives without flattening project identity
-- Clear agent workflows so Arc and supported coding assistants remain assets instead of entropy generators
+- Clear, lightweight agent instructions so supported coding assistants remain assets instead of entropy generators
 - Reusable skills that stay independent when they solve cross-repo agent problems

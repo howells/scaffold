@@ -10,7 +10,7 @@ Treat this as scaffold-owned reference material, not as an external upstream dep
 - `source/packages/transition` for shared transition primitives and preset structure.
 - `source/packages/tailwind-config` for the Tailwind CSS 4.3 shared stylesheet and token wiring.
 - `source/packages/ui/README.md` for the intended component package shape.
-- `source/docs/design-context.md` and `source/docs/arc/specs` for the visual and architectural rationale behind the baseline.
+- `source/docs/design-context.md` and the archived material under `source/docs/arc/` for the visual and architectural rationale behind the baseline.
 - `source/apps/web/content/docs` for the old docs copy around installation, tokens, motion, and responsive behavior.
 
 ## How To Use It

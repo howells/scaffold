@@ -1,3 +1,7 @@
+import { readFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { ImageResponse } from "next/og";
 
 export const alt = "Scaffold — a project baseline";
@@ -12,27 +16,12 @@ const DESCRIPTION =
 const FOOTER_LEFT = "scaffold.danielhowells.com";
 const FOOTER_RIGHT = "Principles · Docs · Agent skill";
 
-// Glyph subset the image actually uses — requested from Google Fonts so Satori
-// renders in real Inter instead of its default face.
-const GLYPHS = `Scaffold ${DESCRIPTION} ${FOOTER_LEFT} ${FOOTER_RIGHT}`;
-
-async function loadInter(weight: number): Promise<ArrayBuffer> {
-  const url = `https://fonts.googleapis.com/css2?family=Inter:wght@${weight}&text=${encodeURIComponent(GLYPHS)}`;
-  const css = await (await fetch(url)).text();
-  const src = css.match(
-    /src: url\((.+?)\) format\('(?:opentype|truetype)'\)/
-  )?.[1];
-  if (!src) {
-    throw new Error("Failed to resolve Inter font URL for the OG image.");
-  }
-  return (await fetch(src)).arrayBuffer();
-}
+const currentDirectory = dirname(fileURLToPath(import.meta.url));
+const regular = readFile(join(currentDirectory, "fonts/Inter-400.ttf"));
+const semibold = readFile(join(currentDirectory, "fonts/Inter-600.ttf"));
 
 const OpengraphImage = async () => {
-  const [regular, semibold] = await Promise.all([
-    loadInter(400),
-    loadInter(600),
-  ]);
+  const [regularData, semiboldData] = await Promise.all([regular, semibold]);
 
   return new ImageResponse(
     <div
@@ -103,8 +92,8 @@ const OpengraphImage = async () => {
     {
       ...size,
       fonts: [
-        { data: regular, name: "Inter", style: "normal", weight: 400 },
-        { data: semibold, name: "Inter", style: "normal", weight: 600 },
+        { data: regularData, name: "Inter", style: "normal", weight: 400 },
+        { data: semiboldData, name: "Inter", style: "normal", weight: 600 },
       ],
     }
   );

@@ -25,6 +25,10 @@ Use this when starting a new repo or standardizing an existing one.
 
 - root `package.json` uses the standard script contract
 - `pnpm-workspace.yaml` is present
+- shared versions use the workspace catalog where more than one package consumes them
+- pnpm settings, overrides, patches, and lifecycle-build policy live in `pnpm-workspace.yaml`
+- dependency build scripts are explicitly allowed or denied
+- serious public-facing repos apply a reviewed release-age cooldown to third-party packages
 - `turbo.json` is present and small
 - `oxlint.config.ts` and `oxfmt.config.ts` use `@howells/lint` presets when the repo needs explicit lint or format configuration
 - `tsconfig.json` uses explicit leaf presets
@@ -47,7 +51,7 @@ Use this when starting a new repo or standardizing an existing one.
 ## Full-Stack and AI Projects
 
 - Drizzle and Neon are the default persistence choice for TypeScript product apps
-- `tRPC` is the default typed app API boundary unless the API needs to be language-agnostic
+- the API uses the narrowest typed boundary that fits: server composition, same-workspace `tRPC`, or a versioned OpenAPI contract
 - `@howells/envy` owns env access and provider preflight checks
 - `@howells/ai` is used before adding raw provider SDKs directly to app code
 - `howells/motif` packages are used before adding raw fal.ai clients for image generation or media utilities
@@ -64,6 +68,24 @@ Use this when starting a new repo or standardizing an existing one.
 - `pnpm build` succeeds
 - `pnpm test` succeeds or is intentionally not present yet
 - hooks run without surprising side effects
+
+## CI and Operations
+
+- CI runs the root `check` command from the pinned Node version with a frozen lockfile
+- environment preflight validates names and shape without printing secret values
+- deployment has a smoke check for the primary user journey and any public agent/API surface
+- the deployed app exposes a non-secret build identity and the release workflow verifies that production reports the expected revision
+- a low-cost scheduled freshness check catches a green commit that never reached production
+- scheduled jobs, queues, and background workers expose failure somewhere actionable instead of failing silently
+- production data needed at launch is present, queryable, and covered by a rollback or repair path
+- destructive maintenance tasks require an explicit target and support a dry run where practical
+
+## Test the gates
+
+- every custom conformance or policy guard has a negative fixture, mutation mode, or other proof that it can fail
+- CI verifies that expected test files and meaningful test counts were actually discovered
+- interaction-heavy web apps run their browser suite in CI; include WebKit when Safari behavior matters
+- a new non-blocking quality signal has an owner and an explicit condition for becoming blocking
 
 ## Guardrails
 

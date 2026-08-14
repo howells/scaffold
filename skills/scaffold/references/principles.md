@@ -98,7 +98,7 @@ Models are confidently out of date. When you build against any library, model, o
 
 ### When you do it three times, build the tool — and publish it
 
-The moment you catch yourself doing the same thing by hand for the third time, stop and make it repeatable: a script, a package, a skill, a shared component. When the result is good enough to help someone else, publish it. Most of my published work started this way, as a pattern extracted from repetition and given a home: the [`@howells/*`](https://github.com/howells) config and infra packages, the [Arc](https://github.com/howells/arc) workflow, the shared UI in [patternmode](https://patternmode.com). Extraction compounds. Every reusable piece you publish is one that you, and everyone downstream, stop rewriting.
+The moment you catch yourself doing the same thing by hand for the third time, stop and make it repeatable: a script, a package, a skill, a shared component. When the result is good enough to help someone else, publish it. Most of my published work started this way, as a pattern extracted from repetition and given a home: the [`@howells/*`](https://github.com/howells) config and infra packages, the reusable skills in [`howells/skills`](https://github.com/howells/skills), the shared UI in [patternmode](https://patternmode.com). Extraction compounds. Every reusable piece you publish is one that you, and everyone downstream, stop rewriting.
 
 ## Building forward
 

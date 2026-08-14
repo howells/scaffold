@@ -9,3 +9,4 @@ package-inventory-*.csv
 package-inventory-*.json
 package-inventory-*.md
 .vercel
+.env*.local

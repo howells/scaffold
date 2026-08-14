@@ -9,7 +9,7 @@ Most new repos should start from one of these shapes.
 
 The point is to reduce unnecessary architectural improvisation.
 
-These archetypes are for new TypeScript-first work. PHP/Craft maintenance projects are outside the default scaffold unless explicitly requested.
+These archetypes are primarily for new TypeScript-first work, with a companion native Apple-client shape where the product requires it. PHP/Craft maintenance projects are outside the default scaffold unless explicitly requested.
 
 ## 1. Full-Stack Product App
 
@@ -23,8 +23,8 @@ Use this for:
 Default stack:
 
 - Next.js App Router
-- `tRPC`
-- React Query
+- the narrowest typed API boundary that fits the consumers
+- React Query when the client owns server-state
 - Drizzle
 - Neon
 - Clerk by default
@@ -40,7 +40,7 @@ apps/
   storybook/        # only if shared UI exists
 packages/
   db/
-  trpc/
+  trpc/             # only for a same-workspace typed API
   ui/
   typescript-config/
   tailwind-config/
@@ -201,6 +201,25 @@ Default stack:
 
 These repos usually need stronger script and data-pipeline conventions than typical UI apps.
 
+## 7. Native Apple Client
+
+Use this for:
+
+- SwiftUI iPhone, iPad, or macOS products
+- a native client paired with an existing service or domain core
+- TestFlight or App Store distribution
+
+Default shape:
+
+- keep the SwiftUI client thin over a versioned service or domain contract
+- generate Xcode projects with XcodeGen when the repo uses it; do not hand-edit generated project files
+- keep persisted `Codable` models backwards-compatible and test upgrades against earlier stored data
+- verify real simulator or device interaction and run the architecture-appropriate native CI lane
+- own TestFlight/App Store credentials and distribution in a runbook
+- verify a separately deployed API is live before the client assumes a merged contract exists
+
+Do not force Node scripts or a web package graph onto a native repo just to resemble the TypeScript archetypes.
+
 ## Choosing Between Archetypes
 
 Use these defaults:
@@ -211,5 +230,6 @@ Use these defaults:
 - reusable library: published package
 - multiple workers/services: worker or service-heavy system
 - model workflows and ingestion: AI pipeline or research repo
+- SwiftUI product or native companion: native Apple client
 
 If a repo looks like two archetypes at once, choose the dominant one and add the secondary capabilities carefully. Do not mash two entire architectures together by default.

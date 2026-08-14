@@ -17,11 +17,35 @@ The default toolchain for new TypeScript work:
 
 The exact versions are pinned by the shared config packages and the root `package.json`. Consume those rather than restating numbers here, which drift the moment a dependency bumps.
 
+## Current Major-Version Lane
+
+Review this table when a compatibility-significant major changes; keep exact minor and patch versions in workspace catalogs and lockfiles.
+
+| Surface | Current major for new work | Adopted/reviewed |
+|---|---:|---|
+| Node.js | 24 | 2026-08-14 |
+| pnpm | 11 | 2026-08-14 |
+| Next.js | 16 | 2026-08-14 |
+| React | 19 | 2026-08-14 |
+| TypeScript | 6 | 2026-08-14 |
+| Tailwind CSS | 4 | 2026-08-14 |
+| Turborepo | 2 | 2026-08-14 |
+| Vitest | 4 | 2026-08-14 |
+| Storybook | 10 | 2026-08-14 |
+| AI SDK | 7 | 2026-08-14 |
+
+For published packages, test every runtime major still claimed in `engines`, even if the new-project lane has moved on. Dropping an existing runtime floor waits for a deliberate package major. Treat persisted classifications, machine-readable output shape, schema meaning, and nullability as compatibility surfaces too: a semantic break may require a major even when function names do not change.
+
 ## Package Manager
 
 - Use `pnpm`.
 - Pin `packageManager` in the root `package.json`.
 - Prefer one lockfile at the repo root.
+- Put shared dependency versions in the `pnpm-workspace.yaml` catalog.
+- Keep pnpm settings, overrides, patches, and lifecycle-build policy in `pnpm-workspace.yaml`, not the ignored `package.json#pnpm` field.
+- Explicitly allow or deny dependency build scripts.
+- For serious public-facing repos, cool down newly published third-party versions; keep first-party or private exclusions exact and reviewed.
+- Test a frozen-lockfile install from a clean checkout in CI.
 - Use Node 24 LTS for development, CI, apps, and services.
 - Default workspace layout is:
 
@@ -225,7 +249,7 @@ The packages that recur most often in UI work are:
 The repeated package names across your Turborepos are also clear enough to treat as default boundaries, not accidental patterns:
 
 - first tier: `db`, `ui`, `typescript-config`, `tailwind-config`
-- second tier: `utils`, `trpc`, `motion`, `auth`, `mastra`, `agents`, `mcp`, repo-local `ai` packages above `@howells/ai`
+- second tier: `utils`, `motion`, `auth`, `mastra`, `agents`, `mcp`, repo-local `ai` packages above `@howells/ai`, and `trpc` when a same-workspace API needs it
 - optional but frequent: `assets`, `upload`, `storage`, `env`, `config`
 
 The detailed policy lives in [Default Dependencies](./default-dependencies.md).
@@ -238,7 +262,7 @@ For media-heavy projects, there is also a platform-level default:
 
 There is also a recurring architecture baseline for full-stack apps:
 
-- `tRPC` for typed API boundaries
+- server composition for app-internal behavior, `tRPC` for same-workspace typed clients, and OpenAPI/oRPC for separate consumers
 - React Query for server state
 - Drizzle plus Neon for persistence
 
@@ -260,7 +284,7 @@ Default package choices:
 
 ### Model access
 
-Default model access is OpenRouter as the gateway, wrapped by the Vercel AI SDK. Pass a `"provider/model"` string through the AI SDK and requests route through OpenRouter — one credential, provider switching without new SDK wiring, and no per-provider client in app code. The Vercel AI Gateway is not the default here.
+`@howells/ai` is the authority for this choice. Its current package-level default is Vercel AI Gateway, selected after an April 2026 benchmark, but this is not a portfolio-wide requirement. OpenRouter and direct providers remain deliberate route choices behind the same boundary, and the default should be revalidated as models and routing systems change.
 
 Per-provider `@ai-sdk/*` packages are the escape hatch for direct-provider needs, and they still sit behind `@howells/ai`. Keep model-string selection behind that boundary rather than hardcoding provider strings across app routes.
 

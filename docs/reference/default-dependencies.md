@@ -95,12 +95,12 @@ Across the active monorepos, the package names that repeat most often are:
 The next tier that recurs often enough to plan for up front is:
 
 - `utils`
-- `trpc`
 - `motion`
 - `auth`
 - repo-local `ai` packages above `@howells/ai`
 - `agents`
 - `mcp`
+- `trpc` when a same-workspace typed API needs it
 
 These are common enough to treat as optional defaults rather than one-off inventions:
 
@@ -115,11 +115,8 @@ That does not mean every repo should start with all of them. It means these shou
 
 ## App Data Layer
 
-These are the recurring defaults for richer app repos:
+These are the recurring data choices for richer app repos:
 
-- `@trpc/server`
-- `@trpc/client`
-- `@trpc/tanstack-react-query`
 - `@tanstack/react-query`
 - `zustand`
 - `drizzle-orm`
@@ -129,7 +126,7 @@ These are the recurring defaults for richer app repos:
 
 Use them when the project needs that capability. Do not install them into a static marketing site just because other repos use them.
 
-For full-stack TypeScript apps, `tRPC` should now be treated as a default recommendation, not just an occasional package.
+Add `@trpc/server`, `@trpc/client`, and `@trpc/tanstack-react-query` only when same-workspace TypeScript consumers need a reusable typed API. Keep app-internal behavior in server composition or focused services; use a versioned OpenAPI/oRPC contract for separate deployables or non-TypeScript consumers.
 
 Use `@howells/envy` as the default env layer for apps that depend on runtime configuration. It should own typed parsing, local `.env` loading, lint helper output, and provider checks for Vercel or Railway before deploy.
 
@@ -196,7 +193,7 @@ When the repo exposes model tools or resources to other agents, also consider:
 
 - `@modelcontextprotocol/sdk`
 
-Default model access on `ai` (the AI SDK) is the AI Gateway: pass a `"provider/model"` string and requests route through the Vercel AI Gateway with no per-provider client in app code.
+Use `@howells/ai` as the provider boundary. Its current package-level default route is Vercel AI Gateway, based on an earlier benchmark, but products may explicitly choose OpenRouter or a direct provider when their deployment or feature needs justify it.
 
 Provider packages are the escape hatch for direct-provider needs, chosen only when required and kept behind `@howells/ai`:
 
@@ -264,8 +261,14 @@ pnpm add -D storybook @storybook/react-vite @testing-library/react @testing-libr
 ### New full-stack product app
 
 ```bash
-pnpm add next react react-dom tailwindcss @tailwindcss/postcss motion lucide-react zod clsx tailwind-merge sonner @tanstack/react-query nuqs @trpc/server @trpc/client @trpc/tanstack-react-query drizzle-orm @neondatabase/serverless @howells/envy
+pnpm add next react react-dom tailwindcss @tailwindcss/postcss motion lucide-react zod clsx tailwind-merge sonner @tanstack/react-query nuqs drizzle-orm @neondatabase/serverless @howells/envy
 pnpm add -D drizzle-kit
+```
+
+When a same-workspace typed API is part of the chosen architecture:
+
+```bash
+pnpm add @trpc/server @trpc/client @trpc/tanstack-react-query
 ```
 
 ### Add stacked sheets to a UI repo
@@ -314,9 +317,6 @@ pnpm add @howells/envy zod
 
 These are the strongest repeated dependencies from the scan of active repos:
 
-- `@trpc/server`
-- `@trpc/client`
-- `@trpc/tanstack-react-query`
 - `motion`
 - `lucide-react`
 - `zod`

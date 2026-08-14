@@ -182,6 +182,7 @@ Preferred integration patterns:
 
 - local mode: app service enqueues a job and drains an in-process queue that calls the Mastra workflow runner
 - remote mode: app service dispatches to a Mastra server API route with a signed or bearer-authenticated request
+- durable adapter: use a durable execution integration when a run must outlive the request or process; keep product-owned state and idempotency, typed suspend/resume contracts, bounded retries, cancellation, and visible progress
 - persisted jobs: database owns job status, input, output, errors, and trace events
 - UI status: app reads persisted job state and workflow events, not private Mastra internals
 

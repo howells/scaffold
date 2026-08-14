@@ -69,7 +69,7 @@ apps/
   web/
 packages/
   db/
-  trpc/                   # typed app API layer
+  trpc/                   # optional: same-workspace typed API
   ui/
   typescript-config/
   tailwind-config/
@@ -101,13 +101,19 @@ packages:
   - "apps/*"
   - "packages/*"
 
-ignoredBuiltDependencies:
-  - esbuild
-  - sharp
-  - unrs-resolver
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - "@howells/*"
+
+allowBuilds:
+  esbuild: true
+  sharp: true
+
+catalog:
+  typescript: "^6.0.0"
 ```
 
-If the repo genuinely needs extra workspaces such as `scripts/*`, add them explicitly.
+If the repo genuinely needs extra workspaces such as `scripts/*`, add them explicitly. Keep private-package cooldown exclusions exact rather than exempting a whole plausible public namespace. Review every lifecycle build entry instead of copying this small example blindly, and keep exact catalog versions in the repo rather than in Scaffold.
 
 ## Root `turbo.json`
 
@@ -333,7 +339,7 @@ export default neonKitConfig({
 });
 ```
 
-Schema-first workflow — `push`, not migration files:
+Local or disposable database workflow:
 
 ```json
 {
@@ -343,6 +349,8 @@ Schema-first workflow — `push`, not migration files:
   }
 }
 ```
+
+For production or valuable data, replace `db:push` with an owned migration command and runbook: explicit target, checked-in reviewed migration, backup or repair path, pre/post schema verification, and a smoke test. Keep `db:push` out of production deployment scripts.
 
 ## Minimal `AGENTS.md`
 
