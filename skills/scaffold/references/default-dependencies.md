@@ -1,12 +1,8 @@
-# Default Dependencies
+# Default dependencies
 
-This is the package baseline inferred from recent active repos.
+These defaults come from direct manifests in active TypeScript repos. Composer `vendor`, build output, PHP, and Craft projects are excluded.
 
-It is split by repo type so new projects do not have to re-decide the same dependencies repeatedly.
-
-The baseline is based on direct manifests only. Composer `vendor`, generated build output, and legacy PHP/Craft projects are ignored for new TypeScript project defaults.
-
-## Every Repo
+## Every repo
 
 Install these by default:
 
@@ -25,9 +21,9 @@ Usually include these too:
 - `knip` when the repo has enough package surface for dependency drift to matter
 - `ultracite` only when developing lint presets inside `@howells/lint`
 
-## Every UI Repo
+## Every UI repo
 
-These recur often enough that they should be treated as the default UI baseline:
+Default UI dependencies:
 
 - `motion` (import from `motion/react` in React code)
 - `lucide-react`
@@ -38,13 +34,13 @@ These recur often enough that they should be treated as the default UI baseline:
 - `@tanstack/react-query` when the UI talks to server state
 - `nuqs` when the UI has meaningful URL state
 
-These are common enough to treat as default-adjacent:
+Common additions:
 
 - `next-themes`
 - `date-fns`
 - `usehooks-ts`
 
-## Every Next.js UI Repo
+## Every Next.js UI repo
 
 Default to:
 
@@ -64,7 +60,7 @@ If the repo exports shared UI, also include:
 - `@testing-library/user-event`
 - `@playwright/test`
 
-## Shared UI Package Baseline
+## Shared UI package baseline
 
 When building a shared UI package, these keep recurring:
 
@@ -74,11 +70,11 @@ When building a shared UI package, these keep recurring:
 - `react-day-picker`
 - `vaul`
 
-These are not mandatory in every package, but they recur enough that they should be the first options rather than random alternatives.
+Use these first when the package needs the capability.
 
 `@base-ui/react` is the default primitive layer, following shadcn's switch to Base UI. Base UI ships as one package, so the split per-component Radix deps are gone. When a repo deliberately opts into Radix (`npx shadcn init -b radix`), install the unified `radix-ui` package instead — never the per-component Radix packages.
 
-## Recurring Turborepo Packages
+## Recurring Turborepo packages
 
 Across the active monorepos, the package names that repeat most often are:
 
@@ -97,7 +93,7 @@ The next tier that recurs often enough to plan for up front is:
 - `mcp`
 - `trpc` when a same-workspace typed API needs it
 
-These are common enough to treat as optional defaults rather than one-off inventions:
+Optional defaults:
 
 - `assets`
 - `upload`
@@ -108,7 +104,7 @@ These are common enough to treat as optional defaults rather than one-off invent
 
 That does not mean every repo should start with all of them. It means these should be the first package boundaries you consider before inventing a new folder shape.
 
-## App Data Layer
+## App data layer
 
 These are the recurring data choices for richer app repos:
 
@@ -125,7 +121,7 @@ Add `@trpc/server`, `@trpc/client`, and `@trpc/tanstack-react-query` only when s
 
 Use `@howells/envy` as the default env layer for apps that depend on runtime configuration. It should own typed parsing, local `.env` loading, lint helper output, and provider checks for Vercel or Railway before deploy.
 
-## Media, Images, and Vectors
+## Media, images, and vectors
 
 When a project needs image generation, editing, upscaling, background removal, image-to-video, or agent-facing creative automation:
 
@@ -160,7 +156,7 @@ Use this for:
 
 Do not confuse generation with storage. Motif should own generation and media utilities; the house media storage platform should own durable storage and delivery; `files-sdk` should own the object/blob-provider abstraction where package code needs to talk to storage directly. Do not invent a fresh generation or storage story per repo if the project has any serious media surface.
 
-## AI and Automation Repos
+## AI and automation repos
 
 These recur in the AI-heavy repos:
 
@@ -197,7 +193,7 @@ Provider packages are the escape hatch for direct-provider needs, chosen only wh
 
 If the repo is orchestrating CLI-first model workflows or wants stricter IO contracts, also consider `@howells/envelope`.
 
-## Agent, MCP, and Ingestion Repos
+## Agent, MCP, and ingestion repos
 
 When the repo exposes agent tooling, MCP servers, or ingestion workflows, these package boundaries now recur enough to consider early:
 
@@ -209,7 +205,7 @@ When the repo exposes agent tooling, MCP servers, or ingestion workflows, these 
 
 For browser/page-source ingestion, consider `@howells/srcfull` before writing a fresh source-fetching layer.
 
-## Overlay and Panel Policy
+## Overlay and panel policy
 
 For drawer-like UI:
 
@@ -219,7 +215,7 @@ For stacked sheets and drill-in panel flows:
 
 - use `@howells/stacksheet`
 
-This is the important distinction:
+Choose by interaction:
 
 - `vaul` is the primitive
 - `@howells/stacksheet` is the stronger product abstraction when you need actual sheet stack orchestration
@@ -230,7 +226,7 @@ For thumbnail-to-expanded media transitions:
 
 Treat these as specific installable components, not as a reason to depend on an old shared UI upstream or design-system project.
 
-## Suggested Install Sets
+## Suggested install sets
 
 ### New non-UI monorepo
 
@@ -306,9 +302,9 @@ pnpm add @mastra/core mastra @modelcontextprotocol/sdk
 pnpm add @howells/envy zod
 ```
 
-## Packages That Are Recurring Enough To Standardize
+## Standard shortlist
 
-These are the strongest repeated dependencies from the scan of active repos:
+The direct-manifest scan found these repeatedly:
 
 - `motion`
 - `lucide-react`
@@ -335,4 +331,4 @@ These are the strongest repeated dependencies from the scan of active repos:
 - `@howells/stow-server`
 - `@howells/stow-next`
 
-That does not mean every repo needs all of them. It means they should be your default shortlist, not re-litigated from zero each time.
+Install only the entries required by the repo archetype.

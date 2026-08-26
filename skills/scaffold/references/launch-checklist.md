@@ -1,6 +1,6 @@
-# Launch Checklist
+# Launch checklist
 
-Use this when starting a new repo or standardizing an existing one.
+Use this for a new repo or before releasing an aligned existing repo.
 
 ## Baseline
 
@@ -31,7 +31,7 @@ Use this when starting a new repo or standardizing an existing one.
 - `@howells/husky` is installed and generated hooks are current
 - `AGENTS.md` exists and is concise
 
-## UI Projects
+## UI projects
 
 - the bundled UI baseline is the starting assumption
 - shared primitives live in a package, not in the app
@@ -43,7 +43,7 @@ Use this when starting a new repo or standardizing an existing one.
 - `@howells/stacksheet` is used for stacked sheet workflows instead of overextending a basic drawer
 - `@howells/aperto` is considered for thumbnail-to-expanded media transitions instead of rebuilding that interaction locally
 
-## Full-Stack and AI Projects
+## Full-stack and AI projects
 
 - Drizzle and Neon are the default persistence choice for TypeScript product apps
 - the API uses the narrowest typed boundary that fits: server composition, same-workspace `tRPC`, or a versioned OpenAPI contract
@@ -64,11 +64,11 @@ Use this when starting a new repo or standardizing an existing one.
 - `pnpm test` succeeds or is intentionally not present yet
 - hooks run without surprising side effects
 
-## CI and Operations
+## CI and operations
 
 - CI runs the root `check` command from the pinned Node version with a frozen lockfile
 - environment preflight validates names and shape without printing secret values
-- deployment has a smoke check for the primary user journey and any public agent/API surface
+- deployment has a smoke check for the primary user flow and any public agent/API surface
 - the deployed app exposes a non-secret build identity and the release workflow verifies that production reports the expected revision
 - a low-cost scheduled freshness check catches a green commit that never reached production
 - scheduled jobs, queues, and background workers expose failure somewhere actionable instead of failing silently

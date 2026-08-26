@@ -8,9 +8,9 @@ import { useTransitionContext } from "./context";
 import { resolvePreset } from "./presets";
 import type { MotionPresetName } from "./types";
 
-export interface TransitionTriggerProps
-  extends ComponentPropsWithoutRef<typeof Dialog.Trigger> {
-  /** Override motion preset for this trigger */
+export interface TransitionTriggerProps extends ComponentPropsWithoutRef<
+  typeof Dialog.Trigger
+> {
   motion?: MotionPresetName;
 }
 
@@ -18,14 +18,12 @@ const TransitionTrigger = forwardRef<HTMLButtonElement, TransitionTriggerProps>(
   ({ children, motion: motionOverride, ...props }, ref) => {
     const ctx = useTransitionContext();
 
-    const globalPresetName =
-      typeof ctx.preset === "object" ? "smooth" : "smooth";
     const resolved = resolvePreset(
       "trigger",
       motionOverride,
-      globalPresetName,
+      "smooth",
       ctx.variants,
-      false,
+      false
     );
 
     return (
@@ -47,7 +45,7 @@ const TransitionTrigger = forwardRef<HTMLButtonElement, TransitionTriggerProps>(
         {children}
       </Dialog.Trigger>
     );
-  },
+  }
 );
 
 TransitionTrigger.displayName = "TransitionTrigger";

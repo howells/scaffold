@@ -6,9 +6,9 @@
 
 ## Verdict
 
-Scaffold's architecture is still valid. The major-version lane remains Node 24, pnpm 11, Next.js 16, React 19, TypeScript 6, Tailwind CSS 4, Turbo 2, Vitest 4, Storybook 10, and AI SDK 7. Fumadocs on Next.js remains a sensible docs shape, and the generated skill mirror is a strong single-source boundary.
+Keep the current architecture and major-version lane: Node 24, pnpm 11, Next.js 16, React 19, TypeScript 6, Tailwind CSS 4, Turbo 2, Vitest 4, Storybook 10, and AI SDK 7. Fumadocs remains the docs surface; the generated skill mirror preserves one source.
 
-The drift was concentrated in six current-state claims and in delivery hygiene:
+Six claims and release controls needed correction:
 
 1. Next.js 16.2.10 was behind the [August 2026 security release](https://nextjs.org/blog/august-2026-security-release), which requires 16.3.3 on the active 16.x line.
 2. Scaffold still recommended `@howells/motif-mcp` after Motif removed the package and deprecated it on npm in `motif@c76f31d`.
@@ -19,7 +19,7 @@ The drift was concentrated in six current-state claims and in delivery hygiene:
 
 ## Evidence
 
-The direct-root manifest scan covered 54 local Git checkouts declaring TypeScript, including first-party products, client repositories, and documentation mirrors. It is useful for relative recurrence, not for claiming 54 independent product choices. The strongest direct-root signals were:
+The direct-root manifest scan covered 54 TypeScript checkouts, including products, client repos, and documentation mirrors. The counts show relative recurrence, not 54 independent choices.
 
 | Package                      | Repositories |
 | ---------------------------- | -----------: |
@@ -38,7 +38,7 @@ The direct-root manifest scan covered 54 local Git checkouts declaring TypeScrip
 | `@howells/husky`             |           14 |
 | `@howells/envy`              |           12 |
 
-Recent history supplied the more important directional evidence:
+Recent history supplied the direction:
 
 - `@howells/lint` 2.0 retired the Biome lane; 2.1 is the current package release.
 - `@howells/husky` 0.2 is now the owned hook surface.
@@ -47,7 +47,7 @@ Recent history supplied the more important directional evidence:
 - DesignRound dropped DuckDB from its current app path, Materia removed Search Lab while retaining evaluation data, and Architizer removed Vercel Analytics from its production surface. None of those project-local removals justify a new global prohibition.
 - Claude logs recorded a real shared-branch collision in Motif after concurrent work overwrote uncommitted edits. That supports isolated task worktrees and owner-controlled cleanup, not more aggressive automatic pruning.
 
-The Codex and Claude log sample was used only as corroboration. Current manifests, Git history, package metadata, and executable checks remain the source of truth.
+Codex and Claude logs only corroborated current manifests, Git history, package metadata, and executable checks.
 
 ## Baseline score
 
@@ -77,7 +77,7 @@ This is the pre-remediation score using the medium-project survey axes.
 
 The post-remediation score is **17/21**: Security 3, Performance 2, Architecture 3, Quality 3, Tests 2, Resilience 2, and Operations 2. The remaining points are deliberately not claimed without a performance budget, broader failure-path coverage, and deployed-revision automation for Scaffold itself.
 
-## Remaining judgement calls
+## Remaining decisions
 
 - Scaffold itself continues to omit Git hooks under ADR 0002. CI now supplies the missing remote gate, so that local deviation remains proportionate.
 - `vercel.ts` remains a prospective new-project preference, while `vercel.json` is still the measured portfolio norm.
@@ -86,4 +86,4 @@ The post-remediation score is **17/21**: Security 3, Performance 2, Architecture
 
 ## Review cadence
 
-Re-run this review when a house package publishes a compatibility-significant major, a default service is deliberately retired, or a framework security release affects the current major lane. Otherwise, review the major-version table and direct-root manifest snapshot quarterly. Historical reviews stay under `docs/reviews`; maintained recommendations stay under `docs/reference`.
+Repeat this review after a house-package major, a service retirement, or a framework security release on the active major. Otherwise, review the version table and manifest snapshot quarterly. Keep historical reviews in `docs/reviews` and current guidance in `docs/reference`.

@@ -1,11 +1,11 @@
 ---
 name: scaffold
-description: Create or standardize a new Howells project using the scaffold baseline for repo archetypes, pnpm/Turborepo/@howells/lint Oxlint/Oxfmt/TypeScript configuration, package boundaries, UI stack, data and AI defaults, agent workflow, deployment defaults, and launch readiness. Use when starting a new repo, bringing an existing repo onto Howells conventions, choosing a project archetype, drafting baseline files, generating setup plans, or checking a repo against the scaffold launch checklist.
+description: Create, standardize, or audit a Howells project. Covers repo shape, tooling, package boundaries, UI, data, AI, agent workflow, deployment, and launch checks.
 ---
 
 # Scaffold
 
-Use this skill to create or standardize a Howells project from the house scaffold. Prefer existing project constraints when they are deliberate, but do not re-decide baseline tooling without a reason.
+Use the house defaults unless the project records a deliberate exception.
 
 ## References
 
@@ -105,6 +105,7 @@ For implementation, finish with:
 - Do not read or include large package inventory JSON/CSV files unless the user asks for evidence analysis.
 - Do not mutate an existing repo without reading its current scripts and workspace shape.
 - Do not replace a project's deliberate choices without naming the tradeoff.
+- Keep prose short and direct. Remove scene-setting, recaps, fake contrasts, and unsupported claims.
 
 ## Completion Check
 

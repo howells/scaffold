@@ -1,5 +1,5 @@
 ---
-title: Responsive System
+title: Responsive system
 description: Breakpoint-aware props with ResponsiveValue<T>.
 ---
 
@@ -11,7 +11,7 @@ Layout primitives like `Flex`, `Grid`, `Stack`, and `Heading` accept responsive 
 type ResponsiveValue<T> = T | (Partial<Record<Breakpoint, T>> & { base?: T });
 ```
 
-A static value applies at all sizes. A responsive object lets you override per breakpoint -- only set the breakpoints you need.
+A static value applies at every size. An object overrides selected breakpoints.
 
 ```tsx
 // Static — same everywhere

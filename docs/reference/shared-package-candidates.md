@@ -1,13 +1,13 @@
 ---
-title: "Shared Package Candidates"
-description: "Which packages are already real shared assets versus patterns that only look ready to extract, and the bar a candidate clears before it moves."
+title: "Shared package candidates"
+description: "Which shared packages are established, which remain candidates, and when to extract one."
 ---
 
-# Shared Package Candidates
+# Shared package candidates
 
-This section separates packages that are already real shared assets from patterns that look ready to become them.
+Separate established packages from patterns that still need evidence.
 
-## Already Shared and Real
+## Established packages
 
 These should be treated as canonical shared packages now:
 
@@ -34,7 +34,7 @@ These should be treated as canonical shared packages now:
 - `@howells/srcfull`
   - shared source-fetching layer for browser/page-source ingestion workflows
 
-## Keep Standardizing: AI Provider Baseline
+## Continue standardising: AI provider baseline
 
 `@howells/ai` is already common enough to be the default provider baseline for AI-capable repos.
 
@@ -46,7 +46,7 @@ Recommendation:
 
 Mastra and MCP should standardize as architecture choices before becoming more shared package surface.
 
-## Keep Standardizing: Image Generation Surface
+## Continue standardising: image generation
 
 Motif should be the default surface for fal.ai image generation, image editing, upscaling, background removal, image-to-video, model metadata, dry runs, cost estimates, and structured agent-facing command-line work.
 
@@ -58,7 +58,7 @@ Recommendation:
 - keep durable media storage separate through the house media storage platform
 - do not write raw fal.ai clients in app routes unless Motif cannot cover the endpoint yet
 
-## Strong Candidate: Motion Tokens Package
+## Strong candidate: motion tokens
 
 This is the clearest next shared package candidate.
 
@@ -81,7 +81,7 @@ This package should be small and boring:
 
 It should not become a second animation library.
 
-## Strong Candidate: Transition Primitives
+## Strong candidate: transition primitives
 
 The bundled transition snapshot suggests another promising shared layer.
 
@@ -96,7 +96,7 @@ Recommendation:
 - stabilize transition primitives inside repos that need them
 - only publish them separately if they prove reusable outside one product family
 
-## Medium Candidate: Shared Drawer and Sidepanel Layer
+## Medium candidate: drawer and side-panel layer
 
 You have repeated `vaul` wrappers across several active UI repos.
 
@@ -113,7 +113,7 @@ For now:
 - keep simple drawers in shared UI packages
 - use `@howells/stacksheet` when the flow becomes stack-oriented
 
-## Not a Good Shared Package Candidate Yet
+## Keep local for now
 
 These are useful patterns, but they should stay repo-local for now:
 
@@ -126,9 +126,9 @@ They encode app boundaries, not cross-project standards.
 
 The env exception is implementation, not ownership: keep a repo-local `packages/env` boundary, but build it on `@howells/envy` instead of publishing another env package per app.
 
-## Product Recommendation vs Package Recommendation
+## Product and package choices
 
-There is an important distinction here:
+Keep these choices separate:
 
 - the house media storage platform is the product recommendation
 - `@howells/stow-server` is the package recommendation
@@ -139,9 +139,9 @@ For new projects, the default decision should be:
 - if the repo needs typed server-side integration, reach for `@howells/stow-server`
 - if package code needs portable object/blob operations, put `files-sdk` inside the storage/upload package rather than calling S3, R2, GCS, Azure Blob, Vercel Blob, or similar provider clients directly from apps
 
-## Practical Standardization Order
+## Standardisation order
 
-If you want to reduce duplicated package work across the portfolio, the best order is:
+Reduce duplicated package work in this order:
 
 1. prefer `@howells/lint` and `@howells/typescript-config` everywhere
 2. use `@howells/envy` for repo-local env boundaries instead of creating more package-specific env tooling
@@ -150,5 +150,3 @@ If you want to reduce duplicated package work across the portfolio, the best ord
 5. standardize `@howells/stacksheet` as the default stacked-panel abstraction
 6. unify motion tokens into one shared package
 7. stabilize the bundled UI baseline through real consuming repos before publishing more UI internals
-
-That order reduces duplication without locking in the wrong abstractions too early.

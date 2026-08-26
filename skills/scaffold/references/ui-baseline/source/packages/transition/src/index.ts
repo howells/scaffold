@@ -50,7 +50,6 @@ import {
   type TransitionTriggerProps,
 } from "./transition-trigger";
 
-/** Compound component namespace */
 const Transition = {
   Close: TransitionClose,
   Content: TransitionContent,
@@ -62,9 +61,7 @@ const Transition = {
   Trigger: TransitionTrigger,
 };
 
-// Preset system
 export { PRESETS, resolvePreset } from "./presets";
-// Types
 export type {
   DismissibleConfig,
   DragSpringConfig,
@@ -73,7 +70,6 @@ export type {
   MotionProp,
   MotionVariants,
 } from "./types";
-// Named exports for tree-shaking
 export {
   Transition,
   TransitionClose,

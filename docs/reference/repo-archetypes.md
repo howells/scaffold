@@ -1,17 +1,13 @@
 ---
-title: "Repo Archetypes"
+title: "Repo archetypes"
 description: "The handful of repo shapes most new projects start from, from a single-purpose tool to a full product monorepo, and how to pick between them."
 ---
 
-# Repo Archetypes
+# Repo archetypes
 
-Most new repos should start from one of these shapes.
+Choose one of these shapes for new TypeScript or native Apple work. PHP and Craft maintenance projects follow their existing architecture.
 
-The point is to reduce unnecessary architectural improvisation.
-
-These archetypes are primarily for new TypeScript-first work, with a companion native Apple-client shape where the product requires it. PHP/Craft maintenance projects are outside the default scaffold unless explicitly requested.
-
-## 1. Full-Stack Product App
+## 1. Full-stack product app
 
 Use this for:
 
@@ -55,9 +51,7 @@ packages/
   upload/           # only if needed
 ```
 
-This is the most common serious-app archetype in your portfolio.
-
-## 2. UI System or Design-System Repo
+## 2. UI system or design-system repo
 
 Use this for:
 
@@ -87,9 +81,9 @@ packages/
   transition/
 ```
 
-This should be the model for new shared UI work, not fresh one-off design system repos.
+Use this model for new shared UI work.
 
-## 3. Docs or Content Site
+## 3. Docs or content site
 
 Use this for:
 
@@ -115,7 +109,7 @@ packages/
 
 Do not install a huge application architecture unless the site actually needs it.
 
-## 4. Published Package
+## 4. Published package
 
 Use this for:
 
@@ -142,7 +136,7 @@ Examples in your ecosystem:
 
 This archetype should stay lean. Do not force app-style monorepo complexity into a package repo.
 
-## 5. Worker or Service-Heavy System
+## 5. Worker or service-heavy system
 
 Use this for:
 
@@ -174,9 +168,7 @@ services/
   crons/
 ```
 
-This is closer to a service-heavy media platform model than the UI-system model.
-
-## 6. AI Pipeline or Research Repo
+## 6. AI pipeline or research repo
 
 Use this for:
 
@@ -199,9 +191,9 @@ Default stack:
 - `mastra`, `agents`, `mcp`, or `cli` packages when the repo exposes reusable agent tooling
 - `@howells/srcfull` if browser or page-source ingestion is central
 
-These repos usually need stronger script and data-pipeline conventions than typical UI apps.
+Define script and data-pipeline conventions explicitly.
 
-## 7. Native Apple Client
+## 7. Native Apple client
 
 Use this for:
 
@@ -220,7 +212,7 @@ Default shape:
 
 Do not force Node scripts or a web package graph onto a native repo just to resemble the TypeScript archetypes.
 
-## Choosing Between Archetypes
+## Choose an archetype
 
 Use these defaults:
 
@@ -232,4 +224,4 @@ Use these defaults:
 - model workflows and ingestion: AI pipeline or research repo
 - SwiftUI product or native companion: native Apple client
 
-If a repo looks like two archetypes at once, choose the dominant one and add the secondary capabilities carefully. Do not mash two entire architectures together by default.
+If two archetypes apply, choose the dominant one and add only the secondary capabilities needed.

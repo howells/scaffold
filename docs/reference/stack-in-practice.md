@@ -1,15 +1,15 @@
 ---
-title: "Stack in Practice"
-description: "The services, packages, and tools I actually reach for, measured from what runs across my repos: hosting, data, AI, and the toolchain."
+title: "Stack in practice"
+description: "Services, packages, and tools measured across active repos."
 ---
 
-# Stack in Practice
+# Stack in practice
 
-This is the stack I actually use, measured rather than idealised: the services wired into my repos, the packages that recur across nearly all of them, and the skills I invoke most. Where [Stack Decisions](./stack-decisions.md) says what a new repo _should_ pin, this page says what the existing ones _do_. It's a snapshot, and it drifts; treat it as "what I currently reach for," not a contract.
+This snapshot records services, packages, and skills used across active repos. [Stack decisions](./stack-decisions.md) defines the new-project standard.
 
 ## Services
 
-The house stack, by category. Counts are rough repo footprints across active work; the point is which choice is the default, not the exact number.
+Counts are approximate repo footprints; use them to identify defaults, not as adoption metrics.
 
 | Category | Default | Also in use |
 | --- | --- | --- |
@@ -26,7 +26,7 @@ The house stack, by category. Counts are rough repo footprints across active wor
 | **Product analytics** | PostHog | Vercel Analytics in a small number of existing sites |
 | **Data warehouse** | Snowflake (where the data lives there) | — |
 
-Two I'm standardising on rather than reporting. They're the deliberate defaults going forward, not yet everywhere:
+Two prospective defaults are not yet widespread:
 
 - **Errors:** Sentry.
 - **Transactional email:** Resend.
@@ -55,7 +55,7 @@ The dependency baseline is consistent: the same ~15 packages carry most repos. A
 
 Measured from a month of actual invocations (both slash commands I type and skills invoked mid-task), not from repo mentions. Skills are installed globally and invoked on demand, never vendored into repos, so a repo grep badly undercounts them.
 
-**The backbone is now the model itself.** Claude Code and Codex handle the ordinary development loop directly. Matt Pocock's skills are the canonical reusable methods for general development work, while the Howells collection stays deliberately narrower and specialist.
+Claude Code and Codex handle the development loop directly. Matt Pocock's skills provide general methods; the Howells collection remains specialist.
 
 **Most-used specialists**, roughly in order of how often I reach for them:
 

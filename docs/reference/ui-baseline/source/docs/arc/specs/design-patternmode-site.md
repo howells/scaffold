@@ -1,18 +1,18 @@
-# Design Direction: PatternMode Site Redesign
+# PatternMode site redesign
 
-## Aesthetic Direction
+## Direction
 
 - **Tone:** Precise, organic-technical. App UI density.
-- **Memorable element:** Density and precision — every pixel earned, nothing wasted.
+- **Density:** Compact controls and short paths to content.
 - **Typography:** Inter everywhere (Ivar Display for landing hero only)
 - **Color strategy:** Green-tinted oklch neutrals (hue 145) with muted teal accent
 - **Motion philosophy:** Restrained. translate-y hover lift, no bounce, no scale.
 
-## Change Spec
+## Changes
 
 ### 1. Color System (shared-styles.css)
 
-Shift ALL neutrals from hue 264 (blue-gray) to hue 145 (green-gray).
+Shift neutrals from hue 264 to hue 145.
 
 | Token | Before (hue 264) | After (hue 145) |
 |-------|-------------------|------------------|
@@ -70,7 +70,7 @@ Tracking stays the same. Line heights tighten proportionally.
 | --radius-lg | 0.75rem (12px) | 0.5rem (8px) |
 | --radius-xl | 1rem (16px) | 0.75rem (12px) |
 
-Tighter radii = more precise, less playful. Matches Forge.
+Use tighter radii to match Forge.
 
 ### 5. Docs Site Layout (apps/web)
 
@@ -102,18 +102,18 @@ Align button shadows with Forge's approach (simpler, less dramatic):
 | buttons-neutral | ring + drop | ring + subtle drop (lower opacity) |
 | buttons-danger | inset + colored ring | ring + subtle colored drop |
 
-Forge's buttons don't have inset highlights — they're cleaner.
+Remove inset highlights to match Forge.
 
-## Landing Page
+## Landing page
 
-The landing page gets a personality upgrade while keeping the component showcase:
+Keep the component showcase and change:
 - Hero heading in Ivar Display (the ONLY serif usage)
 - Tighter, denser component showcase grid
 - Theme customizer collapsed by default or in a sidebar
 - No generous hero padding — get to the content fast
-- Overall feeling: "this is a tool, not a marketing page"
+- Present the page as a tool, not a marketing page
 
-## Anti-Patterns Checklist
+## Constraints
 
 - [ ] No element uses > 15px body text
 - [ ] No padding > 1.5rem on cards
@@ -124,7 +124,7 @@ The landing page gets a personality upgrade while keeping the component showcase
 - [ ] Selection color uses teal, not blue
 - [ ] Green tinting visible on backgrounds (not pure gray)
 
-## Files to Modify
+## Files to modify
 
 1. `packages/tailwind-config/shared-styles.css` — full token overhaul (colors, radii, typography, shadows)
 2. `packages/ui/src/components/button/button-variants.ts` — adjust sizes, shadow tokens

@@ -1,14 +1,10 @@
-# Package Boundaries
+# Package boundaries
 
-These are the package boundaries that keep recurring across your serious monorepos.
+These boundaries keep shared infrastructure out of app code. They come from active TypeScript projects; PHP and Craft maintenance repos do not set this baseline.
 
-The goal is not maximal modularity. The goal is to stop app code from swallowing shared infrastructure and then becoming impossible to reuse or reason about.
+## Default boundaries for a full-stack app
 
-For new scaffolds, derive these boundaries from TypeScript projects only. Legacy PHP/Craft repos do not set the default package model.
-
-## Default Boundaries for a Full-Stack App
-
-For a real product app, this is the clean default:
+For a product app, start with:
 
 ```text
 apps/
@@ -25,7 +21,7 @@ packages/
 
 Add more only when the product clearly needs them.
 
-## Dependency Direction
+## Dependency direction
 
 The package graph should have an obvious direction:
 
@@ -112,7 +108,7 @@ Put these here:
 
 This boundary now recurs enough that it should be deliberate, not accidental.
 
-## Add These Only When Needed
+## Add only when needed
 
 ### `packages/auth`
 
@@ -219,7 +215,7 @@ Use sparingly for:
 
 Do not let `utils` become the first place code goes. In your repos it exists often, but it is weaker than `db`, `ui`, `trpc`, `auth`, or `ai` as a boundary.
 
-## What Should Stay in `apps/web`
+## Keep in `apps/web`
 
 Keep these app-local:
 
@@ -231,7 +227,7 @@ Keep these app-local:
 
 The app should assemble shared infrastructure, not own it.
 
-## What Not to Extract
+## Do not extract
 
 Do not create packages for:
 
@@ -240,25 +236,25 @@ Do not create packages for:
 - speculative future reuse
 - vague categories like `shared`, `common`, or `utils` without a real boundary
 
-If a package does not express a real dependency boundary, it is probably cargo-cult modularity.
+A package must express a dependency boundary.
 
-## Good Signs a Boundary Is Real
+## Signs of a useful boundary
 
 - multiple apps depend on it
 - changing it should not require editing route files directly
 - it has a coherent reason to exist
 - it reduces duplication without hiding behavior
 
-## Bad Signs a Boundary Is Fake
+## Signs of a weak boundary
 
 - everything imports everything
 - package names are generic and meaningless
 - moving code into the package did not reduce coupling
 - the package exists only because monorepos are fashionable
 
-## Strong Defaults
+## Priority order
 
-If you do nothing else right, get these boundaries right first:
+Create boundaries in this order:
 
 1. `db`
 2. `ui`
@@ -268,5 +264,3 @@ If you do nothing else right, get these boundaries right first:
 6. `env`
 7. `trpc` when a same-workspace typed API needs it
 8. `ai` / `mastra` / `agents` / `mcp` when agent behavior is part of the product
-
-That is where the portfolio already shows a durable pattern.

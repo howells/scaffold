@@ -1,13 +1,13 @@
 ---
-title: Design Tokens
+title: Design tokens
 description: oklch colors, radius, shadows, and typography scale.
 ---
 
-All tokens are CSS custom properties defined in `@patternmode/tailwind-config`. They are available as Tailwind utilities automatically.
+`@patternmode/tailwind-config` defines the CSS custom properties and exposes them as Tailwind utilities.
 
 ## Colors
 
-The palette uses **oklch** for perceptual uniformity. Neutrals share hue 264 (blue-gray); the accent sits at hue 241 (saturated blue).
+This archived palette uses oklch with hue 264 neutrals and a hue 241 accent. Check the current stylesheet before copying these values.
 
 ```css
 /* Surfaces */
@@ -37,7 +37,7 @@ The palette uses **oklch** for perceptual uniformity. Neutrals share hue 264 (bl
 --color-border-strong:    oklch(0.85 0.012 264)
 ```
 
-Dark mode overrides every token automatically via the `.dark` class.
+The `.dark` class overrides the tokens for dark mode.
 
 ## Radius
 

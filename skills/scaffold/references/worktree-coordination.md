@@ -1,4 +1,4 @@
-# Worktree Coordination
+# Worktree coordination
 
 All managed worktrees live under one machine-wide umbrella:
 
@@ -10,9 +10,9 @@ All managed worktrees live under one machine-wide umbrella:
   .control/
 ```
 
-This page is the canonical policy. `~/Sites/WORKTREES.md` should be a symlink to this file so global agent instructions, people, and both harnesses read the same standard.
+This page is canonical. `~/Sites/WORKTREES.md` symlinks here so people and both harnesses read the same policy.
 
-The shared umbrella is for coordination, not for sharing a working directory. Codex and Claude must never write to the same worktree. Each task owns one branch, one worktree, and one harness namespace.
+The umbrella coordinates paths; it does not share working directories. Codex and Claude never write to the same worktree. Each task owns one branch, worktree, and harness namespace.
 
 ## Why the namespaces matter
 
@@ -43,7 +43,7 @@ worktree-upstream-refresh-mode = "best-effort"
 
 Use the absolute expanded path if the settings UI or installed Codex version does not expand `~`. The Desktop **Worktree root** field is the root setting: it applies to managed Codex worktrees for every saved project on that macOS profile.
 
-When rotating Codex accounts on the same macOS user, keep one `~/.codex/config.toml`; authentication can change without changing the worktree policy. If an account launcher uses a separate Codex home, symlink that home's `config.toml` to the canonical file rather than copying the settings.
+Rotated Codex accounts on one macOS user share `~/.codex/config.toml`. If a launcher uses another Codex home, symlink its config to that file.
 
 ### Claude Code
 

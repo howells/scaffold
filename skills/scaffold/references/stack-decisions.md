@@ -1,8 +1,8 @@
-# Stack Decisions
+# Stack decisions
 
 These are the current default decisions for new TypeScript product work and shared config repos.
 
-## Core Tools
+## Core tools
 
 The default toolchain for new TypeScript work:
 
@@ -15,9 +15,9 @@ The default toolchain for new TypeScript work:
 - **Git hooks:** `@howells/husky` with `lint-staged`
 - **Runtime:** Node 24 LTS
 
-The exact versions are pinned by the shared config packages and the root `package.json`. Consume those rather than restating numbers here, which drift the moment a dependency bumps.
+Shared config packages and each root `package.json` pin exact versions. This page records only major-version policy.
 
-## Current Major-Version Lane
+## Current major-version lane
 
 Review this table when a compatibility-significant major changes; keep exact minor and patch versions in workspace catalogs and lockfiles.
 
@@ -36,7 +36,7 @@ Review this table when a compatibility-significant major changes; keep exact min
 
 For published packages, test every runtime major still claimed in `engines`, even if the new-project lane has moved on. Dropping an existing runtime floor waits for a deliberate package major. Treat persisted classifications, machine-readable output shape, schema meaning, and nullability as compatibility surfaces too: a semantic break may require a major even when function names do not change.
 
-## Package Manager
+## Package manager
 
 - Use `pnpm`.
 - Pin `packageManager` in the root `package.json`.
@@ -55,7 +55,7 @@ packages:
   - "packages/*"
 ```
 
-## Node Version Policy
+## Node version policy
 
 Use Node 24 LTS as the Howells stack baseline.
 
@@ -79,7 +79,7 @@ Use Turbo as an orchestrator, not as a place to hide complexity.
 - Put package-specific exceptions in leaf packages when needed.
 - Avoid deprecated `turbo run --parallel`; let persistent `dev` tasks run through task config.
 
-The recent pattern across active Turborepos is clear: hidden stale-cache failures cost more than slower local runs.
+Active repos keep caching off because stale-cache failures have cost more than slower local runs.
 
 ## TypeScript
 
@@ -97,7 +97,7 @@ Rules:
 - keep shared presets thin
 - keep local `paths` and `baseUrl` in the consumer repo only
 
-## Linting and Formatting
+## Linting and formatting
 
 Prefer the Oxlint/Oxfmt lane through `@howells/lint`.
 
@@ -118,7 +118,7 @@ Rules:
 
 For env access, use `@howells/envy` lint helpers with Oxlint when a repo needs to enforce "no direct `process.env`" strongly.
 
-## Environment Variables
+## Environment variables
 
 Use `@howells/envy` for repos with runtime configuration.
 
@@ -133,7 +133,7 @@ Default approach:
 
 Do not keep hand-written dotenv loading, ad hoc `process.env` reads, or provider env setup scripts once Envy can own that surface.
 
-## Shared Git Hooks
+## Shared Git hooks
 
 Use `@howells/husky` for the standard immutable hook set. It owns Husky and keeps the hook behavior consistent across repositories.
 
@@ -145,7 +145,7 @@ Default approach:
 
 Change the shared package when the house hook contract needs to change. Don't edit generated `.husky` files in consuming repositories.
 
-## UI Stack
+## UI stack
 
 For new UI repos:
 
@@ -161,7 +161,7 @@ Use Base UI as the primitive layer for new repos. shadcn now defaults to Base UI
 
 Radix stays a supported deliberate opt-out. Choose it with `npx shadcn init -b radix` when a repo has a concrete reason. On Radix, use the unified `radix-ui` package. Do not install the split per-component Radix packages.
 
-This does not mean every product should look the same. It means structural decisions should be shared while brand and product expression stay local.
+Share structural decisions; keep brand and product expression local.
 
 ### Next.js baseline
 
@@ -169,7 +169,7 @@ This does not mean every product should look the same. It means structural decis
 - Adopt Cache Components (`use cache`) as the caching model.
 - Use `proxy.ts` for request interception. `middleware.ts` is deprecated. This repo ships a `proxy.ts` example itself — markdown content negotiation on the docs routes.
 
-## Client Data Fetching
+## Client data fetching
 
 Use `@tanstack/react-query` for all client-side data fetching. No raw `fetch` in components.
 
@@ -204,11 +204,11 @@ export function useUpdatePersona() {
 }
 ```
 
-This replaces `useEffect` + `useState` + `fetch` patterns. React Query handles loading states, error states, caching, and cache invalidation.
+React Query owns loading, errors, caching, and invalidation. Do not rebuild that state with `useEffect`, `useState`, and `fetch`.
 
-## Dependency Standard
+## Dependency standard
 
-The active repos are not just converging on config. They are also converging on a real dependency baseline.
+Active repos share a dependency baseline as well as configuration.
 
 An August 2026 direct-root scan across the local Git checkouts, deduplicated by repository path, found the strongest signals in `typescript` (54), `@howells/lint` (44), `@howells/typescript-config` (32), `turbo` (31), `lint-staged` (29), `vitest` (25), `tsx` (20), and `zod` (19). This broad inventory includes client repositories and documentation mirrors, so use it to rank recurrence rather than to claim that every checkout independently chose the package.
 
@@ -228,7 +228,7 @@ The packages that recur most often in UI work are:
 - `@base-ui/react`
 - `@howells/envy`
 
-The repeated package names across your Turborepos are also clear enough to treat as default boundaries, not accidental patterns:
+Repeated package names across Turborepos define these default boundaries:
 
 - first tier: `db`, `ui`, `typescript-config`, `tailwind-config`
 - second tier: `utils`, `motion`, `auth`, `mastra`, `agents`, `mcp`, repo-local `ai` packages above `@howells/ai`, and `trpc` when a same-workspace API needs it
@@ -243,7 +243,7 @@ For media-heavy projects, there is also a platform-level default:
 - prefer the house media storage platform for image, vector, and general media storage/delivery
 - use `files-sdk` behind storage/upload packages when project code needs a portable object/blob API across S3-compatible storage, R2, GCS, Azure Blob, Vercel Blob, Netlify Blobs, MinIO, or similar providers
 
-There is also a recurring architecture baseline for full-stack apps:
+Full-stack apps also share this architecture:
 
 - server composition for app-internal behavior, `tRPC` for same-workspace typed clients, and OpenAPI/oRPC for separate consumers
 - React Query for server state
@@ -251,9 +251,9 @@ There is also a recurring architecture baseline for full-stack apps:
 
 The detailed guidance lives in [Architecture Defaults](./architecture-defaults.md).
 
-## AI, Agents, and MCP
+## AI, agents, and MCP
 
-AI-capable repos are now common enough that they should have a standard starting shape.
+AI-capable repos use this starting shape.
 
 Default package choices:
 

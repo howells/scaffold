@@ -1,4 +1,4 @@
-# Getting Started
+# Getting started
 
 Use this sequence when creating a new repo.
 
@@ -14,7 +14,7 @@ packages/
 docs/
 ```
 
-Only add more top-level globs when the repo genuinely needs them.
+Add another top-level glob only when it has a clear owner and purpose.
 
 Before creating files, choose the repo archetype from [Repo Archetypes](./repo-archetypes.md). That decision should drive the package graph, deployment target, and dependency baseline.
 
@@ -65,7 +65,7 @@ Start with these files before writing app code:
 
 Use the snippets in [Config Snippets](./config-snippets.md).
 
-Also decide the first package boundaries up front using [Package Boundaries](./package-boundaries.md). A lot of repo drift starts when app code absorbs infra that should have been extracted on day one.
+Choose the first package boundaries with [Package Boundaries](./package-boundaries.md). Keep shared infrastructure out of app code.
 
 ## 4. Install the shared config packages
 
@@ -85,7 +85,7 @@ Do not install direct `oxlint` or `oxfmt` dependencies. Use the `@howells/lint` 
 
 ## 5. Keep the scripts standard
 
-At the root, keep these script names unless the repo has a real reason not to:
+Keep these root script names unless the repo records a reason to differ:
 
 - `dev`
 - `dev:all`
@@ -103,7 +103,7 @@ The exact commands can vary by repo, but the script contract should stay stable.
 
 ## 6. Add the agent and rules layer deliberately
 
-Every repo should have a concise `AGENTS.md`. Add platform-specific agent configuration only when the repo will actually use that assistant or tool surface.
+Every repo should have a concise `AGENTS.md`. Add platform-specific configuration only for tools the repo uses.
 
 - keep `AGENTS.md` short and focused on repo-specific constraints
 - add assistant-specific MCP config only when the repo benefits from project-specific servers
@@ -111,11 +111,11 @@ Every repo should have a concise `AGENTS.md`. Add platform-specific agent config
 - keep repo-local rules small; use project-specific instructions only when the repo has conventions the model and installed skills cannot infer
 - use independent skills from `~/Sites/skills` for specialist work such as UI polish, browser field testing, package extraction, boundary checks, naming, prose cleanup, and plugin packaging
 
-Do not cargo-cult a full rules or workflow system into every project. Start with `AGENTS.md`, then add only the Codex, Claude Code, Cursor, MCP, or workflow support the repo actually uses.
+Start with `AGENTS.md`. Add Codex, Claude Code, Cursor, MCP, or workflow support only when used.
 
 ## 7. Verify the baseline before feature work
 
-Before real implementation begins, these should work:
+Run these before feature work:
 
 ```bash
 pnpm install
@@ -125,7 +125,7 @@ pnpm build
 pnpm test
 ```
 
-If those commands are already messy on day one, the repo standard is wrong.
+Fix this gate before feature work.
 
 ## 8. Record intentional deviations
 
@@ -138,7 +138,7 @@ If you do not use the default stack, write down the reason early:
 - why not `@howells/envy` for runtime env
 - why not the bundled UI baseline for shared UI primitives
 
-The goal is not lockstep. The goal is to avoid re-deciding the same defaults in every repo.
+Recorded deviations prevent the same decision from being reopened in every repo.
 
 ## 9. Pick the deployment shape early
 

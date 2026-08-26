@@ -23,18 +23,15 @@ const RESISTANCE_MIN = 0.1;
 export function calculateResistance(distance: number): number {
   return Math.max(
     RESISTANCE_MIN,
-    1 - Math.log(distance / RESISTANCE_DIVISOR + 1) / RESISTANCE_SCALE,
+    1 - Math.log(distance / RESISTANCE_DIVISOR + 1) / RESISTANCE_SCALE
   );
 }
 
-/** Scale mapping: distance → visual scale (1.0 → 0.95) */
 export const SCALE_INPUT = [0, 50, 100];
 export const SCALE_OUTPUT = [1, 0.98, 0.95];
 
-/** Opacity mapping: distance → visual opacity (1.0 → 0.96) */
 export const OPACITY_INPUT = [0, 80];
 export const OPACITY_OUTPUT = [1, 0.96];
 
-/** Default dismissal thresholds */
 export const DEFAULT_DISTANCE_THRESHOLD = 100;
 export const DEFAULT_VELOCITY_THRESHOLD = 500;

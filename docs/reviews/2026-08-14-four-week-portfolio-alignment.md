@@ -6,9 +6,9 @@
 
 ## Verdict
 
-Scaffold still describes the centre of Daniel's practice well: pnpm workspaces, Node 24 for applications, Next.js App Router, React 19, Tailwind 4, explicit packages, server-first composition, typed environment boundaries, shared lint/TypeScript configuration, disabled Turbo caching, Drizzle/Neon, deliberate agent and MCP packages, and browser-visible verification.
+Scaffold matches most current practice: pnpm workspaces, Node 24, Next.js App Router, React 19, Tailwind 4, explicit packages, server-first composition, typed environment boundaries, shared lint and TypeScript configuration, disabled Turbo caching, Drizzle and Neon, explicit agent packages, and browser verification.
 
-The important drift is concentrated rather than systemic:
+Six gaps needed correction:
 
 1. `tRPC` is documented as a default although the portfolio deliberately uses several API shapes and only five active first-party repos depend on it.
 2. `drizzle-kit push` is documented as the production migration workflow although mature products use reviewed migrations and runbooks.
@@ -33,7 +33,7 @@ Only five of the 36 active first-party repos currently declare `@trpc/server`: D
 
 Rulework is the clearest new evidence: `api/openapi.yaml` became the source of truth with explicit concurrency and error semantics in `fb67403b`, and `api/conformance.sh` was made part of `pnpm check` in `0dbd2ac`. MaterialGraph's discovery endpoint in `0241b7fed` similarly treats capability/refusal shape as a public product contract.
 
-Recommended edit: deprecate “tRPC is the default typed API layer.” Make the default a decision table. Keep tRPC as the same-workspace choice, use ordinary server composition when there is no reusable API, and use OpenAPI/oRPC or an equivalent versioned contract when consumers are separate deployables. Also remove `trpc` from the “strong default” package list.
+Replace “tRPC is the default typed API layer” with a decision table. Keep tRPC for same-workspace clients, server composition when no reusable API exists, and OpenAPI, oRPC, or another versioned contract for separate deployables. Remove `trpc` from the default package list.
 
 Evidence: [Rulework OpenAPI](/Users/danielhowells/Sites/rulework/api/openapi.yaml), [Rulework conformance gate](/Users/danielhowells/Sites/rulework/api/conformance.sh), [MaterialGraph operator contract](/Users/danielhowells/Sites/materialgraph/packages/products/src/graph-operators.ts).
 
@@ -46,7 +46,7 @@ Evidence: [Rulework OpenAPI](/Users/danielhowells/Sites/rulework/api/openapi.yam
 - MaterialGraph still uses `db:push` for schema synchronisation but also owns numerous attributable, one-purpose production migrations in [packages/db/package.json](/Users/danielhowells/Sites/materialgraph/packages/db/package.json).
 - Fieldportrait has a guarded `db:push:verified` that inspects before and after in [packages/db/package.json](/Users/danielhowells/Sites/fieldportrait/packages/db/package.json).
 
-Recommended edit:
+Change the guidance:
 
 - local/prototype database: `drizzle-kit push` is acceptable;
 - production with valuable data: checked-in reviewed migration, explicit target, backup/rollback or repair path, pre/post schema verification, and smoke test;
@@ -59,7 +59,7 @@ This is a policy correction, not a request to standardise every existing migrati
 
 [Stack in Practice](../reference/stack-in-practice.md) said OpenRouter was the default while [Default Dependencies](../reference/default-dependencies.md) said Gateway. The package owns the implementation decision: [the `@howells/ai` AGENTS.md](/Users/danielhowells/Sites/ai/AGENTS.md) records Vercel AI Gateway as its current default route, with OpenRouter and direct providers available per call. Repository history shows that was an April 2026 benchmark decision, not a claim that every project consciously uses Gateway. Commit `e527c47` moved the package to AI SDK 7 and the corresponding provider majors.
 
-Recommended edit: make `@howells/ai` the only authority for provider and model selection. Scaffold should describe its Gateway route as a provisional package default, keep Gateway/OpenRouter/direct selection explicit when a product has a concrete need, and avoid a second exact model roster. New work should start on AI SDK 7. Existing AI SDK 6 products should migrate deliberately because this is a major API change, not as a fleet-wide cosmetic bump.
+Make `@howells/ai` the authority for provider and model selection. Describe Gateway as its provisional package default and keep Gateway, OpenRouter, or direct-provider choice explicit. Do not copy an exact model roster into Scaffold. Start new work on AI SDK 7; migrate SDK 6 products as a compatibility change.
 
 Evidence: [AI provider registry](/Users/danielhowells/Sites/ai/src/providers/registry.ts), [AI model matrix](/Users/danielhowells/Sites/ai/src/models.ts), `ai@e527c47`.
 
@@ -67,7 +67,7 @@ Evidence: [AI provider registry](/Users/danielhowells/Sites/ai/src/providers/reg
 
 The observed new-work lane is now Node 24, pnpm 11, Next 16, React 19, TypeScript 6, Tailwind 4, Turbo 2, Vitest 4, Storybook 10, and AI SDK 7. Twenty-three of the 34 first-party repos with a root `package.json` pin pnpm 11; nine remain on pnpm 10 and two on pnpm 9. That makes pnpm 11 the sensible new-repo baseline without making a pnpm 10 fleet migration urgent.
 
-Recommended edit: add a short generated or manually reviewed “current majors” table to Stack Decisions. Track only compatibility-significant majors and their adoption date. Let exact minors/patches remain in repo catalogs and lockfiles.
+Add a reviewed current-majors table to Stack Decisions. Track compatibility-significant majors and adoption dates; keep minor and patch versions in repo catalogs and lockfiles.
 
 Published packages need one additional rule: test every runtime major still claimed in `engines`, even if it is no longer the new-project default. Gauge found that its Node 20 CI lane ran zero tests because of shell glob behaviour (`4d15af9`). Dropping an existing runtime floor should wait for a deliberate package major.
 
@@ -140,7 +140,7 @@ Add “durable adapter” as a third integration shape when a run must outlive a
 
 ## Documentation and agent workflow
 
-The strongest portfolio-wide convergence is already captured and should remain:
+The survey found these stable practices:
 
 - all 36 active first-party repos have `AGENTS.md`;
 - all 36 make root `CLAUDE.md` a symlink to `AGENTS.md`;
@@ -160,7 +160,7 @@ This is a useful correction to the broad “plans go in docs” advice. Evidence
 
 ## Agent Surface integration
 
-Agent Surface does not need an architectural rewrite. Its 2.2.0 currency pass (`d4f15be`) and the July correctness pass are aligned with current practice: broad framework selection, structured skill routing, a public docs MCP surface, and `AGENTS.md` as the canonical repository instruction file.
+Agent Surface already matches current practice after its 2.2.0 currency pass (`d4f15be`) and July correctness pass: broad framework selection, structured skill routing, a public docs MCP surface, and canonical `AGENTS.md` files.
 
 One pattern should be borrowed into Scaffold: [Agent Surface's docs integrity script](/Users/danielhowells/Sites/agentsurface/scripts/check-docs-integrity.mjs) validates model IDs, manifest/server-card version parity, internal references, and 120-day freshness stamps for fast-decay pages. Scaffold's exact model and platform claims currently have no equivalent freshness mechanism, which is how the Gateway/OpenRouter contradiction survived. Either:
 
@@ -169,9 +169,7 @@ One pattern should be borrowed into Scaffold: [Agent Surface's docs integrity sc
 
 The first option is simpler and better aligned with Scaffold's role.
 
-## Practices Scaffold already captures correctly
-
-No change beyond keeping these prominent:
+## Practices to retain
 
 - lightest repo shape that fits; Fieldstation's deliberate teardown (`81f9f58`) is strong evidence that removal is part of architecture;
 - apps do not import apps, reusable behaviour crosses an enforced package or HTTP boundary;
@@ -226,4 +224,4 @@ The five rows ending in `-docs`, plus `mb-search-lab`, are retained in the inven
 5. Add the native-client archetype and durable-workflow adapter note.
 6. Borrow Agent Surface's freshness discipline or remove duplicated fast-decay claims.
 
-That keeps Scaffold recognisably the same project while updating the few defaults that the last four weeks have materially disproved.
+These changes preserve the project while correcting defaults disproved by the review window.

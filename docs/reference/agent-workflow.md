@@ -1,11 +1,11 @@
 ---
-title: "Agent Workflow"
-description: "The baseline for repos worked on with coding assistants and reusable skills: concise local guidance, native model capability, and specialist skills on demand."
+title: "Agent workflow"
+description: "How agents work in a repo: local rules, shared skills, root commands, Git, and progress records."
 ---
 
-# Agent Workflow
+# Agent workflow
 
-This is the baseline for repos worked on with coding assistants and reusable skills. The model owns the general development loop; repo-local instructions supply only the context it cannot infer, and installed skills add specialist methods when a task benefits from them.
+The model owns the development loop. Repo instructions supply local constraints; installed skills supply specialist methods.
 
 ## AGENTS.md
 
@@ -18,17 +18,17 @@ It should cover:
 - search preferences
 - repo-specific rules that are easy for an agent to violate
 
-Keep it short and direct. The best `AGENTS.md` files change behavior without becoming documentation sludge.
+Keep it short, direct, and operational.
 
-## General Development Skills
+## General development skills
 
-Let Claude Code, Codex, or the current coding assistant handle ordinary investigation, planning, implementation, testing, review, and verification directly. Do not install a second lifecycle runtime around a capable model by default.
+Let the coding assistant handle investigation, planning, implementation, testing, review, and verification. Do not wrap it in another lifecycle runtime by default.
 
-Use Matt Pocock's skills as the canonical reusable methods for general software-development work when a task needs a more explicit technique, such as domain modelling, grilling a requirement, architecture improvement, or structured technical writing. Install those skills globally rather than copying their instructions into each repo.
+Use Matt Pocock's globally installed skills for explicit methods such as domain modelling, requirement grilling, architecture improvement, or technical writing. Do not copy their instructions into each repo.
 
-The model and its skills should still leave durable evidence where the work benefits from it: a focused spec, decision record, test, or review document. The absence of a workflow framework is not permission to hide decisions in chat history.
+Leave durable evidence when a decision needs it: a focused spec, ADR, test, or review. Do not leave project decisions only in chat history.
 
-## Independent Skills
+## Independent skills
 
 `~/Sites/skills` is the independent skill collection. Treat it as reusable agent tooling, not as a package inside each product repo.
 
@@ -55,6 +55,7 @@ Use independent skills when a task is cross-repo and specialist:
 - `mastraudit` for Mastra implementation and package-boundary audits
 - `nomen` for naming and availability checks
 - `deslop` for cleaning AI-sounding prose
+- `unslop` for removing behaviour-neutral code ceremony before review
 - `polyplugin` for dual Claude Code and Codex plugin packaging
 
 Do not copy an independent skill's instructions into every repo. Install or invoke the skill when the task needs it, and keep repo-local `AGENTS.md` focused on the current codebase.
@@ -77,7 +78,7 @@ When implementing Mastra code, verify the current API before writing against it.
 
 For broader agent-facing software design, use [agentsurface.dev](https://agentsurface.dev) and [Agentic Development](./agentic-development.md). That guidance covers Mastra, but also covers API shape, CLI ergonomics, MCP, discovery, tool design, retrievability, orchestration, testing, evaluation, browser access, and sandboxing.
 
-## Rules and Project Instructions
+## Rules and project instructions
 
 Do not install a full rules system into every repo by default.
 
@@ -89,7 +90,7 @@ Use project-local rules or instruction files when:
 
 Do not add a large project-local rule corpus when the repo is still exploring its basic shape. Prefer a concise `AGENTS.md`, the model's native development loop, and installed skills for specialist depth.
 
-## Root Scripts That Agents Should Expect
+## Root scripts agents should expect
 
 Agents should be able to rely on these commands:
 
@@ -101,9 +102,9 @@ Agents should be able to rely on these commands:
 - `pnpm test`
 - `pnpm check`
 
-If a repo chooses different names, it is increasing friction for no real gain.
+Record any different command names and why they exist.
 
-## Git Hooks
+## Git hooks
 
 Use hooks to stop obvious breakage, not to turn local commits into CI.
 
@@ -121,7 +122,7 @@ Rules:
 - keep hook output readable
 - if hooks become slow enough that developers bypass them, the hooks are wrong
 
-## Code Review Stance
+## Code review stance
 
 Agent-driven review should prioritize:
 
@@ -133,7 +134,7 @@ Agent-driven review should prioritize:
 
 It should not default to taste-based nitpicks.
 
-## Documentation and Progress
+## Documentation and progress
 
 For substantial work, keep documentation and progress lightweight but real:
 
@@ -144,12 +145,13 @@ For substantial work, keep documentation and progress lightweight but real:
 - scripts and generated artifacts own executable probes and repeatable evidence
 - temporary plans and handoffs are deleted or folded into a durable home when the task closes
 - docs should describe the current system, not preserve outdated migration stories forever
+- prose should use short declarative sentences, direct verbs, and evidence for claims
 
 ## Worktrees
 
 When more than one harness or agent is active, follow [Worktree Coordination](./worktree-coordination.md). Keep Codex, Claude, and manual work under the shared umbrella but in separate task directories. Branch, stash, handoff, and cleanup operations stay with the coordinating session.
 
-## Environment Discipline
+## Environment discipline
 
 Agents should not read `process.env` ad hoc throughout the codebase.
 

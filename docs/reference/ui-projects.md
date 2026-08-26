@@ -1,15 +1,13 @@
 ---
-title: "UI Projects"
-description: "The default for new UI projects: a local UI package seeded from the bundled baseline, with Tailwind v4, Radix, design tokens, and Storybook."
+title: "UI projects"
+description: "The local UI package baseline: Tailwind v4, Base UI, design tokens, motion, and Storybook."
 ---
 
-# UI Projects
+# UI projects
 
-For new UI-based projects, the default is a local UI package seeded from the scaffold's bundled UI baseline.
+Seed new UI packages from Scaffold's bundled baseline. The shared source lives here rather than in a separate upstream repo.
 
-That is the key decision in this scaffold: the shared shape lives here, not in a separate upstream repo.
-
-## What The Bundled Baseline Owns
+## What the bundled baseline owns
 
 The scaffold now includes the old UI-system files directly under [Bundled UI Baseline](./ui-baseline/README.md). Use those files as a starting point for:
 
@@ -20,7 +18,7 @@ The scaffold now includes the old UI-system files directly under [Bundled UI Bas
 - `apps/storybook` as the visual contract
 - `apps/playground` or a docs app as integration and system surfaces
 
-## Default Rule
+## Default rule
 
 If a new project has a UI, do not start by inventing a fresh component system.
 
@@ -30,7 +28,7 @@ Start from the bundled UI baseline and only diverge when one of these is true:
 - the project needs an app-local composition over shared primitives
 - the visual language needs new tokens or wrappers but not new primitive behavior
 
-## What to Reuse vs What to Own
+## Reuse and local ownership
 
 Reuse from the bundled baseline:
 
@@ -48,7 +46,7 @@ Own locally in the project:
 - domain-specific compound components
 - app-specific wrappers around shared primitives
 
-## What Not to Do
+## Avoid
 
 - do not copy-paste shared components into app code as a default workflow after the repo has a `packages/ui` boundary
 - do not fork primitives just to tweak spacing or visual tone
@@ -57,7 +55,7 @@ Own locally in the project:
 
 The structural baseline is bundled in this scaffold. The aesthetic layer remains project-specific.
 
-## Baseline UI Stack
+## Baseline UI stack
 
 For a new UI repo, prefer:
 
@@ -71,7 +69,7 @@ For a new UI repo, prefer:
 
 Base UI is the house default primitive layer. shadcn scaffolds Base UI-backed components by default (`npx shadcn init`), and Base UI ships as one package — `@base-ui/react`. Radix is a supported opt-out via `npx shadcn init -b radix`; on Radix, use the unified `radix-ui` package, never the split per-component Radix packages.
 
-## Reusable Howells UI Packages
+## Reusable Howells UI packages
 
 Do not use an old shared UI upstream as the UI layer for new projects. Only use specific installable components when the interaction matches the package.
 
@@ -82,7 +80,7 @@ Use:
 
 Do not use legacy provenance as a reason to skip a repo-local `packages/ui` boundary when the repo owns shared primitives. The reusable packages are relevant as specific installable components, not as a shared UI system.
 
-## Overlay Standard
+## Overlay standard
 
 Use different primitives for different overlay jobs.
 
@@ -107,13 +105,13 @@ This distinction already shows up in your ecosystem:
 - `@howells/stacksheet` is the stronger abstraction when the interface needs real stack orchestration
 - `@howells/aperto` is the reusable media-transition component when the interface needs a polished image or video expansion pattern
 
-## Storybook Rule
+## Storybook rule
 
 If the repo exports user-facing reusable UI, Storybook is required.
 
-That does not mean every app needs a huge Storybook surface. It means shared UI should have a visible contract and a place for visual regression checks.
+Keep the Storybook surface proportionate, but give shared UI a visible contract and visual regression checks.
 
-## Bundled Baseline In Flight
+## Maintaining the bundled baseline
 
 The bundled baseline is still a starting point, not a frozen design system:
 
@@ -121,9 +119,7 @@ The bundled baseline is still a starting point, not a frozen design system:
 - keep local wrappers thin until repeated needs prove a stronger shared primitive
 - update the scaffold baseline when the same improvement appears across multiple active repos
 
-This keeps new projects aligned without depending on a separate live upstream.
-
-## Migration Rule for Existing Projects
+## Migrate an existing project
 
 When moving an older UI repo toward the new standard:
 
@@ -132,4 +128,4 @@ When moving an older UI repo toward the new standard:
 3. migrate shared compositions only after the primitive contract is stable
 4. keep page-level product code local
 
-Do not attempt a one-shot visual rewrite just to claim alignment.
+Migrate in stages; alignment does not require a one-shot visual rewrite.

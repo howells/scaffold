@@ -74,7 +74,7 @@
   --text-title--line-height: 4.5rem;
   --text-title--letter-spacing: -0.03em;
 
-  /* Core colors — zinc palette for cool, intentional grays (matches Medusa/Linear) */
+  /* Zinc colour tokens */
   --color-background: var(--color-white);
   --color-foreground: var(--color-zinc-900);
   --color-card: hsl(var(--card));
@@ -82,7 +82,7 @@
   --color-popover: hsl(var(--popover));
   --color-popover-foreground: hsl(var(--popover-foreground));
 
-  /* Theme tokens — zinc palette throughout */
+  /* Theme tokens */
   --color-primary: var(--color-zinc-900);
   --color-primary-foreground: var(--color-zinc-50);
   --color-secondary: var(--color-zinc-100);
@@ -98,11 +98,11 @@
   --color-input: var(--color-white);
   --color-ring: var(--color-blue-500);
 
-  /* Interactive accent — the one color that says "alive" */
+  /* Interactive accent */
   --color-interactive: var(--color-blue-600);
   --color-interactive-foreground: var(--color-white);
 
-  /* Sidebar tokens — zinc palette */
+  /* Sidebar tokens */
   --color-sidebar: var(--color-zinc-100);
   --color-sidebar-foreground: var(--color-zinc-900);
   --color-sidebar-primary: var(--color-zinc-900);
@@ -119,26 +119,26 @@
   --color-text-secondary: var(--color-zinc-500);
   --color-text-muted: var(--color-zinc-400);
 
-  /* Calm semantic colors - Next.js inspired */
-  --color-affirmative-soft: #f0fdf4; /* green-50 */
-  --color-affirmative-accent: #16a34a; /* green-600 */
-  --color-affirmative-foreground: #14532d; /* green-900 */
+  /* Semantic colours */
+  --color-affirmative-soft: #f0fdf4;
+  --color-affirmative-accent: #16a34a;
+  --color-affirmative-foreground: #14532d;
 
-  --color-warning-soft: #fffbeb; /* very soft amber */
-  --color-warning-accent: #f59e0b; /* amber-500 — visible as a signal */
-  --color-warning-foreground: #92400e; /* amber-800 */
+  --color-warning-soft: #fffbeb;
+  --color-warning-accent: #f59e0b;
+  --color-warning-foreground: #92400e;
 
-  --color-error-soft: #fef2f2; /* very soft red */
-  --color-error-accent: #ef4444; /* red-500 — visible as a signal */
-  --color-error-foreground: #991b1b; /* red-800 */
+  --color-error-soft: #fef2f2;
+  --color-error-accent: #ef4444;
+  --color-error-foreground: #991b1b;
 
-  --color-info-soft: #eff6ff; /* blue-50 */
-  --color-info-accent: #3b82f6; /* blue-500 */
-  --color-info-foreground: #1e3a5f; /* blue-900 */
+  --color-info-soft: #eff6ff;
+  --color-info-accent: #3b82f6;
+  --color-info-foreground: #1e3a5f;
 
-  --color-brand-soft: #fffef5; /* very soft brand yellow */
-  --color-brand-accent: #facc15; /* yellow-400 - per Figma */
-  --color-brand-foreground: #0a0a0a; /* gray-950 - per Figma */
+  --color-brand-soft: #fffef5;
+  --color-brand-accent: #facc15;
+  --color-brand-foreground: #0a0a0a;
 
   /* Status border tokens (light mode base values - desaturated blends) */
   --color-affirmative-border: #dcfce7; /* green-100 - muted */
@@ -226,7 +226,7 @@
   --shadow-edge-bottom: 0 1px 0 0 rgb(17 24 39 / 0.06);
   --shadow-edge-top: 0 -4px 12px -4px rgb(17 24 39 / 0.08);
 
-  /* ── Border-as-shadow tokens ──
+  /* Border-as-shadow tokens
      The canonical "bordered surface" look. Used by Card, Input, InputGroup,
      Textarea, Select, Checkbox — any component that needs a subtle edge.
      Composed of: 1px ring (border) + micro drop shadow (depth).
@@ -443,7 +443,7 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Global interactive transitions — everything that can be clicked should breathe */
+  /* Default interactive transitions */
   button,
   a,
   [role="tab"],

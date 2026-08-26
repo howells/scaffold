@@ -1,6 +1,6 @@
 # @patternmode/ui
 
-Shared React component library for Patternmode.
+Historical package shape for shared PatternMode React components.
 
 ## Principles
 
@@ -8,7 +8,7 @@ Shared React component library for Patternmode.
 - Public entrypoints stay small and stable.
 - Implementation lives behind barrel files when a component grows beyond a single file.
 - Shared support code belongs in `src/lib` and `src/utils`, not scattered across components.
-- Storybook should review package-owned stories, not just app-local demos.
+- Storybook reviews package-owned stories and app-local demos.
 
 ## Structure
 
@@ -33,10 +33,10 @@ src/
 
 ## Scope
 
-Patternmode should track PatternMode’s general approach:
+Keep these structural traits:
 
 - broad primitive coverage for shared UI foundations
 - package-level stories for review and regression confidence
 - utility and type layers that keep components consistent
 
-Patternmode should still remain distinct in visual language. PatternMode is the structural reference, not the aesthetic template.
+Treat PatternMode as a structural reference, not an aesthetic template.

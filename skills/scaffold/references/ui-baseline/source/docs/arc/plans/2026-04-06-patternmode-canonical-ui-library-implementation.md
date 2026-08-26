@@ -1,19 +1,19 @@
-# Patternmode Canonical UI Library Implementation Plan
+# PatternMode UI library implementation plan
 
-## Scope Summary
+## Scope
 
-Build the first credible upstream release of `patternmode` rather than a placeholder monorepo shell.
+Build the first usable `patternmode` release.
 
 This implementation slice covers:
 
-- a stronger house-style token contract in `@patternmode/tailwind-config`
-- a cohesive primitive set in `@patternmode/ui`
+- a defined token contract in `@patternmode/tailwind-config`
+- a consistent primitive set in `@patternmode/ui`
 - Storybook stories that act as the visual contract for the new primitives
-- a richer playground page that demonstrates the library as a real system
+- a playground that demonstrates the packages together
 
-This plan deliberately stops short of app-specific compositions or migration tooling. The goal is to establish the family resemblance, API discipline, and review surfaces that downstream projects can trust.
+App-specific compositions and migration tooling are out of scope. This slice establishes package APIs and review surfaces.
 
-## File Structure
+## Files
 
 - `packages/tailwind-config/shared-styles.css`
   Own the house-style tokens, semantic colors, motion defaults, and shared utility-layer ergonomics.
@@ -60,8 +60,8 @@ This plan deliberately stops short of app-specific compositions or migration too
     apps/storybook/src/storybook.css
   </read_first>
   <action>
-    Strengthen the default Patternmode theme so it reads as a confident product UI system rather than a Tailwind starter.
-    Keep the existing neutral direction, but add a richer semantic token surface for surfaces, muted treatments, accent depth, and selection/focus behavior.
+    Define semantic tokens for surfaces, muted treatments, accents, selection, and focus.
+    Keep the existing neutral direction.
     Preserve Tailwind v4 conventions already used in the repo.
     Add only utilities and tokens that the first primitive set will actually consume.
   </action>
@@ -72,7 +72,7 @@ This plan deliberately stops short of app-specific compositions or migration too
   <verify>
     pnpm build — succeeds for playground and storybook with the updated shared stylesheet
   </verify>
-  <done>Shared stylesheet exposes a stronger Patternmode token contract without breaking existing consumers</done>
+  <done>The shared stylesheet exposes the token contract without breaking existing consumers</done>
   <commit>feat(theme): expand canonical house-style tokens</commit>
 </task>
 
@@ -94,8 +94,8 @@ This plan deliberately stops short of app-specific compositions or migration too
   </read_first>
   <action>
     Keep APIs narrow and aligned with the design spec.
-    Button should remain variant-driven and deliberate, not generic or prop-heavy.
-    Add badge, input, textarea, and card primitives with the same visual family resemblance: controlled radii, measured contrast, and subtle motion.
+    Keep Button variant-driven with a narrow API.
+    Add badge, input, textarea, and card primitives with controlled radii, measured contrast, and subtle motion.
     Use semantic variants only where they are clearly reusable.
     Avoid adding compositions or domain-specific wrappers.
   </action>
@@ -128,8 +128,8 @@ This plan deliberately stops short of app-specific compositions or migration too
   </read_first>
   <action>
     Add meaningful stories for every exported user-facing primitive built in task 2.
-    Stories should prove baseline usage, important visual variants, and the family resemblance of the default theme.
-    Prefer compositional story layouts that feel like review surfaces rather than generated prop tables alone.
+    Cover baseline usage, important visual variants, and the default theme.
+    Use compositional review stories as well as prop tables.
   </action>
   <test_code>
     No automated story tests in this slice.
@@ -158,10 +158,9 @@ This plan deliberately stops short of app-specific compositions or migration too
     packages/ui/src/components/card.tsx
   </read_first>
   <action>
-    Replace the placeholder hero with a visually convincing upstream showcase that uses the new primitives together.
-    The page should communicate house style, component scope, and the intended downstream usage model.
-    Keep it product-oriented and restrained rather than decorative.
-    Update the README so the repo description matches the implementation rather than only the intent.
+    Replace the placeholder hero with a showcase that uses the new primitives together.
+    Show the house style, component scope, and downstream usage model.
+    Update the README to match the implementation.
   </action>
   <test_code>
     No standalone UI test file for this task.
@@ -170,7 +169,7 @@ This plan deliberately stops short of app-specific compositions or migration too
   <verify>
     pnpm --filter @patternmode/playground build — succeeds
   </verify>
-  <done>The playground reads as a credible canonical UI showcase and the README matches the current repo state</done>
+  <done>The playground demonstrates the UI system and the README matches the repo</done>
   <commit>feat(playground): showcase the canonical ui system</commit>
 </task>
 

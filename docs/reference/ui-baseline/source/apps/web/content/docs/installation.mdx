@@ -11,13 +11,13 @@ pnpm add @patternmode/ui @patternmode/motion @patternmode/tailwind-config
 
 ## Tailwind configuration
 
-Import the shared styles in your main CSS file. This registers the full theme (colors, radii, shadows, typography) and base layer resets.
+Import the shared styles in the main CSS file to register tokens and base resets.
 
 ```css title="app/globals.css"
 @import "@patternmode/tailwind-config";
 ```
 
-If you need to source additional paths (e.g. components outside the default globs), add `@source` directives after the import.
+Add `@source` directives after the import for components outside the default globs.
 
 ## Font setup
 

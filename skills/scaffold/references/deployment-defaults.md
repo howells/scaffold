@@ -1,16 +1,12 @@
-# Deployment Defaults
+# Deployment defaults
 
-This is the default deployment logic inferred from your active repos.
+Choose the deployment shape with the repo architecture.
 
-The purpose is to make deployment a deliberate architectural choice early, not an afterthought.
-
-## Default Web Deployment
+## Default web deployment
 
 For Next.js apps, docs sites, and Storybook-like web surfaces:
 
 - default to Vercel
-
-This is the clearest repeated pattern for web-facing surfaces in your portfolio.
 
 Use Vercel for:
 
@@ -25,16 +21,14 @@ Use Vercel for:
 - Fluid Compute is the default runtime. Do not reach for Edge Functions; they are no longer the recommended default.
 - The default function timeout is 300s. Set `maxDuration` per function in `vercel.ts` only when a route needs a shorter or longer bound.
 
-## Default Docs Deployment
+## Default docs deployment
 
 If the repo has a real docs site:
 
 - use Fumadocs on Next.js
 - deploy on Vercel by default
 
-This already aligns with the docs-style surfaces in the current portfolio.
-
-## When Vercel Is Not Enough
+## When Vercel is not enough
 
 If the system becomes worker-heavy, cron-heavy, or multi-service:
 
@@ -51,7 +45,7 @@ Use this when:
 - there are multiple long-running or scheduled services
 - deployment units need to be split by runtime responsibility
 
-## API Placement
+## API placement
 
 Default order of preference:
 
@@ -61,20 +55,20 @@ Default order of preference:
 
 Do not create a separate API app by reflex.
 
-## Media Delivery
+## Media delivery
 
 If the repo has serious image, vector, or media behavior:
 
 - default to the house media storage platform for storage and delivery
 - use `files-sdk` inside the storage/upload integration layer when the app needs a portable object/blob API across the selected storage provider
 
-This is a platform decision, not just a package decision.
+The runtime and deployment boundary must agree.
 
 Use `@howells/stow-server` when the app needs a reusable typed media storage integration layer.
 
 Install only the native client or peer dependencies for the selected Files SDK adapter, and keep provider credentials behind the repo's typed env boundary.
 
-## Preview Environments
+## Preview environments
 
 The recurring web pattern is:
 
@@ -87,7 +81,7 @@ Keep this simple:
 - one obvious production path
 - no hidden deployment routes
 
-## Environment Preflight
+## Environment preflight
 
 Use `@howells/envy` before deployments that depend on runtime configuration.
 
@@ -101,7 +95,7 @@ Default checks:
 
 The deploy should fail before it reaches the provider if required env is missing.
 
-## Deployment Rules
+## Deployment rules
 
 - deployment should match repo archetype
 - expose a non-secret build identity and verify the live surface reports the expected revision after production deployment
@@ -110,7 +104,7 @@ The deploy should fail before it reaches the provider if required env is missing
 - do not split runtimes before the system needs it
 - keep local scripts and deployment docs explicit
 
-## Short Version
+## Defaults
 
 - Next.js app or docs surface: Vercel
 - Storybook surface: Vercel
@@ -118,4 +112,4 @@ The deploy should fail before it reaches the provider if required env is missing
 - media storage and delivery: house media storage platform plus the relevant `@howells/*` integration package, with `files-sdk` underneath when code needs provider-neutral object/blob operations
 - runtime env preflight: Envy
 
-That is the default unless the repo has a concrete reason to deviate.
+Record any deviation.
