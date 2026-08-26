@@ -21,6 +21,8 @@ Let the coding assistant handle investigation, planning, implementation, testing
 
 Use Matt Pocock's globally installed skills for explicit methods such as domain modelling, requirement grilling, architecture improvement, or technical writing. Do not copy their instructions into each repo.
 
+[Development skills](./development-skills.md) maps the installed engineering flow, Howells specialists, stack-specific skills, and explicit opt-ins. Use that page for routing; keep this page focused on repository workflow.
+
 Leave durable evidence when a decision needs it: a focused spec, ADR, test, or review. Do not leave project decisions only in chat history.
 
 ## Independent skills
@@ -37,21 +39,7 @@ npx skills@latest add howells/skills --agent codex --global
 npx skills@latest add howells/skills --skill '*' --agent codex --global
 ```
 
-Use independent skills when a task is cross-repo and specialist:
-
-- `aperture` for extracting reusable packages, features, components, hooks, or utilities
-- `chiaroscuro`, `brand`, and `foundry` for visual direction, brand systems, and Tailwind v4 identity work
-- `fieldtest` for rendered browser QA with evidence-backed findings
-- `componentize` for UI reuse audits and scoped shared-component promotion
-- `fenceline` for JavaScript and TypeScript boundary enforcement with `@howells/boundaries`
-- `fail-fast` for removing hidden fallbacks and permissive compatibility paths
-- `heathen` for oversized files, god components, and safe decomposition plans
-- `marginalia` for concise JSDoc on public APIs and complex exports
-- `mastraudit` for Mastra implementation and package-boundary audits
-- `nomen` for naming and availability checks
-- `deslop` for cleaning AI-sounding prose
-- `unslop` for removing behaviour-neutral code ceremony before review
-- `polyplugin` for dual Claude Code and Codex plugin packaging
+The current Howells specialist routes are maintained in [Development skills](./development-skills.md). That map includes structure, recovery, browser QA, UI direction, code quality, agent surfaces, and plugin packaging without duplicating each skill's procedure here.
 
 Do not copy an independent skill's instructions into every repo. Install or invoke the skill when the task needs it, and keep repo-local `AGENTS.md` focused on the current codebase.
 

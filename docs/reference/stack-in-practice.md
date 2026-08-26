@@ -62,10 +62,10 @@ Claude Code and Codex handle the development loop directly. Matt Pocock's skills
 - **chiaroscuro**: UI design direction and Tailwind v4 systems. My most-invoked individual skill by a wide margin; design direction is central to how I work, not a side concern.
 - **/chrome** and **fieldtest**: browsing/dogfooding and evidence-backed rendered QA.
 - **foreman**: foreman-mode delegation, where the main loop plans and reviews while subagents write the code.
-- **grill-with-docs** / **domain-model**: Matt Pocock's grilling skills for pinning the ubiquitous language before building.
+- **grill-with-docs** / **domain-modeling**: Matt Pocock's skills for pinning the ubiquitous language before building.
 - **marginalia**: concise JSDoc on public APIs.
 - **mastraudit**: auditing Mastra implementations against current guidance.
-- **deep-research**: multi-source, fact-checked research reports.
+- **research** / **firecrawl-deep-research**: primary-source repository research and broader web research.
 - On-demand: **componentize**, **heathen**, **aperture**, **fenceline** (structure/boundaries); **nomen** (naming); **deslop** (prose); **surface** (agent-readability); **foundry** (brand systems).
 
-**External skills I lean on:** Matt Pocock's AI Hero set (`domain-model`, `grill-with-docs`, `improve-codebase-architecture`, the writing skills), the superpowers marketplace, and Vercel Labs' `agent-browser`.
+**External skills I lean on:** Matt Pocock's engineering set (`domain-modeling`, `grill-with-docs`, `improve-codebase-architecture`, and the writing skills), the superpowers marketplace, and Vercel Labs' `agent-browser`. See [Development skills](./development-skills.md) for the current installed routing map.

@@ -62,7 +62,7 @@ Offer named typography roles, semantic colour tokens, and approved components. E
 
 Keep a short glossary of preferred domain terms and rejected synonyms. Use those terms in code, UI, APIs, and agent instructions. A rename updates the glossary, schema, and tests in one change.
 
-Use [`/domain-model` and `/grill-with-docs`](https://www.aihero.dev/skills) to test the language before implementation.
+Use [`/domain-modeling` and `/grill-with-docs`](https://www.aihero.dev/skills) to test the language before implementation.
 
 ### Name after meaning, not implementation
 

@@ -22,6 +22,7 @@ Load only the references needed for the current task:
 - `references/config-snippets.md` when generating baseline files.
 - `references/ui-projects.md` for UI baseline decisions.
 - `references/agent-workflow.md` for AGENTS.md, coding-assistant, and reusable-skill setup.
+- `references/development-skills.md` for routing work through installed engineering, specialist, and stack-specific skills.
 - `references/worktree-coordination.md` for shared Codex, Claude, account-profile, branch, stash, and cleanup policy.
 - `references/agentic-development.md` for agentsurface.dev, Mastra, MCP, tools, workflows, memory, observability, and agent-facing software.
 - `references/deployment-defaults.md` for hosting/runtime decisions.

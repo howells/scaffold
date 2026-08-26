@@ -107,7 +107,7 @@ Every repo should have a concise `AGENTS.md`. Add platform-specific configuratio
 
 - keep `AGENTS.md` short and focused on repo-specific constraints
 - add assistant-specific MCP config only when the repo benefits from project-specific servers
-- rely on the coding assistant's native capabilities and Matt Pocock's skills for general planning, implementation, review, testing, and architecture work
+- rely on the coding assistant's native capabilities and the [development skill map](./development-skills.md) for explicit planning, implementation, review, testing, and architecture methods
 - keep repo-local rules small; use project-specific instructions only when the repo has conventions the model and installed skills cannot infer
 - use independent skills from `~/Sites/skills` for specialist work such as UI polish, browser field testing, package extraction, boundary checks, naming, prose cleanup, and plugin packaging
 
