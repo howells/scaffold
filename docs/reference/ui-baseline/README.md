@@ -15,7 +15,7 @@ Treat it as reference source, not an installable upstream. Copy only the require
 - `source/packages/transition` for shared transition primitives and preset structure.
 - `source/packages/tailwind-config` for Tailwind CSS 4.3 wiring. Its stylesheet still contains recovered product-specific Mtag, side-panel, and header tokens; do not copy it wholesale.
 - `source/packages/ui/README.md` for the intended component package shape.
-- `source/docs/design-context.md` and `source/docs/arc/` as historical design records. They are not current implementation instructions.
+- `source/docs/design-context.md` as an archived explanation of the recovered token values. It is not current implementation guidance.
 - `source/apps/web/content/docs` as historical PatternMode package documentation. Verify it against the package source before reuse.
 
 ## Use it
