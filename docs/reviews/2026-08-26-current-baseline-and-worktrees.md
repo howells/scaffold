@@ -1,7 +1,7 @@
 # Current baseline and worktree coordination review
 
 **Date:** 2026-08-26  
-**Stage:** production-standard public documentation site, unconfirmed  
+**Stage:** production-standard public documentation site, verified in production
 **Scope:** Scaffold source and documentation; direct manifests and recent Git history under `~/Sites`; selected Codex and Claude logs where they contained package, framework, or worktree decisions; current package registry metadata; official framework documentation.
 
 ## Verdict
