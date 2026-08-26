@@ -9,34 +9,36 @@
     "source": "fumadocs-mdx",
     "lint": "howells-check src next.config.mjs source.config.ts",
     "lint:fix": "howells-fix src next.config.mjs source.config.ts",
-    "format": "howells-oxfmt --write AGENTS.md README.md package.json pnpm-workspace.yaml next.config.mjs source.config.ts postcss.config.mjs tsconfig.json src",
+    "format": "howells-oxfmt --write AGENTS.md README.md package.json pnpm-workspace.yaml next.config.mjs source.config.ts postcss.config.mjs tsconfig.json scripts/check-docs-integrity.ts src",
     "typecheck": "pnpm run source && tsc --noEmit",
+    "test": "node scripts/check-docs-integrity.ts",
     "sync:skill": "node scripts/sync-skill.ts",
     "generate:principles": "node scripts/generate-principles.ts",
-    "check": "pnpm lint && pnpm typecheck && pnpm build && pnpm generate:principles --check && pnpm sync:skill --check"
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm generate:principles --check && pnpm sync:skill --check"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "4.3.2",
+    "@tailwindcss/postcss": "4.3.3",
     "clsx": "^2.1.1",
-    "fumadocs-core": "16.11.1",
-    "fumadocs-mdx": "15.1.0",
-    "fumadocs-ui": "16.11.1",
-    "lucide-react": "1.23.0",
-    "next": "16.2.10",
-    "react": "19.2.7",
-    "react-dom": "19.2.7",
-    "shadcn": "^4.13.0",
+    "fumadocs-core": "16.15.1",
+    "fumadocs-mdx": "15.3.1",
+    "fumadocs-ui": "16.15.1",
+    "lucide-react": "1.34.0",
+    "next": "16.3.3",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
     "tailwind-merge": "^3.6.0",
-    "tailwindcss": "4.3.2"
+    "tailwindcss": "4.3.3"
   },
   "devDependencies": {
-    "@howells/lint": "1.0.0",
+    "@howells/lint": "2.1.0",
     "@howells/typescript-config": "0.1.6",
     "@types/mdx": "2.0.14",
-    "@types/node": "24.13.2",
-    "@types/react": "19.2.17",
-    "@types/react-dom": "19.2.3",
-    "typescript": "6.0.3"
+    "@types/node": "24.13.3",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "shadcn": "4.19.0",
+    "typescript": "6.0.3",
+    "zod": "4.4.3"
   },
   "engines": {
     "node": ">=24 <25"

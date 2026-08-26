@@ -23,12 +23,12 @@ Adjust names and filters, but do not casually change the overall contract.
     "check": "pnpm lint && pnpm typecheck && pnpm test",
     "check:affected": "turbo run build lint typecheck test --affected",
     "clean": "turbo run clean --continue=always && rm -rf .turbo",
-    "prepare": "husky"
+    "prepare": "howells-husky"
   },
   "devDependencies": {
     "@howells/lint": "latest",
+    "@howells/husky": "latest",
     "@howells/typescript-config": "latest",
-    "husky": "latest",
     "lint-staged": "latest",
     "tsx": "latest",
     "turbo": "latest",
@@ -36,8 +36,7 @@ Adjust names and filters, but do not casually change the overall contract.
     "vitest": "latest"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": "howells-fix",
-    "*.{json,jsonc,css,md}": "howells-oxfmt --write"
+    "*.{js,ts,jsx,tsx,json,jsonc,css,md}": "howells-fix"
   },
   "engines": {
     "node": ">=24 <25"
@@ -262,25 +261,9 @@ Use this when the repo owns a local shared UI package seeded from the bundled UI
 
 If the repo has its own local UI package, keep aliases aligned to that package rather than scattering local component paths across apps.
 
-## `.husky/pre-commit`
+## Git hooks
 
-```sh
-pnpm lint-staged
-pnpm lint
-pnpm typecheck
-```
-
-Use this as the default. Only make it heavier when the repo truly needs that pressure.
-
-## `.husky/pre-push`
-
-Optional heavier gate:
-
-```sh
-pnpm lint || exit 1
-pnpm typecheck || exit 1
-pnpm test || exit 1
-```
+`@howells/husky` writes the immutable `.husky/pre-commit` and `.husky/pre-push` files during `prepare`. Don't hand-edit the generated hooks in a consumer repository. Pre-commit runs `lint-staged`; pre-push runs `typecheck` and `lint` when the pushed ref is the checked-out `HEAD`.
 
 ## Envy env boundary
 

@@ -116,6 +116,10 @@ const docGroups: readonly DocGroup[] = [
         title: "Agentic Development",
       },
       {
+        href: "/docs/reference/worktree-coordination",
+        title: "Worktree Coordination",
+      },
+      {
         href: "/docs/adr/0001-agent-skill-packaging",
         title: "Agent Skill Packaging",
       },
@@ -139,7 +143,7 @@ function PrinciplesPanel() {
       <div className="flex max-w-[68ch] flex-col gap-3">
         {principlesIntro.map((paragraph) => (
           <p
-            className="text-sm leading-[1.7] text-fd-muted-foreground"
+            className="text-fd-muted-foreground text-sm leading-[1.7]"
             key={paragraph.slice(0, 40)}
           >
             {paragraph}
@@ -154,7 +158,7 @@ function PrinciplesPanel() {
             <div className="mt-6 flex flex-col gap-9">
               {group.principles.map((principle) => (
                 <article key={principle.title}>
-                  <h4 className="text-sm font-medium text-fd-foreground">
+                  <h4 className="text-fd-foreground text-sm font-medium">
                     {principle.title}
                   </h4>
                   <Prose body={principle.body} />
@@ -171,7 +175,7 @@ function PrinciplesPanel() {
 function DocsPanel() {
   return (
     <div>
-      <p className="max-w-[62ch] text-sm leading-[1.6] text-fd-muted-foreground">
+      <p className="text-fd-muted-foreground max-w-[62ch] text-sm leading-[1.6]">
         Reference chapters, grouped by the question they answer. The full
         write-ups live under{" "}
         <Link className={linkClass} href="/docs/overview">
@@ -182,16 +186,16 @@ function DocsPanel() {
       <div className="mt-8 grid gap-x-10 gap-y-10 sm:grid-cols-2">
         {docGroups.map((group) => (
           <div key={group.key}>
-            <h3 className="text-sm font-medium text-fd-foreground">
+            <h3 className="text-fd-foreground text-sm font-medium">
               {group.title}
             </h3>
-            <p className="mt-1 text-sm leading-[1.55] text-fd-muted-foreground">
+            <p className="text-fd-muted-foreground mt-1 text-sm leading-[1.55]">
               {group.desc}
             </p>
             <div className="mt-3 flex flex-col">
               {group.links.map((link) => (
                 <Link
-                  className={`group/row flex items-center justify-between gap-2 py-2 text-sm text-fd-muted-foreground transition-colors hover:text-fd-foreground ${hairline} ${focusRing}`}
+                  className={`group/row text-fd-muted-foreground hover:text-fd-foreground flex items-center justify-between gap-2 py-2 text-sm transition-colors ${hairline} ${focusRing}`}
                   href={link.href}
                   key={link.href}
                 >
@@ -215,11 +219,11 @@ function DocsPanel() {
 function AgentsPanel() {
   return (
     <div>
-      <p className="max-w-[62ch] text-sm leading-[1.6] text-fd-muted-foreground">
+      <p className="text-fd-muted-foreground max-w-[62ch] text-sm leading-[1.6]">
         The docs double as an installable Agent Skill and machine-readable
         surfaces. Install the skill:
       </p>
-      <pre className="mt-4 overflow-x-auto rounded-lg bg-foreground px-4 py-3 font-mono text-sm text-background dark:border dark:border-border/55 dark:bg-muted dark:text-fd-foreground">
+      <pre className="bg-foreground text-background dark:border-border/55 dark:bg-muted dark:text-fd-foreground mt-4 overflow-x-auto rounded-lg px-4 py-3 font-mono text-sm dark:border">
         <code className="tabular-nums">
           npx skills@latest add howells/scaffold
         </code>
@@ -237,14 +241,14 @@ function AgentsPanel() {
 
 const HomePage = () => {
   return (
-    <main className="mx-auto flex w-full max-w-[860px] flex-col gap-14 px-6 pb-24 pt-16 sm:pt-20">
+    <main className="mx-auto flex w-full max-w-[860px] flex-col gap-14 px-6 pt-16 pb-24 sm:pt-20">
       <script
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         type="application/ld+json"
       />
       <header>
-        <h1 className="text-sm font-medium text-fd-foreground">Scaffold</h1>
-        <p className="mt-2 max-w-[58ch] text-sm leading-[1.65] text-fd-muted-foreground">
+        <h1 className="text-fd-foreground text-sm font-medium">Scaffold</h1>
+        <p className="text-fd-muted-foreground mt-2 max-w-[58ch] text-sm leading-[1.65]">
           The baseline I start projects from: repo shape, tooling, package
           boundaries, how coding agents fit in, and what has to be true before
           launch. Written for my own repos, and open for anyone to read.
@@ -277,7 +281,7 @@ const HomePage = () => {
       />
 
       <footer
-        className={`flex flex-wrap items-center justify-between gap-2 pt-6 text-sm text-fd-muted-foreground ${hairline}`}
+        className={`text-fd-muted-foreground flex flex-wrap items-center justify-between gap-2 pt-6 text-sm ${hairline}`}
       >
         <span>Scaffold · Daniel Howells</span>
         <a

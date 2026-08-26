@@ -22,7 +22,7 @@ Default stack:
 - React Query when the client owns server-state
 - Drizzle
 - Neon
-- Clerk by default
+- WorkOS by default; Clerk only when a lighter existing or consumer-oriented app has a concrete reason
 - bundled UI baseline
 - `@howells/envy` when runtime env exists
 - `@howells/ai`, Mastra, and MCP packages when agent behavior is product behavior
@@ -186,7 +186,7 @@ Default stack:
 - `zod`
 - `ai`
 - `@howells/ai`
-- `howells/motif` packages when image generation, editing, media utilities, CLI automation, or MCP image tools are central
+- Motif's SDK or agent-readable CLI when image generation, editing, media utilities, or creative automation are central
 - Mastra when the repo needs agent orchestration, workflow state, memory, or observability
 - `@modelcontextprotocol/sdk` when the repo exposes MCP tools or resources
 - Drizzle if persistence is needed

@@ -33,7 +33,7 @@ Use this when starting a new repo or standardizing an existing one.
 - `oxlint.config.ts` and `oxfmt.config.ts` use `@howells/lint` presets when the repo needs explicit lint or format configuration
 - `tsconfig.json` uses explicit leaf presets
 - `components.json` exists for UI repos
-- `.husky/pre-commit` is installed
+- `@howells/husky` is installed and generated hooks are current
 - `AGENTS.md` exists and is concise
 
 ## UI Projects

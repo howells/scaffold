@@ -7,7 +7,7 @@ This section separates packages that are already real shared assets from pattern
 These should be treated as canonical shared packages now:
 
 - `@howells/lint`
-  - pinned Oxlint/Oxfmt, Biome, Ultracite, and React Doctor presets
+  - pinned Oxlint/Oxfmt, Ultracite, and React Doctor presets
 - `@howells/typescript-config`
   - explicit thin tsconfig presets
 - `@howells/stacksheet`
@@ -20,8 +20,6 @@ These should be treated as canonical shared packages now:
   - shared fal.ai image-generation, editing, utility media, model registry, and cost-estimation surface
 - `@howells/motif-cli`
   - agent-friendly image-generation CLI with dry runs, structured output, local history, and series workflows
-- `@howells/motif-mcp`
-  - MCP tools and resources for image generation, editing, utility media actions, model metadata, and history
 - `@howells/envy`
   - typed env parsing, lint helpers, and deployment env preflight checks
 - `@howells/stow-server`
@@ -45,13 +43,13 @@ Mastra and MCP should standardize as architecture choices before becoming more s
 
 ## Keep Standardizing: Image Generation Surface
 
-`howells/motif` should be the default surface for fal.ai image generation, image editing, upscaling, background removal, image-to-video, model metadata, dry runs, cost estimates, structured CLI output, and MCP image tools.
+Motif should be the default surface for fal.ai image generation, image editing, upscaling, background removal, image-to-video, model metadata, dry runs, cost estimates, and structured agent-facing command-line work.
 
 Recommendation:
 
 - use `@howells/motif-sdk` for product or package code
 - use `@howells/motif-cli` for scriptable local and agent workflows
-- use `@howells/motif-mcp` when other agents need image-generation tools through MCP
+- use the CLI's JSON/NDJSON output, semantic exit codes, and live `--describe` schema when an agent needs the tool surface
 - keep durable media storage separate through the house media storage platform
 - do not write raw fal.ai clients in app routes unless Motif cannot cover the endpoint yet
 
