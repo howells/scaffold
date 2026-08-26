@@ -90,7 +90,7 @@ export const principleGroups: readonly PrincipleGroup[] = [
       {
         title: "Fix the ubiquitous language first",
         summary: "Define the terms before the code.",
-        body: "Keep a short glossary of preferred domain terms and rejected synonyms. Use those terms in code, UI, APIs, and agent instructions. A rename updates the glossary, schema, and tests in one change.\n\nUse [`/domain-model` and `/grill-with-docs`](https://www.aihero.dev/skills) to test the language before implementation.",
+        body: "Keep a short glossary of preferred domain terms and rejected synonyms. Use those terms in code, UI, APIs, and agent instructions. A rename updates the glossary, schema, and tests in one change.\n\nUse [`/domain-modeling` and `/grill-with-docs`](https://www.aihero.dev/skills) to test the language before implementation.",
       },
       {
         title: "Name after meaning, not implementation",
