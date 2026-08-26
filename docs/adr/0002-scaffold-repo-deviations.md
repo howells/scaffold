@@ -9,7 +9,7 @@ The scaffold repository deliberately deviates from its own published baseline be
 
 ## Considered Options
 
-- Adopt the full published baseline verbatim (turbo, husky/lint-staged, vitest, workspace packages, `oxlint.config.ts`).
+- Adopt the full published baseline verbatim (Turbo, `@howells/husky`/lint-staged, Vitest, workspace packages, `oxlint.config.ts`).
 - Deviate deliberately for a single-app content site, and record the deviations here.
 
 Full-baseline compliance was rejected because most of that machinery orchestrates or protects concerns this repo does not have: no second package to build, no shared test surface, no high-volume multi-author commit stream. Carrying it unused would be dead configuration that rots and misleads readers about what the baseline is _for_.
@@ -17,7 +17,7 @@ Full-baseline compliance was rejected because most of that machinery orchestrate
 ## Deviations
 
 - **No `turbo` / `turbo.json`.** Turbo orchestrates work across packages. This is a single package, so there is nothing to orchestrate.
-- **No `husky` / `lint-staged`.** `pnpm check` is the local gate. The repo is single-author and low commit volume, so a staged-file pre-commit hook adds friction without protecting anything a manual `check` does not already cover.
+- **No `@howells/husky` / `lint-staged`.** `pnpm check` is the local gate. The repo is single-author and low commit volume, so a staged-file pre-commit hook adds friction without protecting anything a manual `check` does not already cover.
 - **No `vitest` / `test` script; `check` gates on `build` instead of `test`.** For a content site the meaningful correctness gate is that every docs page still statically generates. `pnpm check` therefore runs `lint && typecheck && build && sync:skill --check` — the build _is_ the test.
 - **`pnpm-workspace.yaml` with empty `packages`.** The workspace file exists for pnpm settings (build allowlists, minimum-release-age exclusions), but declares no workspace packages because there are none.
 - **No `oxlint.config.ts`.** Lint targets are passed as CLI arguments instead: `howells-check src next.config.mjs source.config.ts`. Scoping on the command line keeps the small, fixed set of lint targets visible in `package.json` without a separate config file.

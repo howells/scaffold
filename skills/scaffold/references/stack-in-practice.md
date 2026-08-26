@@ -1,13 +1,13 @@
 # Stack in Practice
 
-This is the stack I actually use, measured rather than idealised: the services wired into my repos, the packages that recur across nearly all of them, and the skills I invoke most. Where [Stack Decisions](./stack-decisions.md) says what a new repo *should* pin, this page says what the existing ones *do*. It's a snapshot, and it drifts; treat it as "what I currently reach for," not a contract.
+This is the stack I actually use, measured rather than idealised: the services wired into my repos, the packages that recur across nearly all of them, and the skills I invoke most. Where [Stack Decisions](./stack-decisions.md) says what a new repo _should_ pin, this page says what the existing ones _do_. It's a snapshot, and it drifts; treat it as "what I currently reach for," not a contract.
 
 ## Services
 
 The house stack, by category. Counts are rough repo footprints across active work; the point is which choice is the default, not the exact number.
 
 | Category | Default | Also in use |
-|---|---|---|
+| --- | --- | --- |
 | **Hosting** | Vercel | Docker for containerised services; Cloudflare Workers occasionally |
 | **Database** | Neon (Postgres) + Drizzle ORM | Upstash Redis for caching/rate-limits; Turso once |
 | **LLM access** | Provider access through `@howells/ai` | Choose Gateway, OpenRouter, or a direct `@ai-sdk/*` provider explicitly when the product needs a particular route |
@@ -16,9 +16,9 @@ The house stack, by category. Counts are rough repo footprints across active wor
 | **Agent browsing** | Kernel | the `agent-browser` skill for local automation |
 | **Media / voice** | fal.ai (image/video), `@howells/motif` in front of it | ElevenLabs for voice |
 | **Object storage** | Cloudflare R2, via the S3-compatible SDK | Vercel Blob occasionally |
-| **Auth** | WorkOS (org/B2B) and Clerk (lighter/consumer apps) | — |
+| **Auth** | WorkOS for serious product apps | Clerk in a smaller set of lighter or existing apps |
 | **LLM observability** | Langfuse | — |
-| **Product analytics** | PostHog | Vercel Analytics on marketing sites |
+| **Product analytics** | PostHog | Vercel Analytics in a small number of existing sites |
 | **Data warehouse** | Snowflake (where the data lives there) | — |
 
 Two I'm standardising on rather than reporting. They're the deliberate defaults going forward, not yet everywhere:
@@ -38,7 +38,8 @@ New AI work starts on AI SDK 7. Existing AI SDK 6 products migrate deliberately 
 
 The dependency baseline is consistent: the same ~15 packages carry most repos. Authoritative pinned versions live in [Stack Decisions](./stack-decisions.md) and [Default Dependencies](./default-dependencies.md); this is just the measured shape.
 
-- **Near-universal** (most repos): `typescript`, `react` / `react-dom`, `tailwindcss` (+ `@tailwindcss/postcss`), `next`, `zod`, `lucide-react`, `motion` (never `framer-motion`; fully migrated), plus the internal tooling scope `@howells/*` (`lint`, `typescript-config`, `envy`, `husky`), `vitest`, `turbo`, `lint-staged`.
+- **Tooling spine**: `typescript`, `@howells/lint`, `@howells/typescript-config`, `turbo`, `lint-staged`, `vitest`, `tsx`, `@howells/husky`, and `@howells/envy` where runtime configuration exists.
+- **UI repos**: `react` / `react-dom`, `tailwindcss` (+ `@tailwindcss/postcss`), `next`, `zod`, `lucide-react`, and `motion` (not `framer-motion` in current first-party work).
 - **Common UI**: `clsx` + `tailwind-merge`, `class-variance-authority`, `@base-ui/react` / `@radix-ui/*`, `@tanstack/react-query`, `nuqs`, `next-themes`, `sonner`, `cmdk`, and the `@patternmode/*` kit (`stacksheet`, `scrollframe`, `swatch`, `aperto`).
 - **Data & AI**: `drizzle-orm` (+ `drizzle-kit`), `@neondatabase/serverless`, `ai` (Vercel AI SDK), `@howells/ai`, `@mastra/*` when orchestration is needed, `@modelcontextprotocol/sdk` for MCP.
 - **Testing**: `vitest` for unit/integration, `@playwright/test` for E2E, `@testing-library/*`.

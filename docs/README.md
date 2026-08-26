@@ -15,8 +15,8 @@ It is not a generic starter guide. It reflects the conventions that are already 
 - `@howells/lint` for pinned Oxlint/Oxfmt linting and formatting
 - `@howells/typescript-config` for thin, explicit tsconfig presets
 - `@howells/envy` for typed env parsing and deployment env checks
-- `@howells/ai`, Mastra, and MCP packages for AI-capable product and agent work
-- `howells/motif` packages for image generation, image editing, utility media tools, and agent-facing creative automation
+- `@howells/ai`, Mastra, and deliberately scoped MCP packages for AI-capable product and agent work
+- Motif's SDK and agent-readable CLI for image generation, image editing, utility media tools, and creative automation
 - conservative Turborepo defaults through the root `turbo.json` snippet
 
 ## Defaults
@@ -26,7 +26,7 @@ It is not a generic starter guide. It reflects the conventions that are already 
 - Default linting and formatting: prefer the `@howells/lint` Oxlint/Oxfmt lane
 - Default task runner: Turborepo with cache disabled until a repo proves it is deterministic
 - Default data stack for product apps: Drizzle and Neon, with the narrowest typed API boundary that fits and React Query when client server-state exists
-- Default AI-capable shape: shared provider baseline through `@howells/ai`, image generation through `howells/motif`, product orchestration through repo-local `ai` or `agents`, and MCP in its own package when exposed
+- Default AI-capable shape: shared provider baseline through `@howells/ai`, image generation through Motif, product orchestration through repo-local `ai` or `agents`, and MCP in its own package only when the product needs that protocol surface
 
 ## Sections
 
@@ -42,6 +42,7 @@ It is not a generic starter guide. It reflects the conventions that are already 
 - [UI Projects](./reference/ui-projects.md)
 - [Shared Package Candidates](./reference/shared-package-candidates.md)
 - [Agent Workflow](./reference/agent-workflow.md)
+- [Worktree Coordination](./reference/worktree-coordination.md)
 - [Agentic Development](./reference/agentic-development.md)
 - [Launch Checklist](./reference/launch-checklist.md)
 

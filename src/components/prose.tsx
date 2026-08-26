@@ -28,7 +28,7 @@ function renderInline(text: string): ReactNode[] {
     if (code != null) {
       nodes.push(
         <code
-          className="rounded bg-muted px-1 py-0.5 font-mono text-[0.8125rem] text-fd-foreground"
+          className="bg-muted text-fd-foreground rounded px-1 py-0.5 font-mono text-[0.8125rem]"
           key={key}
         >
           {code}
@@ -69,7 +69,7 @@ export function Prose({ body }: { readonly body: string }) {
     <div className="mt-2 flex max-w-[68ch] flex-col gap-3">
       {body.split("\n\n").map((paragraph) => (
         <p
-          className="text-sm leading-[1.7] text-fd-muted-foreground"
+          className="text-fd-muted-foreground text-sm leading-[1.7]"
           key={paragraph.slice(0, 40)}
         >
           {renderInline(paragraph)}

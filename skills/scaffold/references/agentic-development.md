@@ -152,7 +152,7 @@ Do not expose `httpRequest`, `runSql`, or other broad tools unless the product e
 
 Tool schemas should live in `schemas/` or in domain packages and be re-exported through the Mastra package when app code needs the contract. Keep tool descriptions precise enough that a model can choose correctly without reading implementation code.
 
-For image-generation tools, prefer `howells/motif` before creating a fresh provider integration. Use `@howells/motif-sdk` inside product or package code, `@howells/motif-cli` for scriptable local and agent workflows, and `@howells/motif-mcp` when image generation, editing, upscaling, background removal, image-to-video, model metadata, or history should be exposed through MCP.
+For image-generation tools, prefer Motif before creating a fresh provider integration. Use `@howells/motif-sdk` inside product or package code and `@howells/motif-cli` for scriptable local and agent workflows. The CLI's JSON/NDJSON output, semantic exit codes, and live `--describe` schema are the maintained agent surface; Motif's former MCP package is retired.
 
 Keep generated media storage separate from generation. Motif should create or transform media; the product storage layer should persist and deliver final assets.
 

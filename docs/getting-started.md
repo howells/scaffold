@@ -34,7 +34,7 @@ If the project ships a UI:
 
 If the project is not UI-first:
 
-- still use the same `pnpm`, TypeScript, Oxlint/Oxfmt, Husky, and Turbo baseline
+- still use the same `pnpm`, TypeScript, Oxlint/Oxfmt, `@howells/husky`, and Turbo baseline
 - prefer thinner workspace structure and fewer packages
 
 If this is a full-stack product app rather than a simple UI shell:
@@ -66,7 +66,6 @@ Start with these files before writing app code:
 - `oxfmt.config.ts`
 - `tsconfig.json`
 - `components.json` for UI repos
-- `.husky/pre-commit`
 - `AGENTS.md`
 
 Use the snippets in [Config Snippets](./reference/config-snippets.md).
@@ -81,7 +80,7 @@ For the current house baseline:
 - `@howells/typescript-config`
 - `turbo`
 - `typescript`
-- `husky`
+- `@howells/husky`
 - `lint-staged`
 - `tsx`
 - `vitest`

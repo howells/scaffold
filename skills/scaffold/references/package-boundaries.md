@@ -192,7 +192,7 @@ Do not bury MCP server contracts inside a web app route if another surface needs
 
 Use `@modelcontextprotocol/sdk` here rather than hand-rolling protocol objects.
 
-For image-generation tools, prefer wrapping or configuring `@howells/motif-mcp` before creating a fresh MCP server surface.
+For image-generation tools, prefer Motif's maintained SDK or agent-readable CLI before creating a fresh protocol surface. Add an MCP server only when the product has a demonstrated MCP client need that the CLI cannot serve.
 
 ### `packages/cli`
 

@@ -17,7 +17,7 @@ The default toolchain for new TypeScript work:
 - **Lint and format:** `@howells/lint` (Oxlint / Oxfmt)
 - **TypeScript config:** `@howells/typescript-config`
 - **Env parsing:** `@howells/envy`
-- **Git hooks:** `husky` with `lint-staged`
+- **Git hooks:** `@howells/husky` with `lint-staged`
 - **Runtime:** Node 24 LTS
 
 The exact versions are pinned by the shared config packages and the root `package.json`. Consume those rather than restating numbers here, which drift the moment a dependency bumps.
@@ -26,18 +26,18 @@ The exact versions are pinned by the shared config packages and the root `packag
 
 Review this table when a compatibility-significant major changes; keep exact minor and patch versions in workspace catalogs and lockfiles.
 
-| Surface | Current major for new work | Adopted/reviewed |
-|---|---:|---|
-| Node.js | 24 | 2026-08-14 |
-| pnpm | 11 | 2026-08-14 |
-| Next.js | 16 | 2026-08-14 |
-| React | 19 | 2026-08-14 |
-| TypeScript | 6 | 2026-08-14 |
-| Tailwind CSS | 4 | 2026-08-14 |
-| Turborepo | 2 | 2026-08-14 |
-| Vitest | 4 | 2026-08-14 |
-| Storybook | 10 | 2026-08-14 |
-| AI SDK | 7 | 2026-08-14 |
+| Surface      | Current major for new work | Adopted/reviewed |
+| ------------ | -------------------------: | ---------------- |
+| Node.js      |                         24 | 2026-08-26       |
+| pnpm         |                         11 | 2026-08-26       |
+| Next.js      |                         16 | 2026-08-26       |
+| React        |                         19 | 2026-08-26       |
+| TypeScript   |                          6 | 2026-08-26       |
+| Tailwind CSS |                          4 | 2026-08-26       |
+| Turborepo    |                          2 | 2026-08-26       |
+| Vitest       |                          4 | 2026-08-26       |
+| Storybook    |                         10 | 2026-08-26       |
+| AI SDK       |                          7 | 2026-08-26       |
 
 For published packages, test every runtime major still claimed in `engines`, even if the new-project lane has moved on. Dropping an existing runtime floor waits for a deliberate package major. Treat persisted classifications, machine-readable output shape, schema meaning, and nullability as compatibility surfaces too: a semantic break may require a major even when function names do not change.
 
@@ -138,17 +138,17 @@ Default approach:
 
 Do not keep hand-written dotenv loading, ad hoc `process.env` reads, or provider env setup scripts once Envy can own that surface.
 
-## Husky and Git Hooks
+## Shared Git Hooks
 
-Use Husky for lightweight quality gates.
+Use `@howells/husky` for the standard immutable hook set. It owns Husky and keeps the hook behavior consistent across repositories.
 
 Default approach:
 
-- `prepare`: `husky`
-- `pre-commit`: run `lint-staged`, then repo-wide `lint` and `typecheck`
-- `pre-push`: only when the repo needs a heavier gate such as `test` or stricter validation
+- `prepare`: `howells-husky`
+- `pre-commit`: run `lint-staged`
+- `pre-push`: run `typecheck` and `lint` when the pushed ref is the checked-out `HEAD`
 
-Across recent repos, the stable baseline is small hooks plus standard root scripts.
+Change the shared package when the house hook contract needs to change. Don't edit generated `.husky` files in consuming repositories.
 
 ## UI Stack
 
@@ -215,25 +215,7 @@ This replaces `useEffect` + `useState` + `fetch` patterns. React Query handles l
 
 The active repos are not just converging on config. They are also converging on a real dependency baseline.
 
-The strongest direct-dependency signals across a recent inventory of the active repos are:
-
-- `typescript`: 90 projects
-- `react`: 80 projects
-- `tailwindcss`: 75 projects
-- `next`: 72 projects
-- `zod`: 54 projects
-- `@howells/lint`: 48 projects
-- `lucide-react`: 48 projects
-- `vitest`: 47 projects
-- `turbo`: 45 projects
-- `motion`: 44 projects
-- `tsx`: 43 projects
-- `@howells/typescript-config`: 40 projects
-- `drizzle-orm`: 33 projects
-- `@neondatabase/serverless`: 31 projects
-- `ai`: 22 projects
-- `@mastra/core`: 18 projects
-- `@modelcontextprotocol/sdk`: 18 projects
+An August 2026 direct-root scan across the local Git checkouts, deduplicated by repository path, found the strongest signals in `typescript` (54), `@howells/lint` (44), `@howells/typescript-config` (32), `turbo` (31), `lint-staged` (29), `vitest` (25), `tsx` (20), and `zod` (19). This broad inventory includes client repositories and documentation mirrors, so use it to rank recurrence rather than to claim that every checkout independently chose the package.
 
 The packages that recur most often in UI work are:
 
@@ -261,7 +243,8 @@ The detailed policy lives in [Default Dependencies](./default-dependencies.md).
 
 For media-heavy projects, there is also a platform-level default:
 
-- use `howells/motif` for image generation, editing, utility media tools, and agent-facing creative automation
+- use `@howells/motif-sdk` for product image generation, editing, and fal utility integration
+- use `@howells/motif-cli` for scriptable and agent-facing creative automation; prefer its JSON/NDJSON output, semantic exit codes, and live `--describe` schema
 - prefer the house media storage platform for image, vector, and general media storage/delivery
 - use `files-sdk` behind storage/upload packages when project code needs a portable object/blob API across S3-compatible storage, R2, GCS, Azure Blob, Vercel Blob, Netlify Blobs, MinIO, or similar providers
 
@@ -281,7 +264,7 @@ Default package choices:
 
 - `ai` for the Vercel AI SDK surface
 - `@howells/ai` for shared provider defaults and house wrappers
-- `howells/motif` packages when image generation, image editing, media utilities, CLI automation, or MCP image tools are part of the product
+- Motif's SDK or CLI when image generation, image editing, media utilities, or agent-facing automation are part of the product
 - `zod` for structured model IO and tool schemas
 - `@mastra/core` and `mastra` when the repo needs agent orchestration, memory, observability, or workflow structure
 - `@modelcontextprotocol/sdk` when the repo exposes MCP tools, resources, or transports

@@ -59,7 +59,7 @@ Do not copy an independent skill's instructions into every repo. Install or invo
 For AI-capable repos, keep the agent surface explicit:
 
 - use `@howells/ai` before raw provider SDKs in app code
-- use `howells/motif` before raw fal.ai clients for image generation, image editing, media utilities, CLI automation, or MCP image tools
+- use Motif's SDK or agent-readable CLI before raw fal.ai clients for image generation, image editing, media utilities, or creative automation
 - use repo-local `packages/ai` for product-specific model and provider composition
 - use `packages/agents` when prompts, evaluators, tools, or agent definitions are shared
 - use Mastra when the repo needs real agent orchestration, memory, workflow state, or observability
@@ -139,6 +139,10 @@ For substantial work, keep documentation and progress lightweight but real:
 - scripts and generated artifacts own executable probes and repeatable evidence
 - temporary plans and handoffs are deleted or folded into a durable home when the task closes
 - docs should describe the current system, not preserve outdated migration stories forever
+
+## Worktrees
+
+When more than one harness or agent is active, follow [Worktree Coordination](./worktree-coordination.md). Keep Codex, Claude, and manual work under the shared umbrella but in separate task directories. Branch, stash, handoff, and cleanup operations stay with the coordinating session.
 
 ## Environment Discipline
 

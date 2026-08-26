@@ -21,7 +21,7 @@ This pattern shows up strongly in current full-stack product apps.
 ### Choose the API seam
 
 | Consumer shape | Default seam |
-|---|---|
+| --- | --- |
 | One Next.js app, no reusable external API | Server Components, server actions, or a focused typed service |
 | Same-workspace TypeScript clients | `tRPC`, optionally with React Query |
 | Separate deployables or non-TypeScript clients | A versioned OpenAPI contract, with oRPC as the TypeScript-first option |
@@ -73,7 +73,7 @@ This is one of the strongest repeated patterns in the current portfolio. Use Dri
 Pick the subpath by runtime, not by habit:
 
 - **Default — `@howells/neon/http`** (`createHttpDb({ url, schema })`, neon-http adapter). Use for all app data access (Server Components, route handlers, serverless functions, Workers) and short-lived scripts. HTTP one-shot queries are lowest-latency for request/response work, and `db.batch([...])` gives atomic non-interactive writes — which covers almost every write path.
-- **Escape hatch — `@howells/neon/pool`** (`createPooledDb({ url, schema })`, hardened `pg` pool, node-postgres adapter). Use when a runtime genuinely needs *interactive* (session) transactions — `db.transaction(async (tx) => ...)` with mid-transaction branching — or `LISTEN/NOTIFY`, or long-running batch work. Note: neon-http's `.transaction()` **typechecks but throws at runtime**; if a package calls it, that package belongs on `/pool` (fieldportrait learned this with 12 call sites).
+- **Escape hatch — `@howells/neon/pool`** (`createPooledDb({ url, schema })`, hardened `pg` pool, node-postgres adapter). Use when a runtime genuinely needs _interactive_ (session) transactions — `db.transaction(async (tx) => ...)` with mid-transaction branching — or `LISTEN/NOTIFY`, or long-running batch work. Note: neon-http's `.transaction()` **typechecks but throws at runtime**; if a package calls it, that package belongs on `/pool` (fieldportrait learned this with 12 call sites).
 - **Avoid — `drizzle-orm/neon-serverless`** (the WebSocket `Pool`). It drops idle sockets on autosuspend and leaks pools across HMR; candor migrated off it after documented pain. Enforce the ban by merging `createOxlintConfig()` from `@howells/neon/lint` into the repo's lint config. The one exception is edge runtimes that truly need the WS pool (`neonConfig.poolQueryViaFetch`).
 
 Do not mix subpaths within one package without a reason, and do not reach for `postgres.js` or hand-rolled `pg` as a default — that is driver sprawl. Full failure-class analysis and per-repo survey: [Neon](./neon.md).
@@ -168,7 +168,7 @@ For projects with serious image, vector, or media needs:
 - use `@howells/stow-server` when a reusable server integration layer is needed
 - use `@howells/stow-next` when a Next.js app needs the app-facing media storage integration
 
-Keep the distinction clear: Motif owns generation, editing, upscaling, background removal, image-to-video, model metadata, dry runs, structured CLI output, and MCP tools. The storage platform owns durable storage and delivery. `files-sdk` owns the provider-neutral object/blob-store calls underneath a repo-local storage or upload boundary, not ad hoc provider clients in app routes.
+Keep the distinction clear: Motif owns generation, editing, upscaling, background removal, image-to-video, model metadata, dry runs, and structured agent-facing CLI output. The storage platform owns durable storage and delivery. `files-sdk` owns the provider-neutral object/blob-store calls underneath a repo-local storage or upload boundary, not ad hoc provider clients in app routes.
 
 ## AI-Enabled Apps
 

@@ -11,12 +11,12 @@ Read `docs/README.md` first: it carries the defaults in one page. Then the refer
 Defaults a new repo inherits:
 
 - pnpm monorepo, usually `apps/*` and `packages/*`, with Turborepo and cache disabled until the repo proves it's deterministic.
-- Next.js App Router, React, Tailwind v4, Radix, and Storybook when the repo exports reusable UI.
+- Next.js App Router, React, Tailwind v4, Base UI, and Storybook when the repo exports reusable UI; unified Radix is the deliberate opt-out.
 - `@howells/lint` on the Oxlint/Oxfmt lane, `@howells/typescript-config` for tsconfig presets, `@howells/envy` for typed env parsing and deploy-time env checks.
-- Drizzle, Neon, tRPC and React Query for product data.
-- `@howells/ai` as the provider baseline, `howells/motif` for image work, product orchestration in a repo-local `ai` or `agents` package, MCP in its own package when exposed.
+- Drizzle and Neon for product data, the narrowest typed API boundary that fits, and React Query when the client owns server-state.
+- `@howells/ai` as the provider baseline, Motif's SDK or agent-readable CLI for image work, product orchestration in a repo-local `ai` or `agents` package, and MCP in its own package only when the product genuinely exposes it.
 
-Reference pages: `stack-decisions`, `architecture-defaults`, `repo-archetypes`, `package-boundaries`, `deployment-defaults`, `default-dependencies`, `config-snippets`, `ui-projects`, `shared-package-candidates`, `agent-workflow`, `agentic-development`, `stack-in-practice`, `neon`, `launch-checklist`. `docs/reference/agent-workflow.md` defines what a root `AGENTS.md` should cover. `docs/adr/` records deviations, including this repo's own.
+Reference pages: `stack-decisions`, `architecture-defaults`, `repo-archetypes`, `package-boundaries`, `deployment-defaults`, `default-dependencies`, `config-snippets`, `ui-projects`, `shared-package-candidates`, `agent-workflow`, `agentic-development`, `stack-in-practice`, `worktree-coordination`, `neon`, `launch-checklist`. `docs/reference/agent-workflow.md` defines what a root `AGENTS.md` should cover. `docs/adr/` records deviations, including this repo's own.
 
 ## Generated surfaces - never hand-edit
 

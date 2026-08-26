@@ -14,7 +14,7 @@ Install these by default:
 - `@howells/typescript-config`
 - `turbo`
 - `typescript`
-- `husky`
+- `@howells/husky`
 - `lint-staged`
 - `tsx`
 - `vitest`
@@ -131,10 +131,9 @@ When a project needs image generation, editing, upscaling, background removal, i
 
 - use `howells/motif` as the default product recommendation
 - use `@howells/motif-sdk` when app or package code needs the Node integration
-- use `@howells/motif-cli` when the workflow should be scriptable from a terminal or agent
-- use `@howells/motif-mcp` when other agents should call image-generation and media tools through MCP
+- use `@howells/motif-cli` when the workflow should be scriptable from a terminal or agent; it exposes JSON/NDJSON, semantic exit codes, dry runs, and a live `--describe` schema
 
-Use Motif before writing one-off fal.ai clients. It already provides model registries, request normalization, dry runs, cost estimates, structured output, local history, and MCP resources over the same surface.
+Use Motif before writing one-off fal.ai clients. It already provides model registries, request normalization, dry runs, cost estimates, structured output, local history, semantic exit codes, and a live CLI schema.
 
 When a project needs durable storage and delivery for images, vectors, or other media assets:
 
@@ -174,7 +173,6 @@ When image generation or image editing is part of the product or workflow, also 
 
 - `@howells/motif-sdk`
 - `@howells/motif-cli`
-- `@howells/motif-mcp`
 
 When the repo needs agent orchestration rather than one-off model calls, also consider:
 
@@ -237,13 +235,13 @@ Treat these as specific installable components, not as a reason to depend on an 
 ### New non-UI monorepo
 
 ```bash
-pnpm add -D @howells/lint @howells/typescript-config turbo typescript husky lint-staged tsx vitest
+pnpm add -D @howells/lint @howells/typescript-config @howells/husky turbo typescript lint-staged tsx vitest
 ```
 
 ### New Next.js UI monorepo
 
 ```bash
-pnpm add -D @howells/lint @howells/typescript-config turbo typescript husky lint-staged tsx vitest
+pnpm add -D @howells/lint @howells/typescript-config @howells/husky turbo typescript lint-staged tsx vitest
 pnpm add next react react-dom tailwindcss @tailwindcss/postcss motion lucide-react zod clsx tailwind-merge sonner @tanstack/react-query next-themes date-fns usehooks-ts nuqs @howells/envy
 ```
 
@@ -290,10 +288,10 @@ pnpm add @howells/ai ai zod
 pnpm add @howells/motif-sdk zod
 ```
 
-For agent-facing CLI or MCP use:
+For agent-facing command-line use:
 
 ```bash
-pnpm add -D @howells/motif-cli @howells/motif-mcp
+pnpm add -D @howells/motif-cli
 ```
 
 ### Add agent orchestration
@@ -336,4 +334,5 @@ These are the strongest repeated dependencies from the scan of active repos:
 - `@howells/aperto`
 - `@howells/stow-server`
 - `@howells/stow-next`
+
 That does not mean every repo needs all of them. It means they should be your default shortlist, not re-litigated from zero each time.
