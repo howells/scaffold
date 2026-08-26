@@ -1,17 +1,13 @@
 ---
-title: "Architecture Defaults"
+title: "Architecture defaults"
 description: "The recurring architecture choices across my active repos: a domain core, thin app clients, typed boundaries, and where orchestration lives."
 ---
 
-# Architecture Defaults
+# Architecture defaults
 
-These are the recurring architecture choices across your active repos.
+These defaults come from active TypeScript, UI, data, and agent repositories. PHP and Craft maintenance projects do not set the baseline for new work.
 
-They are not universal laws. They are the default answers when a new project needs these capabilities and there is no strong reason to do something else.
-
-These defaults intentionally ignore PHP/Craft maintenance surfaces. The useful signal for new work is the direct TypeScript, UI, data, and agent dependency surface.
-
-## Full-Stack TypeScript App
+## Full-stack TypeScript app
 
 For a serious TypeScript product app, the recurring stack is:
 
@@ -20,8 +16,6 @@ For a serious TypeScript product app, the recurring stack is:
 - `@tanstack/react-query` for client data orchestration when client server-state exists
 - Drizzle for the database layer
 - Neon Postgres via `@neondatabase/serverless`
-
-This pattern shows up strongly in current full-stack product apps.
 
 ### Choose the API seam
 
@@ -40,7 +34,7 @@ Use `tRPC` when:
 - the app is TypeScript end to end
 - you want typed procedures across server and client
 - the team is comfortable with a monorepo or shared package boundary
-- the product has real database-backed behavior, not just static pages
+- the product has database-backed behaviour that benefits from typed procedures
 
 ### When not to use tRPC
 
@@ -62,26 +56,26 @@ Keep App Router route files server-first. A page or layout should compose data a
 - avoid turning a whole route into a client component for one interactive control
 - move reusable business, agent, and transport contracts into a package or domain module instead of defining them inside route handlers
 
-## Database and Persistence
+## Database and persistence
 
-The clear default is:
+Use:
 
 - Postgres
 - Drizzle (ORM + typed schema)
 - Neon for serverless-hosted Postgres
-- **`@howells/neon`** as the client layer — never hand-rolled drivers. It wraps `@neondatabase/serverless` (HTTP) and `pg` (TCP) with the fleet's hardening: write-safe retries, IPv4-first DNS, cold-start timeouts, HMR-safe caching, endpoint guards.
+- **`@howells/neon`** as the client layer; never hand-roll drivers. It wraps `@neondatabase/serverless` (HTTP) and `pg` (TCP) with write-safe retries, IPv4-first DNS, cold-start timeouts, HMR-safe caching, and endpoint guards.
 
-This is one of the strongest repeated patterns in the current portfolio. Use Drizzle from day one — hand-written SQL with manual row typing is not the baseline.
+Use Drizzle from day one. Hand-written SQL with manual row typing is an exception.
 
-### Connecting Drizzle to Neon (the rule)
+### Connect Drizzle to Neon
 
 Pick the subpath by runtime, not by habit:
 
-- **Default — `@howells/neon/http`** (`createHttpDb({ url, schema })`, neon-http adapter). Use for all app data access (Server Components, route handlers, serverless functions, Workers) and short-lived scripts. HTTP one-shot queries are lowest-latency for request/response work, and `db.batch([...])` gives atomic non-interactive writes — which covers almost every write path.
-- **Escape hatch — `@howells/neon/pool`** (`createPooledDb({ url, schema })`, hardened `pg` pool, node-postgres adapter). Use when a runtime genuinely needs _interactive_ (session) transactions — `db.transaction(async (tx) => ...)` with mid-transaction branching — or `LISTEN/NOTIFY`, or long-running batch work. Note: neon-http's `.transaction()` **typechecks but throws at runtime**; if a package calls it, that package belongs on `/pool` (fieldportrait learned this with 12 call sites).
-- **Avoid — `drizzle-orm/neon-serverless`** (the WebSocket `Pool`). It drops idle sockets on autosuspend and leaks pools across HMR; candor migrated off it after documented pain. Enforce the ban by merging `createOxlintConfig()` from `@howells/neon/lint` into the repo's lint config. The one exception is edge runtimes that truly need the WS pool (`neonConfig.poolQueryViaFetch`).
+- **Default: `@howells/neon/http`** (`createHttpDb({ url, schema })`, neon-http adapter). Use for app data access (Server Components, route handlers, serverless functions, Workers) and short-lived scripts. HTTP one-shot queries suit request/response work, and `db.batch([...])` provides atomic non-interactive writes for most write paths.
+- **Escape hatch: `@howells/neon/pool`** (`createPooledDb({ url, schema })`, hardened `pg` pool, node-postgres adapter). Use for _interactive_ transactions with mid-transaction branching, `LISTEN/NOTIFY`, or long-running batch work. Neon HTTP's `.transaction()` **typechecks but throws at runtime**; a package that calls it belongs on `/pool`.
+- **Avoid: `drizzle-orm/neon-serverless`** (the WebSocket `Pool`). It drops idle sockets on autosuspend and leaks pools across HMR. Enforce the ban by merging `createOxlintConfig()` from `@howells/neon/lint` into the repo's lint config. Edge runtimes that require the WS pool (`neonConfig.poolQueryViaFetch`) are the exception.
 
-Do not mix subpaths within one package without a reason, and do not reach for `postgres.js` or hand-rolled `pg` as a default — that is driver sprawl. Full failure-class analysis and per-repo survey: [Neon](./neon.md).
+Do not mix subpaths within a package without a recorded reason. Avoid `postgres.js` and hand-rolled `pg` clients. See [Neon](./neon.md) for the failure analysis and repo survey.
 
 ### Schema and migrations
 
@@ -98,7 +92,7 @@ Do not mix subpaths within one package without a reason, and do not reach for `p
 - Call the neon query function as a **template** (`` sql`…` ``) or via `.query(text, params)` — never as a conventional function `sql('…', [])` (the GA breaking change).
 - Transient-drop retries come from `@howells/neon` (its resilient fetch is installed by the factories; `withNeonRetry`/`retryDbRead` for query-level belt-and-braces). Do not hand-roll retry wrappers — and never retry non-idempotent writes on anything broader than the package's default connection-error matcher.
 
-## Client State
+## Client state
 
 Use state tools by scope:
 
@@ -122,7 +116,7 @@ Guideline:
 
 Do not treat both as default dependencies in the same new repo.
 
-## Documentation Sites
+## Documentation sites
 
 When a project needs a proper docs site, the recurring answer is:
 
@@ -138,7 +132,7 @@ Use it when:
 
 Do not scaffold a docs framework into every repo by default.
 
-## Shared UI Development
+## Shared UI development
 
 When the repo owns reusable UI:
 
@@ -148,7 +142,7 @@ When the repo owns reusable UI:
 
 Storybook is not mandatory for every app. It is mandatory when the repo exports reusable UI that should be reviewed and regression-checked in isolation.
 
-## Component Scaffolding
+## Component scaffolding
 
 The recurring pattern is:
 
@@ -163,7 +157,7 @@ That means:
 
 Scaffold on Base UI. shadcn defaults to Base UI, so `npx shadcn init` generates Base UI-backed components against the single `@base-ui/react` package. Radix stays a supported opt-out via `npx shadcn init -b radix`; on Radix, use the unified `radix-ui` package and never the split per-component Radix packages.
 
-## Media and Asset Storage
+## Media and asset storage
 
 For projects with serious image, vector, or media needs:
 
@@ -175,9 +169,9 @@ For projects with serious image, vector, or media needs:
 
 Keep the distinction clear: Motif owns generation, editing, upscaling, background removal, image-to-video, model metadata, dry runs, and structured agent-facing CLI output. The storage platform owns durable storage and delivery. `files-sdk` owns the provider-neutral object/blob-store calls underneath a repo-local storage or upload boundary, not ad hoc provider clients in app routes.
 
-## AI-Enabled Apps
+## AI-enabled apps
 
-For apps that genuinely need AI features, the recurring pattern is:
+For apps with AI features:
 
 - `ai` (the AI SDK) for the application-facing AI SDK surface
 - `@howells/ai` as the shared AI SDK/provider baseline
@@ -190,7 +184,7 @@ If the repo is doing CLI-model orchestration or needs stricter typed IO around a
 
 - consider `@howells/envelope`
 
-When the repo is doing real agent orchestration, add Mastra deliberately:
+Add Mastra when the repo needs agent orchestration:
 
 - `@mastra/core` for agent and workflow foundations
 - `mastra` for the CLI/dev runtime
@@ -204,15 +198,15 @@ Use raw provider SDKs only behind a boundary:
 - project-specific provider composition belongs in `packages/ai`
 - app routes should call product services, not create raw OpenAI, Anthropic, or OpenRouter clients inline
 
-## Runtime Environment
+## Runtime environment
 
 Use `@howells/envy` when an app depends on runtime env.
 
 The default shape is a `packages/env` boundary that owns schema definition, parsing, generated Next.js server/client modules, lint helper config, and provider preflight checks. App code should import typed env exports rather than reading `process.env` directly.
 
-## Agent and MCP Surfaces
+## Agent and MCP surfaces
 
-Recent agent-heavy repos are converging on explicit package boundaries for tool surfaces:
+Agent-heavy repos use explicit package boundaries for tool surfaces:
 
 - `packages/ai` for repo-specific model/provider composition above `@howells/ai`
 - `packages/mastra` for Mastra runtime code, agents, tools, workflows, storage, memory, observability, scorers, and runtime routes
@@ -224,14 +218,14 @@ Use `zod` for tool and transport schemas, and keep provider plumbing behind `@ho
 
 Use `@modelcontextprotocol/sdk` when the repo exposes MCP tools or resources. Do not bury MCP tool contracts inside a Next.js route unless the route is the only consumer and there is no expected CLI, test, or agent reuse.
 
-## Ingestion and Enrichment
+## Ingestion and enrichment
 
 For source-heavy or scraper-heavy repos:
 
 - use a dedicated `ingestion`, `enrichment`, or `scraper` package when pipeline behavior becomes substantial
 - consider `@howells/srcfull` for browser/page-source extraction before building a fresh source-fetching layer
 
-## Overlay Model
+## Overlay model
 
 Use the overlay primitives deliberately:
 
@@ -239,18 +233,18 @@ Use the overlay primitives deliberately:
 - stacked sheets or nested panel drills: `@howells/stacksheet`
 - thumbnail-to-expanded image or video transitions: `@howells/aperto`
 
-This avoids the common mistake of stretching a simple drawer primitive into a multi-layer workflow it was not designed to own.
+Do not stretch a basic drawer into a multi-layer workflow.
 
-## Short Version
+## Default product stack
 
-For a new product app, the default answer is usually:
+For a new product app, use:
 
 - Next.js
 - the API seam appropriate to the consumers
 - React Query
 - Drizzle
 - Neon
-- Clerk
+- WorkOS by default; Clerk for a lighter existing or consumer-oriented app with a recorded reason
 - the bundled UI baseline
 - `@howells/ai` plus Mastra/MCP packages when agent behavior is part of the product
 - Envy if runtime env exists
@@ -258,7 +252,7 @@ For a new product app, the default answer is usually:
 - Fumadocs if the repo needs docs
 - the house media storage packages if the repo needs media storage
 
-Only deviate when the product constraints actually justify it.
+Record any deviation and the product constraint behind it.
 
 See also:
 

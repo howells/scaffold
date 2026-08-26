@@ -1,42 +1,5 @@
-/**
- * sync-skill.ts
- *
- * Generates `skills/scaffold/references/` from `docs/`, replacing the previously
- * hand-maintained duplicate tree. All docs edits happen once in `docs/` and are
- * propagated into the packaged agent skill by running this script.
- *
- * Run with Node 24's native TypeScript type-stripping:
- *   node scripts/sync-skill.ts          # write mode (regenerate the skill tree)
- *   node scripts/sync-skill.ts --check  # verify the skill tree is in sync; exit 1 on drift
- *
- * No dependencies. `node:fs` / `node:path` only. Fail-fast: unexpected tree
- * shapes throw rather than being silently skipped.
- *
- * Transform contract (matched byte-for-byte against the committed skill tree):
- *
- *   Strip pass  — every root `docs/*.md` file except `README.md` (which is a
- *                 site-only index, not shipped in the skill) and `docs/reference/*.md`
- *                 (non-recursive, `.md` only, excluding the `ui-baseline/`
- *                 directory), plus the `ui-baseline/README.md` landing page.
- *                 Removes the leading YAML frontmatter block and the single
- *                 blank line after it. Never synthesises an H1 (every page
- *                 already carries a body H1); a guarded fallback inserts one
- *                 only if a stripped body does not already start with "# ".
- *
- *   Link flatten — in the root `docs/*.md` pages (they live one level above
- *                 `reference/`), the literal substring `./reference/` becomes
- *                 `./`. Sibling links inside `reference/*.md` are already flat
- *                 and are left untouched (`./ui-baseline/README.md` passes
- *                 through unchanged). Root pages link ADRs with site-absolute
- *                 `/docs/adr/...` paths, which are left untouched since ADRs
- *                 are not shipped into the skill tree.
- *
- *   Verbatim pass — everything under `docs/reference/ui-baseline/source/**` is
- *                 copied byte-identically (including `.mdx` files with their
- *                 vendored frontmatter and the vendored fumadocs `meta.json`
- *                 inside that snapshot). The fumadocs navigation `meta.json`
- *                 that sits directly at the `ui-baseline/` root is dropped.
- */
+// Root docs and reference docs lose frontmatter. UI baseline sources are copied
+// byte-for-byte. Root-doc links are flattened to match the generated tree.
 
 import {
   existsSync,
@@ -56,16 +19,13 @@ const DOCS = join(ROOT, "docs");
 const OUT = join(ROOT, "skills", "scaffold", "references");
 
 const UI_BASELINE_SRC = join(DOCS, "reference", "ui-baseline");
-// The skill tree flattens `docs/reference/` away, so ui-baseline lands directly
-// under the references root.
 const UI_BASELINE_OUT = "ui-baseline";
 
-/** Remove the leading YAML frontmatter block and the single blank line after it. */
 function stripFrontmatter(text: string, sourceLabel: string): string {
   if (!text.startsWith("---\n")) {
     throw new Error(
       `Expected leading YAML frontmatter (\`---\`) in ${sourceLabel}, ` +
-        `but the file does not start with one.`,
+        `but the file does not start with one.`
     );
   }
 
@@ -82,22 +42,18 @@ function stripFrontmatter(text: string, sourceLabel: string): string {
   }
 
   let bodyStart = closingIndex + 1;
-  // Remove the single blank line that separates frontmatter from the body.
   if (lines[bodyStart] === "") {
     bodyStart += 1;
   }
 
   let body = lines.slice(bodyStart).join("\n");
 
-  // Guarded fallback: only synthesise an H1 if the body lacks one. Every current
-  // page already has a body H1, so this never fires in practice — synthesising
-  // unconditionally would recreate the duplicate-heading bug fixed in b9ce174.
   if (!body.startsWith("# ")) {
     const frontmatter = lines.slice(1, closingIndex);
     const titleLine = frontmatter.find((line) => /^title:\s*/.test(line));
     if (!titleLine) {
       throw new Error(
-        `${sourceLabel}: stripped body has no H1 and frontmatter has no \`title\` to synthesise one from.`,
+        `${sourceLabel}: stripped body has no H1 and frontmatter has no \`title\` to synthesise one from.`
       );
     }
     const title = titleLine
@@ -110,12 +66,10 @@ function stripFrontmatter(text: string, sourceLabel: string): string {
   return body;
 }
 
-/** In `getting-started.md`, flatten `./reference/` links (it sits above `reference/`). */
 function flattenReferenceLinks(text: string): string {
   return text.split("./reference/").join("./");
 }
 
-/** List `.md` files directly inside a directory (non-recursive), sorted. */
 function listFlatMarkdown(dir: string): string[] {
   return readdirSync(dir)
     .filter((name) => name.endsWith(".md"))
@@ -123,7 +77,6 @@ function listFlatMarkdown(dir: string): string[] {
     .sort();
 }
 
-/** Recursively list files under a directory as paths relative to it, sorted. */
 function walk(dir: string): string[] {
   const out: string[] = [];
   const recurse = (current: string): void => {
@@ -142,11 +95,6 @@ function walk(dir: string): string[] {
   return out.sort();
 }
 
-/**
- * Build the complete desired skill-reference tree in memory as a map of
- * output-relative path -> file bytes. This is the single source of truth for
- * both write and --check modes.
- */
 function generate(): Map<string, Buffer> {
   const tree = new Map<string, Buffer>();
 
@@ -157,30 +105,27 @@ function generate(): Map<string, Buffer> {
     tree.set(relPath, content);
   };
 
-  // --- Strip pass: root docs/*.md (excludes README.md; with link flatten) ---
-  // Root-level pages sit one level above reference/, so their ./reference/
-  // links are flattened. README.md is a site-only index and is not shipped in
-  // the skill, so it is skipped here.
   for (const name of listFlatMarkdown(DOCS)) {
     if (name === "README.md") {
       continue;
     }
     const src = join(DOCS, name);
-    const stripped = stripFrontmatter(readFileSync(src, "utf8"), `docs/${name}`);
+    const stripped = stripFrontmatter(
+      readFileSync(src, "utf8"),
+      `docs/${name}`
+    );
     add(name, Buffer.from(flattenReferenceLinks(stripped), "utf8"));
   }
 
-  // --- Strip pass: docs/reference/*.md (non-recursive, excludes ui-baseline/) ---
   for (const name of listFlatMarkdown(join(DOCS, "reference"))) {
     const src = join(DOCS, "reference", name);
-    const stripped = stripFrontmatter(readFileSync(src, "utf8"), `docs/reference/${name}`);
+    const stripped = stripFrontmatter(
+      readFileSync(src, "utf8"),
+      `docs/reference/${name}`
+    );
     add(name, Buffer.from(stripped, "utf8"));
   }
 
-  // --- ui-baseline pass ---
-  // README.md landing page is a docs page (frontmatter stripped); the fumadocs
-  // nav meta.json at the ui-baseline root is dropped; everything under source/
-  // is copied verbatim (including its vendored frontmatter and meta.json).
   for (const rel of walk(UI_BASELINE_SRC)) {
     const segments = rel.split(/[/\\]/);
     const outRel = join(UI_BASELINE_OUT, rel);
@@ -190,29 +135,28 @@ function generate(): Map<string, Buffer> {
       if (rel === "README.md") {
         const stripped = stripFrontmatter(
           readFileSync(abs, "utf8"),
-          "docs/reference/ui-baseline/README.md",
+          "docs/reference/ui-baseline/README.md"
         );
         add(outRel, Buffer.from(stripped, "utf8"));
       } else if (rel === "meta.json") {
-        // Fumadocs navigation for this repo's docs site — not skill content.
         continue;
       } else {
         throw new Error(
           `Unexpected file at ui-baseline root: ${rel}. ` +
-            `Expected only README.md, meta.json, and source/.`,
+            `Expected only README.md, meta.json, and source/.`
         );
       }
       continue;
     }
 
     if (segments[0] === "source") {
-      add(outRel, readFileSync(abs)); // verbatim bytes
+      add(outRel, readFileSync(abs));
       continue;
     }
 
     throw new Error(
       `Unexpected path under ui-baseline: ${rel}. ` +
-        `Expected files under source/ only (plus root README.md / meta.json).`,
+        `Expected files under source/ only (plus root README.md / meta.json).`
     );
   }
 
@@ -272,7 +216,6 @@ function writeMode(tree: Map<string, Buffer>): number {
     existing.delete(rel);
   }
 
-  // Remove files that no longer correspond to any generated output.
   for (const rel of existing) {
     rmSync(join(OUT, rel));
   }

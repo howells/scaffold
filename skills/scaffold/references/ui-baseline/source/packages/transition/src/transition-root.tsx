@@ -18,21 +18,17 @@ import type {
   MotionVariants,
 } from "./types";
 
-export interface TransitionRootProps
-  extends Omit<
-    ComponentPropsWithoutRef<typeof Dialog.Root>,
-    "open" | "onOpenChange"
-  > {
+export interface TransitionRootProps extends Omit<
+  ComponentPropsWithoutRef<typeof Dialog.Root>,
+  "open" | "onOpenChange"
+> {
   children: ReactNode;
   /** Whether dragging can dismiss the content (default: true) */
   dismissible?: boolean | DismissibleConfig;
   /** Layout ID for shared element transition (auto-generated if omitted) */
   layoutId?: string;
-  /** Motion preset or per-component variants */
   motion?: MotionPresetName | MotionVariants;
-  /** Controlled open state */
   open?: boolean;
-  /** Callback when open state changes */
   onOpenChange?: (open: boolean) => void;
   /** Force reduced motion regardless of system preference */
   reduceMotion?: boolean;
@@ -53,7 +49,6 @@ function TransitionRoot({
   const systemReducedMotion = useReducedMotion() ?? false;
   const shouldReduce = reduceMotionProp ?? systemReducedMotion;
 
-  // Uncontrolled state fallback
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = controlledOpen !== undefined;
   const open = isControlled ? controlledOpen : internalOpen;
@@ -65,10 +60,9 @@ function TransitionRoot({
       }
       controlledOnOpenChange?.(nextOpen);
     },
-    [isControlled, controlledOnOpenChange],
+    [isControlled, controlledOnOpenChange]
   );
 
-  // Resolve global preset name
   const globalPresetName: MotionPresetName =
     typeof motionProp === "string" ? motionProp : "smooth";
   const variants: MotionVariants | undefined =

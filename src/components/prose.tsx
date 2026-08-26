@@ -1,13 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-/**
- * Renders the constrained Markdown subset used in principle bodies —
- * paragraphs, inline `code`, and `[text](url)` links — as React. Server
- * component; no dependency. The bodies are authored in
- * `src/content/principles.ts`, so the accepted syntax is deliberately narrow.
- */
-
 const INLINE = /`([^`]+)`|\[([^\]]+)\]\(([^)]+)\)/g;
 
 const linkClass =

@@ -1,13 +1,11 @@
 ---
-title: "Config Snippets"
-description: "Canonical starting config for a new repo: turbo.json, tsconfig presets, the lint setup, and the small set of root scripts every repo shares."
+title: "Config snippets"
+description: "Starting config for Turbo, TypeScript, linting, and shared root scripts."
 ---
 
-# Config Snippets
+# Config snippets
 
-These are the canonical starting snippets for a new repo.
-
-Adjust names and filters, but do not casually change the overall contract.
+Adjust names and filters while preserving the script and workspace contracts.
 
 ## Root `package.json`
 
@@ -117,7 +115,7 @@ catalog:
   typescript: "^6.0.0"
 ```
 
-If the repo genuinely needs extra workspaces such as `scripts/*`, add them explicitly. Keep private-package cooldown exclusions exact rather than exempting a whole plausible public namespace. Review every lifecycle build entry instead of copying this small example blindly, and keep exact catalog versions in the repo rather than in Scaffold.
+Add extra workspaces such as `scripts/*` explicitly. Keep private-package cooldown exclusions exact, review each lifecycle build entry, and pin catalog versions in the consuming repo.
 
 ## Root `turbo.json`
 
@@ -164,7 +162,7 @@ If the repo genuinely needs extra workspaces such as `scripts/*`, add them expli
 }
 ```
 
-Only add task-level `env` when a task actually needs it.
+Add task-level `env` only when the task reads it.
 
 ## Root `oxlint.config.ts`
 
@@ -343,7 +341,7 @@ For production or valuable data, replace `db:push` with an owned migration comma
 ## Minimal `AGENTS.md`
 
 ```md
-# Project Instructions
+# Project instructions
 
 - Continually explain what you are doing, especially with long and complex tasks.
 - Prefer `rg` for search.
@@ -351,4 +349,4 @@ For production or valuable data, replace `db:push` with an owned migration comma
 - Never add generic starter code when project-local patterns already exist.
 ```
 
-Keep this short. It should constrain agent behavior, not restate your whole engineering philosophy.
+Keep it short and operational.

@@ -1,17 +1,3 @@
-/**
- * generate-principles.ts
- *
- * Generates `docs/principles.md` from the single source of truth in
- * `src/content/principles.ts`. The homepage renders the same module directly,
- * so the two surfaces cannot drift.
- *
- *   node scripts/generate-principles.ts          # write docs/principles.md
- *   node scripts/generate-principles.ts --check  # verify it is in sync; exit 1 on drift
- *
- * No dependencies beyond node:fs. The principles module is imported at runtime
- * (Node 24 type-stripping) via a file URL so `tsc` does not resolve it here.
- */
-
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -31,7 +17,10 @@ interface PrincipleGroup {
   readonly principles: readonly Principle[];
 }
 interface PrinciplesModule {
-  readonly principlesMeta: { readonly title: string; readonly description: string };
+  readonly principlesMeta: {
+    readonly title: string;
+    readonly description: string;
+  };
   readonly principlesIntro: readonly string[];
   readonly principleGroups: readonly PrincipleGroup[];
 }
@@ -68,11 +57,13 @@ async function main(): Promise<void> {
     if (existing !== generated) {
       console.error(
         "docs/principles.md is out of sync with src/content/principles.ts.\n" +
-          "Run `pnpm generate:principles` to regenerate.",
+          "Run `pnpm generate:principles` to regenerate."
       );
       process.exit(1);
     }
-    console.log("docs/principles.md is in sync with src/content/principles.ts.");
+    console.log(
+      "docs/principles.md is in sync with src/content/principles.ts."
+    );
     return;
   }
 

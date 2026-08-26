@@ -21,7 +21,7 @@ import {
   SCALE_INPUT,
   SCALE_OUTPUT,
 } from "./physics";
-import { getDragSpring, resolvePreset } from "./presets";
+import { resolvePreset } from "./presets";
 import type { DismissibleConfig, MotionPresetName } from "./types";
 
 export interface TransitionContentProps {
@@ -40,10 +40,9 @@ const TransitionContent = forwardRef<HTMLDivElement, TransitionContentProps>(
       motionOverride,
       "smooth",
       ctx.variants,
-      false,
+      false
     );
 
-    const dragSpring = getDragSpring(resolved);
     const isDismissible = ctx.dismissible !== false;
 
     const dismissConfig: DismissibleConfig =
@@ -55,11 +54,11 @@ const TransitionContent = forwardRef<HTMLDivElement, TransitionContentProps>(
 
     const dragX = useMotionValue(0);
     const dragY = useMotionValue(0);
-    const springX = useSpring(dragX, dragSpring);
-    const springY = useSpring(dragY, dragSpring);
+    const springX = useSpring(dragX, resolved.drag);
+    const springY = useSpring(dragY, resolved.drag);
 
     const distance = useTransform(() =>
-      Math.hypot(springX.get(), springY.get()),
+      Math.hypot(springX.get(), springY.get())
     );
     const scaleMotion = useTransform(distance, SCALE_INPUT, SCALE_OUTPUT);
     const opacityMotion = useTransform(distance, OPACITY_INPUT, OPACITY_OUTPUT);
@@ -71,7 +70,7 @@ const TransitionContent = forwardRef<HTMLDivElement, TransitionContentProps>(
         dragX.set(info.offset.x * r);
         dragY.set(info.offset.y * r);
       },
-      [dragX, dragY, resistance],
+      [dragX, dragY, resistance]
     );
 
     const handleDragEnd = useCallback(
@@ -93,7 +92,7 @@ const TransitionContent = forwardRef<HTMLDivElement, TransitionContentProps>(
         dragX,
         dragY,
         velocityThreshold,
-      ],
+      ]
     );
 
     const motionStyle = useMemo(
@@ -105,7 +104,7 @@ const TransitionContent = forwardRef<HTMLDivElement, TransitionContentProps>(
         y: springY,
         ...style,
       }),
-      [isDismissible, opacityMotion, scaleMotion, springX, springY, style],
+      [isDismissible, opacityMotion, scaleMotion, springX, springY, style]
     );
 
     return (
@@ -130,7 +129,7 @@ const TransitionContent = forwardRef<HTMLDivElement, TransitionContentProps>(
         {children}
       </Dialog.Popup>
     );
-  },
+  }
 );
 
 TransitionContent.displayName = "TransitionContent";

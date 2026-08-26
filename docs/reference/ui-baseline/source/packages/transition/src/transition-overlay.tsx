@@ -10,7 +10,6 @@ import type { MotionPresetName } from "./types";
 
 export interface TransitionOverlayProps {
   className?: string;
-  /** Override motion preset for the overlay */
   motion?: MotionPresetName;
   style?: React.CSSProperties;
 }
@@ -23,7 +22,7 @@ const TransitionOverlay = forwardRef<HTMLDivElement, TransitionOverlayProps>(
       motionOverride,
       "smooth",
       ctx.variants,
-      false,
+      false
     );
 
     return (
@@ -42,7 +41,7 @@ const TransitionOverlay = forwardRef<HTMLDivElement, TransitionOverlayProps>(
         }
       />
     );
-  },
+  }
 );
 
 TransitionOverlay.displayName = "TransitionOverlay";

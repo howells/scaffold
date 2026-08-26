@@ -1,13 +1,11 @@
 ---
 title: "Overview"
-description: "The canonical starting point for a new Howells project: repo shape, default stack, package boundaries, agent workflow, and launch checklist."
+description: "Howells defaults for repo shape, stack, package boundaries, agent workflow, and launch checks."
 ---
 
-# New Project Docs
+# New project docs
 
-This docs set is the canonical starting point for a new Howells project.
-
-It is not a generic starter guide. It reflects the conventions that are already converging across your recently active repos:
+These are the current Howells project defaults:
 
 - the bundled UI baseline for shared UI, tokens, motion, and Storybook
 - native coding-assistant workflows and Matt Pocock's skills for general software development
@@ -46,15 +44,15 @@ It is not a generic starter guide. It reflects the conventions that are already 
 - [Agentic Development](./reference/agentic-development.md)
 - [Launch Checklist](./reference/launch-checklist.md)
 
-## Agent Skill
+## Agent skill
 
 The Project Docs are the source of truth. The installable skill at `skills/scaffold` is a distribution surface that routes supported coding assistants through these docs without loading every reference at once.
 
-## What This Standard Optimizes For
+## What this standard optimises for
 
 - Low config drift across active repos
 - Fast project setup without re-deciding toolchain basics
 - Correctness over cleverness
 - Shared UI primitives without flattening project identity
-- Clear, lightweight agent instructions so supported coding assistants remain assets instead of entropy generators
+- Short agent instructions that prevent ambiguity and drift
 - Reusable skills that stay independent when they solve cross-repo agent problems

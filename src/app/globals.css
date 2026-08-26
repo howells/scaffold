@@ -4,8 +4,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ── Design Tokens ─────────────────────── */
-
 :root {
   --background: oklch(0.9875 0.0026 106.45);
   --foreground: oklch(0.23 0.0038 106.69);
@@ -46,10 +44,7 @@
   --shadow-xl: 0 18px 60px 0px oklch(0.23 0.0038 106.69 / 0.18);
 }
 
-/* ── Fumadocs Theme Mapping ────────────── */
-/* Point Fumadocs' --color-fd-* API at the standard shadcn tokens. These use
-   runtime var() references, so they follow the .dark token switch below without
-   needing a re-declaration inside .dark. */
+/* Runtime references let Fumadocs follow the dark token switch. */
 
 @theme {
   --color-fd-background: var(--background);
@@ -111,8 +106,6 @@
   background: color-mix(in oklab, var(--color-fd-foreground) 14%, transparent);
   color: inherit;
 }
-
-/* ── Docs Layout Refinements ───────────── */
 
 #nd-page {
   max-width: 900px;

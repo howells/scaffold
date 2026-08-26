@@ -1,12 +1,12 @@
 # Scaffold
 
-The house baseline for starting or standardising a Howells project: repo shape, default stack, package boundaries, agent workflow, deployment and launch readiness. It's a docs-first standard with a Fumadocs site over it, not a template you clone.
+The house baseline for starting or standardising a Howells project. It defines repo shape, stack, package boundaries, agent workflow, deployment, and launch checks. It is a standard, not a template.
 
 `docs/` is the source of truth. `skills/scaffold` is a distribution surface, generated from it.
 
 ## What a new project takes from here
 
-Read `docs/README.md` first: it carries the defaults in one page. Then the reference page for the decision in front of you.
+Read `docs/README.md` first, then open only the reference page needed for the task.
 
 Defaults a new repo inherits:
 
@@ -16,7 +16,7 @@ Defaults a new repo inherits:
 - Drizzle and Neon for product data, the narrowest typed API boundary that fits, and React Query when the client owns server-state.
 - `@howells/ai` as the provider baseline, Motif's SDK or agent-readable CLI for image work, product orchestration in a repo-local `ai` or `agents` package, and MCP in its own package only when the product genuinely exposes it.
 
-Reference pages: `stack-decisions`, `architecture-defaults`, `repo-archetypes`, `package-boundaries`, `deployment-defaults`, `default-dependencies`, `config-snippets`, `ui-projects`, `shared-package-candidates`, `agent-workflow`, `agentic-development`, `stack-in-practice`, `worktree-coordination`, `neon`, `launch-checklist`. `docs/reference/agent-workflow.md` defines what a root `AGENTS.md` should cover. `docs/adr/` records deviations, including this repo's own.
+`docs/reference/agent-workflow.md` defines what a root `AGENTS.md` should cover. Other decisions live in `docs/reference/`; deviations live in `docs/adr/`.
 
 ## Generated surfaces - never hand-edit
 
@@ -31,6 +31,8 @@ Reference pages: `stack-decisions`, `architecture-defaults`, `repo-archetypes`, 
 - Search `docs/reference/` before adding new baseline policy, and search existing pages before creating a new one.
 - Search `CONTEXT.md` before changing the terms Scaffold Baseline, Project Docs, Agent Skill, Agent Skill Distribution or Skill Wrapper.
 - Don't add runtime dependencies unless the docs or skill distribution genuinely needs them.
+- Write short, declarative prose. Cut scene-setting, recaps, fake contrasts, vague praise, and claims without evidence.
+- Prefer a paragraph or short list to a table unless exact comparison is the point.
 
 ## Commands
 

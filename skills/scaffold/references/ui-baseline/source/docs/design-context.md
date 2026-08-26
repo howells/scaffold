@@ -1,6 +1,6 @@
-# Design Context
+# Design context
 
-Persistent aesthetic decisions for patternmode. All design work inherits these choices.
+Archived PatternMode design decisions. They explain the recovered source but do not override current Scaffold guidance.
 
 ## Brand
 
@@ -14,11 +14,11 @@ Persistent aesthetic decisions for patternmode. All design work inherits these c
 - **Body font**: Inter (everywhere, including docs headings)
 - **Mono font**: Geist Mono
 
-## Color Strategy
+## Colour strategy
 
-Green-tinted grays (from Forge). Not pure zinc, not warm ivory — a subtle organic warmth that makes the UI feel alive without being decorative.
+Use green-tinted greys from Forge rather than zinc or warm ivory.
 
-### Light Mode Neutrals (oklch, hue ~145)
+### Light-mode neutrals (oklch, hue 145)
 
 ```
 background:     oklch(0.985 0.004 145)   # very faint green-white
@@ -35,7 +35,7 @@ border:         oklch(0.915 0.006 145)   # subtle green-tinted border
 - **Interactive accent**: oklch(0.55 0.14 175) — muted teal (from Forge/Stow)
 - **Ring/focus**: Same teal
 
-### Shadows (from Stow's compound system)
+### Shadows
 
 Every shadow is ring + micro-blur + drop:
 
@@ -55,25 +55,20 @@ modal:        0 0 0 1px rgb(0 0 0 / 0.06), 0 8px 16px 0 rgb(0 0 0 / 0.08), 0 24p
 - **Docs content width**: 900px max (from Stacksheet)
 - **Docs sidebar**: Tight, functional, no decorative padding
 
-## Motion Philosophy
+## Motion
 
 - **Style**: Restrained and precise. No bounce, no exaggeration.
 - **Library**: CSS transitions for most things; motion/react only when JS control required
 - **Hover**: translate-y -1px + shadow elevation change. No scale.
 - **Durations**: 150ms for hovers, 200ms for reveals, 250ms for dialogs
 
-## Memorable Element
+## References
 
-The overall density and precision. Every pixel feels earned. Tightest, most precise docs site. Like Linear's docs — you notice the quality through the absence of waste.
+- [Medusa UI](https://docs.medusajs.com/ui): flat buttons, clean tables, subtle borders, and more space.
+- Linear: compact documentation and dense controls.
+- PatternMode: Medusa's surface treatment at Linear's density, with muted avatars, 8px radii, and flat buttons.
 
-## Design References
-
-The aesthetic sweet spot is **between Medusa UI and Linear**:
-- **Medusa UI** (https://docs.medusajs.com/ui) — flat buttons, clean tables, subtle borders, slightly warmer/more spacious
-- **Linear** — dense, compact, aggressive density, every pixel earned
-- **PatternMode target** — Medusa's cleanliness + Linear's density. Muted avatar tones. Tight radii (rounded-lg, 8px). No button gradients.
-
-## Anti-Patterns (Project-Specific)
+## Project-specific constraints
 
 - No generous whitespace for its own sake — whitespace must create hierarchy, not fill space
 - No inflated text sizes (body > 15px is too large for this)

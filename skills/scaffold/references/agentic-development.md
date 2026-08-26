@@ -1,8 +1,8 @@
-# Agentic Development
+# Agentic development
 
-Use this reference when a repo is not just calling a model, but exposing agent-facing behavior, agent-owned tools, workflows, memory, traces, MCP, or long-running AI jobs.
+Use this reference for agent-facing behaviour, tools, workflows, memory, traces, MCP, or long-running AI jobs.
 
-## Source of Truth
+## Source of truth
 
 [agentsurface.dev](https://agentsurface.dev) is the broader reference for agentic development. Use it for API surface, CLI design, MCP servers, discovery, authentication, errors, testing, multi-agent patterns, scoring, tool design, retrievability, and orchestration.
 
@@ -15,7 +15,7 @@ The local `surface` skill from the Agent Surface repo is the right specialist to
 
 Do not make every product repo carry a copy of that guidance. Link to agentsurface.dev and invoke the `surface` skill when the work is specifically about making software agent-ready.
 
-## When Agentic Infrastructure Is Warranted
+## When agent infrastructure is warranted
 
 Do not add agent infrastructure for a single prompt, one route handler, or a simple model completion. Use ordinary app/service code with `@howells/ai`, `ai`, and `zod` until the behavior needs agent structure.
 
@@ -30,11 +30,11 @@ Add agentic infrastructure when at least one of these is true:
 - the repo exposes MCP tools, resources, or transports
 - the AI surface needs first-class tests, traces, quality scoring, or operational controls
 
-Start with one agent and focused tools. Add workflows when the process is defined. Add more agents only when responsibilities split by domain, not just by implementation task.
+Start with one agent and focused tools. Add workflows after the process is defined. Add agents only when responsibility splits by domain.
 
-## Framework Selection
+## Framework selection
 
-Use the existing stack first. If the repo already has a deliberate agent framework, deepen that rather than starting over.
+Keep an existing deliberate agent framework unless its constraints no longer fit.
 
 Default choices:
 
@@ -47,7 +47,7 @@ Default choices:
 
 Mastra is the default serious agent/workflow framework when the repo needs agents, workflows, tools, memory, storage, observability, or Studio inspection. It is not the default for one-off completions.
 
-## Mastra Ground Rules
+## Mastra rules
 
 Use `$mastra` before writing or reviewing Mastra code. Mastra changes quickly, so do not trust memory for constructor signatures, imports, model strings, storage, memory, workflows, tools, or CLI behavior.
 
@@ -67,7 +67,7 @@ Mastra code should be ESM-friendly:
 - `moduleResolution` should be compatible with the installed Mastra guidance
 - local package presets from `@howells/typescript-config` are fine when they produce the right ESM shape
 
-## Preferred Package Boundary
+## Preferred package boundary
 
 When Mastra becomes part of a product, give it a dedicated workspace package:
 
@@ -79,11 +79,11 @@ packages/
   sessions/    # app-facing job/session orchestration when needed
 ```
 
-Use `packages/mastra` instead of burying Mastra inside an app route. Keep app code as a client of product services or a small dispatch surface.
+Put Mastra in `packages/mastra`. App code should call product services or a small dispatch surface.
 
 Use `packages/agents` only when the repo has reusable non-Mastra agent definitions, prompts, evaluators, or tool wiring that should not live in the Mastra runtime package. If Mastra owns the runtime, `packages/mastra` should be the main agent/workflow boundary.
 
-## Mastra Package Shape
+## Mastra package shape
 
 A substantial Mastra package should be organized by runtime concern:
 
@@ -116,7 +116,7 @@ Keep the root `index.ts` as the Mastra runtime registration point. It should ass
 
 Use explicit package exports for runtime surfaces that other packages need. Avoid importing deep internal files from app code.
 
-## Agent Design
+## Agent design
 
 Use agents for open-ended reasoning with tools. Use workflows for defined multi-step processes.
 
@@ -134,7 +134,7 @@ Good agents have:
 
 Prefer a small set of domain agents over many tiny task agents. A supervisor agent is appropriate when it delegates to specialists and owns the overall goal, but avoid agent meshes where every agent can call every other agent.
 
-## Tool Design
+## Tool design
 
 Mastra tools should be intent-shaped, not generic transport wrappers.
 
@@ -174,7 +174,7 @@ Use `.parallel()` when independent steps can run safely. Use `.foreach()` with e
 
 Do not use a workflow as a dumping ground for arbitrary app code. If a step is deterministic domain logic, keep that logic in a domain package and call it from the workflow step.
 
-## Runtime and App Integration
+## Runtime and app integration
 
 Keep the user-facing app decoupled from the Mastra runtime.
 
@@ -196,7 +196,7 @@ Mastra server routes should:
 
 The app should not build raw Mastra calls in React components or route handlers. Put dispatch and polling behavior behind a product service package.
 
-## Storage, Memory, and Observability
+## Storage, memory, and observability
 
 Use memory only where the agent benefits from thread history or working context. Do not add memory just because the package supports it.
 
@@ -221,7 +221,7 @@ Observability should be product-useful:
 - expose traces to the UI when they help users understand progress
 - use scorers when quality gates are part of the product behavior
 
-## Environment and Scripts
+## Environment and scripts
 
 Mastra packages should use `@howells/envy` for runtime env and deploy checks.
 
@@ -265,7 +265,7 @@ Test:
 
 Prefer fake drivers for tests. Real provider calls belong in integration checks or manual Studio verification, not the default unit suite.
 
-## Anti-Patterns
+## Anti-patterns
 
 Avoid:
 

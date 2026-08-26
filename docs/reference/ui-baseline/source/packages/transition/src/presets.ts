@@ -1,9 +1,4 @@
-import type {
-  DragSpringConfig,
-  MotionPreset,
-  MotionPresetName,
-  MotionVariants,
-} from "./types";
+import type { MotionPreset, MotionPresetName, MotionVariants } from "./types";
 
 /**
  * Motion presets — each bundles transition timing AND drag physics
@@ -48,27 +43,19 @@ export function resolvePreset(
   componentMotion: MotionPresetName | undefined,
   globalPreset: MotionPresetName,
   variants: MotionVariants | undefined,
-  reduceMotion: boolean,
+  reduceMotion: boolean
 ): MotionPreset {
   if (reduceMotion) {
     return PRESETS.reduced;
   }
 
-  // 1. Component-level override
   if (componentMotion) {
     return PRESETS[componentMotion];
   }
 
-  // 2. Per-component variant
   if (variants?.[componentType]) {
     return PRESETS[variants[componentType]];
   }
 
-  // 3. Global preset
   return PRESETS[globalPreset];
-}
-
-/** Extract the drag spring config from a preset */
-export function getDragSpring(preset: MotionPreset): DragSpringConfig {
-  return preset.drag;
 }

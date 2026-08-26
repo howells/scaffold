@@ -1,18 +1,3 @@
-/**
- * Easing curve tokens.
- *
- * For motion-react: Use the array format directly.
- * For CSS/Tailwind: Use the `easingsCSS` object.
- *
- * Curves:
- * - smooth: General purpose, smooth acceleration and deceleration
- * - customIn: Accelerate in, sharp end (entering elements)
- * - customOut: Smooth start, decelerate out (exiting elements)
- * - customExpand: Smooth expansion (complex transitions)
- * - customGentle: Gentle easing out
- */
-
-/** Cubic bezier easing curve as [x1, y1, x2, y2] control points */
 export type EasingTuple = [number, number, number, number];
 
 const SMOOTH_EASING: EasingTuple = [0.4, 0, 0.2, 1];
@@ -29,7 +14,6 @@ export const easings = {
   customGentle: CUSTOM_GENTLE_EASING,
 } as const;
 
-/** CSS cubic-bezier string representations for Tailwind or inline styles. */
 export const easingsCSS = {
   smooth: "cubic-bezier(0.4, 0, 0.2, 1)",
   customIn: "cubic-bezier(0.55, 0.085, 0.68, 0.53)",
