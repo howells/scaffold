@@ -86,6 +86,18 @@ Keep this simple:
 - one obvious production path
 - no hidden deployment routes
 
+## CI and release runners
+
+Use the runner that matches the work:
+
+- GitHub-hosted `ubuntu-latest` for deployments, releases, repository housekeeping, drift checks, and scheduled maintenance
+- Blacksmith only for measured CI validation where the smaller GitHub-hosted runner is materially slower or cannot complete reliably
+- the smallest Blacksmith runner that passes the workload; increase the runner only from observed duration or memory evidence
+
+Do not use Blacksmith for Vercel deployment waiting, release orchestration, cron-like data repair, branch management, or report generation. Cancel stale pull-request CI when a newer commit supersedes it, and skip full CI for draft pull requests.
+
+Do not build the same web application in CI and Vercel unless the CI build proves a distinct contract that Vercel does not. The production Vercel build is the release build.
+
 ## Environment preflight
 
 Use `@howells/envy` before deployments that depend on runtime configuration.
@@ -103,6 +115,9 @@ The deploy should fail before it reaches the provider if required env is missing
 ## Deployment rules
 
 - deployment should match repo archetype
+- production deploys once from the stable branch through one checked-in command or workflow
+- automatic branch previews stay off by default; create previews deliberately for active review
+- deployment and release orchestration use GitHub-hosted runners, not Blacksmith
 - expose a non-secret build identity and verify the live surface reports the expected revision after production deployment
 - keep a low-cost scheduled freshness check for products where a missed deployment is operationally material
 - do not deploy worker-heavy systems like they are simple marketing sites

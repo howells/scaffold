@@ -72,6 +72,9 @@ Use this for a new repo or before releasing an aligned existing repo.
 ## CI and operations
 
 - CI runs the root `check` command from the pinned Node version with a frozen lockfile
+- Blacksmith is reserved for measured CI validation and uses the smallest runner that passes; deployments, releases, housekeeping, drift checks, and scheduled maintenance use GitHub-hosted runners
+- pull-request CI cancels stale runs and skips draft pull requests
+- Vercel performs the single production web build unless a separate CI build proves a distinct contract
 - environment preflight validates names and shape without printing secret values
 - deployment has a smoke check for the primary user flow and any public agent/API surface
 - the deployed app exposes a non-secret build identity and the release workflow verifies that production reports the expected revision
