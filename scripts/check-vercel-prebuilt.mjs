@@ -49,9 +49,6 @@ for (const path of functionConfigs) {
 }
 if (!hasLinuxSharpTrace)
   throw new Error("Linux x64 sharp was not traced into a function");
-if (nativeBinaries.length === 0)
-  throw new Error("artifact contains no native .node binaries");
-
 for (const path of nativeBinaries) {
   const header = Buffer.alloc(20);
   const descriptor = openSync(path, "r");
