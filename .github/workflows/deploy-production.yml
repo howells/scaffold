@@ -1,0 +1,60 @@
+name: Deploy production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Ship main
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      VERCEL_ORG_ID: team_28w38vkjG0kiiLNVL2DgJrna
+      VERCEL_PROJECT_ID: prj_DpeuJsxVrSrklPF3fECKiVPTOTLf
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: git switch --detach "$GITHUB_SHA"
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          version: 11.10.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install pinned Vercel CLI
+        run: npm install --global vercel@59.11.1
+      - name: Pull production settings
+        run: pnpm deploy:prod:pull
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Stamp exact commit
+        run: |
+          echo "VERCEL_GIT_COMMIT_SHA=$GITHUB_SHA" >> "$GITHUB_ENV"
+          pnpm deploy:prod:stamp
+      - name: Build production output once on Linux
+        run: pnpm deploy:prod:build
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      - name: Validate artifact and native binaries
+        run: pnpm deploy:prod:verify
+      - name: Publish, verify, and promote exact deployment
+        timeout-minutes: 8
+        run: pnpm deploy:prod:publish
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      - name: Verify public SHA and homepage
+        run: |
+          version=$(curl -fsS --max-time 20 -H 'Cache-Control: no-cache' "https://scaffold.danielhowells.com/api/internal/version?expected=$GITHUB_SHA")
+          node -e 'const v=JSON.parse(process.argv[1]);if(v.sha!==process.env.GITHUB_SHA)process.exit(1)' "$version"
+          curl -fsS --max-time 20 -H 'Cache-Control: no-cache' https://scaffold.danielhowells.com/ | grep -q Scaffold
