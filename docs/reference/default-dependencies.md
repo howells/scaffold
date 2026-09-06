@@ -33,8 +33,7 @@ Default UI dependencies:
 - `motion` (import from `motion/react` in React code)
 - `lucide-react`
 - `zod`
-- `clsx`
-- `tailwind-merge`
+- `cn`
 - `sonner`
 - `@tanstack/react-query` when the UI talks to server state
 - `nuqs` when the UI has meaningful URL state
@@ -44,6 +43,8 @@ Common additions:
 - `next-themes`
 - `date-fns`
 - `usehooks-ts`
+
+Use the official [`cn`](https://github.com/shadcn-ui/cn) package for conditional class names and Tailwind v4 conflict resolution. Import `{ cn }` from `"cn"`; existing `lib/utils.ts` helpers can re-export it. Preserve custom merge rules with `createCn` from `"cn/config"`. Projects still on Tailwind v3 keep `tailwind-merge` v2 until they upgrade Tailwind.
 
 ## Every Next.js UI repo
 
@@ -243,7 +244,7 @@ pnpm add -D @howells/lint @howells/typescript-config @howells/husky turbo typesc
 
 ```bash
 pnpm add -D @howells/lint @howells/typescript-config @howells/husky turbo typescript lint-staged tsx vitest
-pnpm add next react react-dom tailwindcss @tailwindcss/postcss motion lucide-react zod clsx tailwind-merge sonner @tanstack/react-query next-themes date-fns usehooks-ts nuqs @howells/envy
+pnpm add next react react-dom tailwindcss @tailwindcss/postcss motion lucide-react zod cn sonner @tanstack/react-query next-themes date-fns usehooks-ts nuqs @howells/envy
 ```
 
 When the repo exports reusable UI, also add Storybook and browser/component test tooling:
@@ -255,7 +256,7 @@ pnpm add -D storybook @storybook/react-vite @testing-library/react @testing-libr
 ### New full-stack product app
 
 ```bash
-pnpm add next react react-dom tailwindcss @tailwindcss/postcss motion lucide-react zod clsx tailwind-merge sonner @tanstack/react-query nuqs drizzle-orm @neondatabase/serverless @howells/envy
+pnpm add next react react-dom tailwindcss @tailwindcss/postcss motion lucide-react zod cn sonner @tanstack/react-query nuqs drizzle-orm @neondatabase/serverless @howells/envy
 pnpm add -D drizzle-kit
 ```
 
@@ -314,8 +315,7 @@ The direct-manifest scan found these repeatedly:
 - `motion`
 - `lucide-react`
 - `zod`
-- `clsx`
-- `tailwind-merge`
+- `cn`
 - `sonner`
 - `nuqs`
 - `@tanstack/react-query`

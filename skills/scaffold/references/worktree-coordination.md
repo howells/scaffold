@@ -6,13 +6,14 @@ All managed worktrees live under one machine-wide umbrella:
 ~/Sites/.worktrees/
   codex/<project>/<task>/
   claude/<project>/<task>/
+  opencode/<project>/<task>/
   manual/<project>/<task>/
   .control/
 ```
 
-This page is canonical. `~/Sites/WORKTREES.md` symlinks here so people and both harnesses read the same policy.
+This page is canonical. `~/Sites/WORKTREES.md` symlinks here so people and all three harnesses read the same policy.
 
-The umbrella coordinates paths; it does not share working directories. Codex and Claude never write to the same worktree. Each task owns one branch, worktree, and harness namespace.
+The umbrella coordinates paths; it does not share working directories. Codex, Claude Code, and OpenCode never write to the same worktree. Each task owns one branch, worktree, and harness namespace.
 
 ## Why the namespaces matter
 
@@ -22,6 +23,7 @@ The namespace answers who created the tree:
 
 - `codex/` is owned by Codex Desktop or Codex CLI work.
 - `claude/` is owned by Claude Desktop or Claude Code work.
+- `opencode/` is owned by OpenCode.
 - `manual/` is for deliberate human-created worktrees.
 - `.control/` contains shared hooks or scripts, never project work.
 
@@ -51,11 +53,23 @@ Set `worktree.baseRef` to `fresh` and use a global `WorktreeCreate` hook that cr
 
 1. resolve the repository's common Git directory rather than assuming the current directory is the primary checkout;
 2. fetch and prune `origin` without prompting;
-3. start from `origin/HEAD`, falling back to `origin/main`, `origin/master`, then `HEAD`;
+3. resolve the current remote default branch and start from its fetched commit; stop on refresh failure; use committed `HEAD` only for a repository with no remotes;
 4. fail if the target path or branch already exists;
 5. copy only explicitly ignored files selected by `.worktreeinclude`.
 
 Keep the hook in `~/Sites/.worktrees/.control/`. Every rotated Claude account home should symlink its `settings.json` to the canonical `~/.claude/settings.json`, so new accounts cannot silently lose the hook.
+
+### CLI launchers and OpenCode
+
+Use `claude-worktree <task>` or `opencode-worktree <task>` from the project to create and launch a new task. Both use the same creator in `.control/create-task-worktree.py`, the freshly fetched remote default branch, and a `<harness>/<task>` branch. Both preserve dirty source files, refuse collisions, and retain the task checkout on exit. Resume Claude from inside the existing tree; resume OpenCode with `opencode <existing-worktree-path>`.
+
+OpenCode loads `.control/opencode-worktrees.md` through the global config's `instructions` array. It must reuse the task's existing tree or create one before implementation, and target that absolute path in every tool. A shell `cd` cannot move another tool's workspace.
+
+Claude's native `--worktree` creation hook uses the same creator, but native mode still owns its exit cleanup. Use `claude-worktree` for the shared retain-until-cleanup behaviour. OpenCode has no native worktree-root setting; the launcher and global instructions provide that routing.
+
+Codex Desktop uses its native Worktree mode and may start detached with generated directory names. Its configured namespace and disabled automatic cleanup still apply. Before implementation, verify the fetched default-branch base and attach a unique `codex/<task>` branch; do not silently treat a failed refresh as current. Respect an explicitly requested starting branch or commit. Do not create a second tree inside one already owned by the task.
+
+These settings govern Git isolation. Task selection, specifications, validation and PR delivery belong to the selected skill, including `next`.
 
 ### Claude Desktop
 
@@ -68,7 +82,7 @@ Before creating a tree:
 1. run `git worktree list --porcelain` from any checkout of the repository;
 2. inspect `git status --short` in the intended source checkout;
 3. fetch and prune the remote;
-4. choose a unique task name and harness-prefixed branch, such as `codex/current-baseline` or `claude/auth-cleanup`;
+4. choose a unique task name and harness-prefixed branch, such as `codex/current-baseline`, `claude/auth-cleanup`, or `opencode/search-fix`;
 5. create the tree from the freshest trustworthy base.
 
 One task owns one branch and one worktree. A subagent may work inside its assigned tree, but branch, worktree, stash, and cleanup operations stay with the coordinating session.

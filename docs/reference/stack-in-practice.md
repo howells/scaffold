@@ -45,7 +45,7 @@ The dependency baseline is consistent: the same ~15 packages carry most repos. A
 
 - **Tooling spine**: `typescript`, `@howells/lint`, `@howells/typescript-config`, `turbo`, `lint-staged`, `vitest`, `tsx`, `@howells/husky`, and `@howells/envy` where runtime configuration exists.
 - **UI repos**: `react` / `react-dom`, `tailwindcss` (+ `@tailwindcss/postcss`), `next`, `zod`, `lucide-react`, and `motion` (not `framer-motion` in current first-party work).
-- **Common UI**: `clsx` + `tailwind-merge`, `class-variance-authority`, `@base-ui/react` / `@radix-ui/*`, `@tanstack/react-query`, `nuqs`, `next-themes`, `sonner`, `cmdk`, and the `@patternmode/*` kit (`stacksheet`, `scrollframe`, `swatch`, `aperto`).
+- **Common UI**: `cn`, `class-variance-authority`, `@base-ui/react` / `@radix-ui/*`, `@tanstack/react-query`, `nuqs`, `next-themes`, `sonner`, `cmdk`, and the `@patternmode/*` kit (`stacksheet`, `scrollframe`, `swatch`, `aperto`).
 - **Data & AI**: `drizzle-orm` (+ `drizzle-kit`), `@neondatabase/serverless`, `ai` (Vercel AI SDK), `@howells/ai`, `@mastra/*` when orchestration is needed, `@modelcontextprotocol/sdk` for MCP.
 - **Testing**: `vitest` for unit/integration, `@playwright/test` for E2E, `@testing-library/*`.
 

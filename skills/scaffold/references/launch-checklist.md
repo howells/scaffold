@@ -38,7 +38,7 @@ Use this for a new repo or before releasing an aligned existing repo.
 - Storybook exists for exported reusable UI
 - local wrappers are preferred over primitive forks
 - brand expression is handled through tokens and compositions, not component duplication
-- `motion`, `lucide-react`, `zod`, `clsx`, `tailwind-merge`, and `sonner` are installed when the repo is UI-first
+- `motion`, `lucide-react`, `zod`, `cn`, and `sonner` are installed when the repo is UI-first
 - `@tanstack/react-query` is used for client server-state and `nuqs` for meaningful URL state
 - `@howells/stacksheet` is used for stacked sheet workflows instead of overextending a basic drawer
 - `@howells/aperto` is considered for thumbnail-to-expanded media transitions instead of rebuilding that interaction locally
