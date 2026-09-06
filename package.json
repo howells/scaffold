@@ -12,6 +12,12 @@
     "format": "howells-oxfmt --write AGENTS.md README.md package.json pnpm-workspace.yaml next.config.mjs source.config.ts postcss.config.mjs tsconfig.json scripts/check-docs-integrity.ts src",
     "typecheck": "pnpm run source && tsc --noEmit",
     "test": "node scripts/check-docs-integrity.ts",
+    "check:ci": "pnpm lint && pnpm typecheck && pnpm test && pnpm generate:principles --check && pnpm sync:skill --check",
+    "deploy:prod:pull": "vercel pull --yes --environment=production --scope danielhowells",
+    "deploy:prod:stamp": "node scripts/stamp-build.mjs",
+    "deploy:prod:build": "vercel build --prod --scope danielhowells",
+    "deploy:prod:verify": "node scripts/check-vercel-prebuilt.mjs",
+    "deploy:prod:publish": "node scripts/publish-vercel-prebuilt.mjs",
     "sync:skill": "node scripts/sync-skill.ts",
     "generate:principles": "node scripts/generate-principles.ts",
     "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm generate:principles --check && pnpm sync:skill --check"
