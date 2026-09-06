@@ -222,8 +222,7 @@ The packages that recur most often in UI work are:
 - `motion`
 - `lucide-react`
 - `zod`
-- `clsx`
-- `tailwind-merge`
+- `cn`
 - `sonner`
 - `nuqs`
 - `next-themes`
