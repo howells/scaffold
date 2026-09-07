@@ -30,7 +30,7 @@ Adjust names and filters while preserving the script and workspace contracts.
     "lint-staged": "latest",
     "tsx": "latest",
     "turbo": "latest",
-    "typescript": "latest",
+    "typescript": "7.0.2",
     "vitest": "latest"
   },
   "lint-staged": {
@@ -107,7 +107,7 @@ allowBuilds:
   sharp: true
 
 catalog:
-  typescript: "^6.0.0"
+  typescript: "7.0.2"
 ```
 
 Add extra workspaces such as `scripts/*` explicitly. Keep private-package cooldown exclusions exact, review each lifecycle build entry, and pin catalog versions in the consuming repo.
@@ -188,9 +188,6 @@ For a UI-oriented monorepo root:
 ```json
 {
   "extends": "@howells/typescript-config/bundler-dom-app",
-  "compilerOptions": {
-    "baseUrl": "."
-  },
   "exclude": [
     "node_modules",
     "**/node_modules",
@@ -207,7 +204,7 @@ For a Next.js app leaf:
 {
   "extends": "@howells/typescript-config/nextjs",
   "compilerOptions": {
-    "baseUrl": "."
+    "paths": { "@/*": ["./src/*"] }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
 }

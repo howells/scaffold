@@ -16,11 +16,11 @@
     "motion": "^12.40.0"
   },
   "devDependencies": {
-    "@howells/typescript-config": "^0.1.6",
     "@howells/lint": "^1.0.0",
+    "@howells/typescript-config": "^0.1.6",
     "@types/react": "^19.2.16",
     "@types/react-dom": "^19.2.3",
-    "typescript": "^6.0.3"
+    "typescript": "7.0.2"
   },
   "peerDependencies": {
     "react": "^19.2.7",

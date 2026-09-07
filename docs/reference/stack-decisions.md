@@ -32,7 +32,7 @@ Review this table when a compatibility-significant major changes; keep exact min
 | pnpm         |                         11 | 2026-08-26       |
 | Next.js      |                         16 | 2026-08-26       |
 | React        |                         19 | 2026-08-26       |
-| TypeScript   |                          6 | 2026-08-26       |
+| TypeScript   |                          7 | 2026-09-07       |
 | Tailwind CSS |                          4 | 2026-08-26       |
 | Turborepo    |                          2 | 2026-08-26       |
 | Vitest       |                          4 | 2026-08-26       |
@@ -100,7 +100,13 @@ Rules:
 
 - do not reintroduce a vague `base.json`
 - keep shared presets thin
-- keep local `paths` and `baseUrl` in the consumer repo only
+- keep `paths` in the consumer repo, with targets relative to its config
+- remove retired `baseUrl` and obsolete `ignoreDeprecations`
+- declare Node, worker and test ambient `types` in their owning leaf configs
+
+Native TypeScript 7 is the default for checking and supported declaration emission. Pin the reviewed stable compiler in the workspace catalog and verify the actual `tsc --version` from each checking package. Preserve the selected preset's target, DOM libraries and emit behavior.
+
+Scripts that import the JavaScript compiler API need a separate TypeScript 6 tooling dependency, such as `@typescript/typescript6`; keep application checking on native 7. Third-party parsers and declaration builders retain their supported compiler resolution until their own compatibility checks pass. Do not use a whole-workspace override to force their compiler version.
 
 ## Linting and formatting
 
