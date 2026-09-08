@@ -2,7 +2,7 @@
 
 Codex and Claude work directly in the existing project checkout, normally `~/Sites/<project>`. Do not create a Git worktree, isolated clone, or worktree-based subagent for a task unless Daniel explicitly requests that isolation. Branches and pull requests remain available in the existing checkout.
 
-This page is canonical; `~/Sites/WORKTREES.md` remains a compatibility symlink so existing instruction links keep working. It replaces the previous mandatory-worktree policy.
+This page is canonical; `~/Sites/WORKTREES.md` remains a compatibility symlink so existing instruction links keep working. It replaces the previous mandatory-worktree policy and older repository instructions that require Claude or Codex to create worktrees. Other repository rules still apply.
 
 ## One writer per project
 
