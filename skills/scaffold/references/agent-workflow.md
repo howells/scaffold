@@ -130,9 +130,9 @@ For substantial work, keep documentation and progress lightweight but real:
 - docs should describe the current system, not preserve outdated migration stories forever
 - prose should use short declarative sentences, direct verbs, and evidence for claims
 
-## Worktrees
+## Checkout ownership
 
-When more than one harness or agent is active, follow [Worktree Coordination](./worktree-coordination.md). Keep Codex, Claude, and manual work under the shared umbrella but in separate task directories. Branch, stash, handoff, and cleanup operations stay with the coordinating session.
+Use the existing project checkout and follow [Checkout Coordination](./worktree-coordination.md). One lead editing session owns each project across harnesses; parallelise across projects or explicitly assigned non-overlapping edits. Create a worktree only when Daniel explicitly requests isolation. Branch, stash, handoff, and cleanup operations stay with the coordinating session.
 
 ## Environment discipline
 

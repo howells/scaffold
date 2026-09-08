@@ -41,7 +41,7 @@ These are the current Howells project defaults:
 - [Shared Package Candidates](./reference/shared-package-candidates.md)
 - [Agent Workflow](./reference/agent-workflow.md)
 - [Development Skills](./reference/development-skills.md)
-- [Worktree Coordination](./reference/worktree-coordination.md)
+- [Checkout Coordination](./reference/worktree-coordination.md)
 - [Agentic Development](./reference/agentic-development.md)
 - [Launch Checklist](./reference/launch-checklist.md)
 
