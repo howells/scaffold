@@ -150,11 +150,21 @@ jobs:
 ### Why `--provenance` is passed explicitly
 
 npm documents trusted publishing as attaching a provenance attestation by itself,
-without the flag. Measured on `@instruments/colorscope@9.1.0`, published from a
-trusted-publishing workflow with no `--provenance`: the attestations endpoint
-answered `{"error":"Not found"}` long after the release became installable. Pass the
-flag. It costs nothing, and a missing attestation is only noticed by someone who goes
-looking for one.
+without the flag. It does not. Measured as a controlled pair, same account and same
+mechanism, one flag apart:
+
+| Package | `--provenance` | Attestations endpoint |
+| --- | --- | --- |
+| `@instruments/colorscope@9.1.0` | absent | `{"error":"Not found"}` |
+| `@howells/lint@3.2.5` | passed | 2 attestations |
+| `@howells/lint@3.3.0` | passed | 2 attestations |
+
+Both negative checks were made well after the release became installable, so this is
+not ingestion lag. The two attestations are npm's own publish attestation and a SLSA
+provenance statement.
+
+Pass the flag. It costs nothing, and a missing attestation is only noticed by someone
+who goes looking for one.
 
 ### Why it packs first
 
@@ -185,8 +195,15 @@ For a 6.9 MB tarball that window was over five minutes, during which the registr
 answered 404 for a version it had already accepted. A single check turns a release
 that actually shipped into a red run.
 
+**The window is not proportional to tarball size.** `@howells/lint@3.3.0` is 130 kB,
+around a fiftieth of that, and its resolver lag was also over five minutes: the
+registry document served the new version roughly a minute after the publish step
+logged `+ @howells/lint@3.3.0`, while `npm view` and `npm install` kept answering 404
+for a further five. Budget the same wait for a small package.
+
 Poll two things, because they lag independently: the registry document, and the
-resolver. npm returned `ETARGET` for a version the packument already listed.
+resolver. npm returned `ETARGET` for a version the packument already listed, and a
+404 for one the packument served.
 
 A successful publish is not evidence that anyone can install it. Resolve the
 published version **anonymously** - fetch it with no `Authorization` header and
