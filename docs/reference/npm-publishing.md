@@ -244,3 +244,76 @@ JSON
 
 Not automated, and it goes first. Consumers holding data at scale need warning ahead
 of the tarball rather than alongside it.
+
+## Where this is deployed
+
+Every repo below publishes over OIDC from `.github/workflows/release.yml`, and each
+was proven by a dry run that ran the full gate and packed the tarball without
+publishing. Actions is `allowed_actions: selected` on all of them, github-owned plus
+`pnpm/action-setup` only, with a read-only workflow token.
+
+| Repo | Packages |
+| --- | --- |
+| `materialinstruments/colorscope` | `@instruments/colorscope`, `-client`, `-data` |
+| `materialinstruments/taxonomy` | `@instruments/taxonomy`, `-client` |
+| `materialinstruments/sustainability` | `@instruments/sustainability` |
+| `materialinstruments/visual-grounding` | `@instruments/visual-grounding` |
+| `howells/lint` | `@howells/lint` |
+| `howells/ai` | `@howells/ai` |
+| `howells/boundaries` | `@howells/boundaries` |
+| `howells/envy` | `@howells/envy` |
+| `howells/husky` | `@howells/husky` |
+| `howells/typescript-config` | `@howells/typescript-config` |
+| `howells/patternmode` | fifteen `@patternmode/*` and `@howells/motion` |
+
+### Registrations still outstanding
+
+The workflow is only half of it. These packages have the workflow and no trusted
+publisher, so their first publish through it will fail until someone sits down with a
+security key:
+
+`@instruments/taxonomy`, `@instruments/taxonomy-client`,
+`@instruments/sustainability`, `@instruments/visual-grounding`, `@howells/ai`,
+`@howells/boundaries`, `@howells/envy`, `@howells/husky`,
+`@howells/typescript-config`.
+
+`@howells/husky` moved from `commoninstruments/husky` to `howells/husky` and its npm
+`repository` field still names the old one. Register it against **howells**.
+
+The fifteen patternmode packages were registered against a `patternmode` /
+`release.yml` pair while no such file existed. It exists now, so they may need
+nothing; confirm one before assuming the rest.
+
+## Five traps this rollout actually hit
+
+Each of these turned a green-looking release path into a broken one.
+
+**A repo that cannot run its own checks on a fresh clone.** `typecheck` before
+`build` means a package importing its sibling fails with "Cannot find module"; it only
+ever passed because a developer machine already had `dist`. Hit `visual-grounding` and
+`envy`. Type-aware lint has the same dependency: on a clean clone it resolves sibling
+types from built output, so `lint` before `build` reports errors that are not in the
+code. Run the repo's own composite gate rather than one leg of it, and give `lint` a
+`^build` dependency in `turbo.json` where packages import each other through `dist`.
+
+**A repo that cannot install on a clean machine.** pnpm 11 treats an ignored build
+script as an error rather than a warning, so a package whose `esbuild` is not in
+`allowBuilds` dies at `pnpm install --frozen-lockfile` before any check runs. It works
+locally because the approval is already on disk.
+
+**A dry run that passes by skipping everything.** A multi-package release script that
+skips versions already on the registry will skip all of them when nothing has been
+bumped, exit green, and never reach the pack step - which is where the `workspace:`
+protocol guard lives. Make the rehearsal pack even a published version. For the same
+reason, skip the republish guard on a dry run: guarding the current version means a
+rehearsal can never run until someone bumps.
+
+**The repo's lint config applies to the release tooling you add.** Three dry runs
+failed on `scripts/check-published-package.mjs` before reaching anything real. The
+formatters disagree between repos, so run each repo's own fixer rather than copying
+one formatted file everywhere.
+
+**A published package with no route.** Audit by manifest, not by memory:
+`@instruments/colorscope-data` was published at 0.2.0 and absent from its own repo's
+workflow, so it could only go out by hand. `gh api /search/code?q=repo:<owner>/<repo>+filename:package.json+%22publishConfig%22`
+finds them.
