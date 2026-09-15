@@ -147,6 +147,15 @@ jobs:
           retention-days: 90
 ```
 
+### Why `--provenance` is passed explicitly
+
+npm documents trusted publishing as attaching a provenance attestation by itself,
+without the flag. Measured on `@instruments/colorscope@9.1.0`, published from a
+trusted-publishing workflow with no `--provenance`: the attestations endpoint
+answered `{"error":"Not found"}` long after the release became installable. Pass the
+flag. It costs nothing, and a missing attestation is only noticed by someone who goes
+looking for one.
+
 ### Why it packs first
 
 **Publish the packed tarball, never the workspace directory.** `npm publish` on a
@@ -168,7 +177,16 @@ historical version dark to anonymous consumers at once. Give each package
 package publishes restricted on its first publish, because that is npm's default for
 a scope.
 
-### Verifying after the publish
+### Verifying after the publish, patiently
+
+**npm ingests a publish asynchronously and the check must poll.** The CLI says so:
+"Your package is being processed and may take a few minutes to become available."
+For a 6.9 MB tarball that window was over five minutes, during which the registry
+answered 404 for a version it had already accepted. A single check turns a release
+that actually shipped into a red run.
+
+Poll two things, because they lag independently: the registry document, and the
+resolver. npm returned `ETARGET` for a version the packument already listed.
 
 A successful publish is not evidence that anyone can install it. Resolve the
 published version **anonymously** - fetch it with no `Authorization` header and
