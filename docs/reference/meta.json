@@ -9,6 +9,7 @@
     "repo-archetypes",
     "package-boundaries",
     "deployment-defaults",
+    "npm-publishing",
     "default-dependencies",
     "config-snippets",
     "ui-projects",
