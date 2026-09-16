@@ -265,6 +265,28 @@ If the repo has its own local UI package, keep aliases aligned to that package r
 
 `@howells/husky` writes the immutable `.husky/pre-commit` and `.husky/pre-push` files during `prepare`. Don't hand-edit the generated hooks in a consumer repository. Pre-commit runs `lint-staged`; pre-push runs `typecheck` and `lint` when the pushed ref is the checked-out `HEAD`.
 
+## Claude Code hooks: `.claude/settings.json`
+
+Commit this, merged into any existing settings. It formats only the file an `Edit` or `Write` touched. It `cd`s into the file's directory so `howells-oxfmt` picks up the nearest package's config, and calls the binary through `$CLAUDE_PROJECT_DIR` because the hook runs wherever the session last changed directory. Needs `jq`. Repos still on Biome call `biome format --write` in the same place, never `check --fix`. `stack-decisions.md` explains why there is no Stop hook, no lint fix and no Codex hook.
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); [ -f \"$f\" ] || exit 0; case \"$f\" in *.js|*.jsx|*.ts|*.tsx|*.mjs|*.cjs|*.mts|*.cts|*.json|*.jsonc|*.css|*.md|*.mdx) cd \"$(dirname \"$f\")\" && \"$CLAUDE_PROJECT_DIR/node_modules/.bin/howells-oxfmt\" --write \"$f\" >/dev/null ;; esac"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
 ## Envy env boundary
 
 Use this shape for repos with runtime env:
