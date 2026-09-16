@@ -151,6 +151,16 @@ Default approach:
 
 Change the shared package when the house hook contract needs to change. Don't edit generated `.husky` files in consuming repositories.
 
+## Agent hooks
+
+Git hooks are the enforcement layer, because they see every change whichever tool made it: Claude Code, Codex, or a person. Agent hooks only tidy a session.
+
+- **Claude Code:** commit one `PostToolUse` hook, matcher `Edit|Write`, that formats the file just edited and nothing else. The snippet is in `config-snippets.md`. It follows the documented format-after-edit pattern and runs inside subagents too.
+- **No lint fixes in agent hooks.** A lint autofix can change what code means: `vitest/prefer-to-be-truthy` rewrites `toBe(true)` to `toBeTruthy()`, and a hook ran it on every edit. Lint fixes happen at commit, through `lint-staged`, on staged files only.
+- **Nothing that writes files on `Stop` or `SubagentStop`.** Those fire for every session and subagent in the checkout, so a repo-wide fix or format rewrites files other agents are still editing.
+- **No `|| true` or `2>/dev/null` on a formatter.** Four repos ran formatters that did not exist, and nobody saw, because the failure was hidden.
+- **Codex:** no project `.codex/hooks.json`. Codex passes `apply_patch` edits as `tool_input.command` with no file path, and most of its writes go through shell commands that tool hooks don't reliably see. `lint-staged` formats and fixes Codex's changes at commit.
+
 ## UI stack
 
 For new UI repos:
