@@ -35,7 +35,7 @@
     "tailwindcss": "4.3.3"
   },
   "devDependencies": {
-    "@howells/lint": "2.1.0",
+    "@howells/lint": "^3.3.2",
     "@howells/typescript-config": "0.1.6",
     "@types/mdx": "2.0.14",
     "@types/node": "24.13.3",

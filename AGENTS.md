@@ -13,6 +13,7 @@ Defaults a new repo inherits:
 - pnpm monorepo, usually `apps/*` and `packages/*`, with Turborepo and cache disabled until the repo proves it's deterministic.
 - Next.js App Router, React, Tailwind v4, Base UI, and Storybook when the repo exports reusable UI; unified Radix is the deliberate opt-out.
 - `@howells/lint` on the Oxlint/Oxfmt lane, `@howells/typescript-config` for tsconfig presets, `@howells/envy` for typed env parsing and deploy-time env checks.
+  Every package that lints carries an `oxlint.config.ts` extending the closest preset (`core`, `react` or `next`), and the file is spelled `.ts`: Oxlint never reads `oxlint.config.mjs`, `.js` or `.json`, the run is quiet and exits 0, and MaterialGraph plus five sibling repos linted on Oxlint's defaults for months that way. A repo that depends on `@howells/lint` with no config at all is in the same state. The preset ships as ultracite ships it; no config-level rule disposals, no compat shim, no old-version alias under another name. Verify a fresh setup by reading the rule names in the first `pnpm lint` run: `anti-slop(...)` and `unicorn(...)` present means the preset loaded. The `howells-lint` skill carries the sweep and the fixer.
 - Drizzle and Neon for product data, the narrowest typed API boundary that fits, and React Query when the client owns server-state.
 - `@howells/ai` as the provider baseline, Motif's SDK or agent-readable CLI for image work, product orchestration in a repo-local `ai` or `agents` package, and MCP in its own package only when the product genuinely exposes it.
 
