@@ -163,6 +163,14 @@ Git hooks are the enforcement layer, because they see every change whichever too
 - **No `|| true` or `2>/dev/null` on a formatter.** Four repos ran formatters that did not exist, and nobody saw, because the failure was hidden.
 - **Codex:** no project `.codex/hooks.json`. Codex passes `apply_patch` edits as `tool_input.command` with no file path, and most of its writes go through shell commands that tool hooks don't reliably see. `lint-staged` formats Codex's changes at commit.
 
+## Deploying to Vercel
+
+Production deploys are manual. Nothing ships on a push.
+
+- **An arm64 Mac cannot build the artifact.** `vercel build` stamps the architecture of the machine it ran on, and `scripts/check-vercel-prebuilt.mjs` requires x86_64 functions, so a Mac build is rejected before it can be published. `pnpm deploy:prod:linux` clones HEAD into an amd64 OrbStack machine, installs the pinned Node, pnpm and Vercel CLI there, and runs the pull, stamp, build, verify and publish chain. Pass `--no-publish` to build and verify without promoting. It reads the Vercel CLI's own login from the Mac, so it needs no token.
+- **GitHub Actions needs a token, and tokens expire.** Vercel has no OIDC route for CLI deploys, unlike npm publishing, so `deploy-production.yml` depends on a `VERCEL_TOKEN` secret. This repository's token worked for thirteen minutes on 2026-09-03 and then expired: the next ten pushes each failed on `vercel pull` with "You do not have access to the specified account", and the site served a two-week-old build while every run went red. The workflow is now `workflow_dispatch` only, so a missing token cannot masquerade as a broken build.
+- **Verify the deployed SHA, not the deploy's exit code.** `scripts/publish-vercel-prebuilt.mjs` promotes and then confirms the running deployment; the site also answers `/api/internal/version` with the commit it was built from. A green deploy step is not evidence that the SHA you intended is serving.
+
 ## UI stack
 
 For new UI repos:

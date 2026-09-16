@@ -20,6 +20,8 @@
     "deploy:prod:build": "vercel build --prod --scope danielhowells",
     "deploy:prod:verify": "node scripts/check-vercel-prebuilt.mjs",
     "deploy:prod:publish": "node scripts/publish-vercel-prebuilt.mjs",
+    "deploy:prod": "pnpm deploy:prod:pull && pnpm deploy:prod:stamp && pnpm deploy:prod:build && pnpm deploy:prod:verify && pnpm deploy:prod:publish",
+    "deploy:prod:linux": "sh scripts/deploy-prod-linux.sh",
     "sync:skill": "node scripts/sync-skill.ts",
     "generate:principles": "node scripts/generate-principles.ts",
     "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm generate:principles --check && pnpm sync:skill --check"

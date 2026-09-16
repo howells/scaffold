@@ -1,8 +1,20 @@
 name: Deploy production
 
+# Manual only. This workflow needs a VERCEL_TOKEN secret, Vercel has no OIDC
+# route for CLI deploys, and the token this repository held expired hours after
+# it was created: one deploy succeeded on 2026-09-03 and the next ten failed on
+# `vercel pull` with "You do not have access to the specified account", one per
+# push to main.
+#
+# The route that works without a token is `pnpm deploy:prod:linux`, which builds
+# in an amd64 OrbStack machine on the Mac and reads the Vercel CLI's own login.
+# An arm64 build cannot pass check-vercel-prebuilt, which requires x86_64
+# functions.
+#
+# Restore the push trigger when a VERCEL_TOKEN secret is in place and proven by
+# a manual run.
+
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
