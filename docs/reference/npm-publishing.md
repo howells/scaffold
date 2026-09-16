@@ -250,7 +250,9 @@ of the tarball rather than alongside it.
 Every repo below publishes over OIDC from `.github/workflows/release.yml`, and each
 was proven by a dry run that ran the full gate and packed the tarball without
 publishing. Actions is `allowed_actions: selected` on all of them, github-owned plus
-`pnpm/action-setup` only, with a read-only workflow token.
+`pnpm/action-setup` only, with a read-only workflow token. `mastra` and
+`routerbase` also allow `oven-sh/setup-bun`, because a package in each tests
+under Bun.
 
 | Repo | Packages |
 | --- | --- |
@@ -265,6 +267,25 @@ publishing. Actions is `allowed_actions: selected` on all of them, github-owned 
 | `howells/husky` | `@howells/husky` |
 | `howells/typescript-config` | `@howells/typescript-config` |
 | `howells/patternmode` | fifteen `@patternmode/*` and `@howells/motion` |
+| `howells/cli` | `@howells/cli` |
+| `howells/linearcli` | `@howells/linearcli` |
+| `howells/starlingcli` | `@howells/starlingcli` |
+| `howells/thingscli` | `@howells/thingscli` (macOS runner) |
+| `howells/revolutcli` | `@howells/revolutcli` |
+| `howells/wisecli` | `@howells/wisecli` |
+| `howells/envelope` | `@howells/envelope` |
+| `howells/stacksheet` | `@howells/stacksheet` |
+| `howells/srcfull` | `@howells/srcfull` |
+| `howells/boubakikid` | `boubakikid` |
+| `howells/gauge` | `@howells/gauge` |
+| `howells/neon` | `@howells/neon` |
+| `howells/wiredeck` | `@howells/wiredeck` |
+| `howells/mastra` | `@howells/mastra` |
+| `howells/faceplacer` | `@howells/faceplacer` |
+| `howells/routerbase` | `@howells/routerbase-mcp` |
+| `howells/motif` | `@howells/motif-cli`, `-sdk` |
+| `howells/stow` | `@howells/stow-cli`, `-client`, `-next`, `-react`, `-server` |
+| `howells/wiretext` | `wiretext`, `@wiretext/mcp` |
 
 ### Registrations still outstanding
 
@@ -284,7 +305,7 @@ The fifteen patternmode packages were registered against a `patternmode` /
 `release.yml` pair while no such file existed. It exists now, so they may need
 nothing; confirm one before assuming the rest.
 
-## Five traps this rollout actually hit
+## Traps this rollout actually hit
 
 Each of these turned a green-looking release path into a broken one.
 
@@ -317,3 +338,44 @@ one formatted file everywhere.
 `@instruments/colorscope-data` was published at 0.2.0 and absent from its own repo's
 workflow, so it could only go out by hand. `gh api /search/code?q=repo:<owner>/<repo>+filename:package.json+%22publishConfig%22`
 finds them.
+
+**A gate wider than the thing being published.** A workspace-wide `pnpm lint` or
+`pnpm build` lets an example, a sibling app or a docs site withhold a library it has
+nothing to do with, and some of them cannot run on a runner at all - `faceplacer`'s web
+app reads `DATABASE_URL` at build time. Scope it: `pnpm --filter "<name>..." run
+--if-present <script>` checks the published package and its workspace dependencies and
+nothing else.
+
+**A dependency that only exists on the machine you developed on.** `oxlint-tsgolint`
+reaches most repos as an *optional peer* of oxlint. It materialised on the Mac and not
+on a Linux runner, and type-aware lint failed with "Failed to find tsgolint
+executable". Declare it as a real devDependency rather than trusting the peer to be
+hoisted.
+
+**A CLI that builds its API client at module load.** `linearcli` constructed the Linear
+client for every command but `help` and `schema`, so `create --dry-run` - which never
+calls the API - failed without a key, and `issues --limit abc` reported a missing key
+rather than the bad limit. `starlingcli` had the same shape: the account token was
+resolved before `--fields` was checked, and `--fields` was only validated *after* the
+live request. Validate the invocation first; build the client where it is used.
+
+**Tests that assert against a live service.** A publish gate that calls a real bank, a
+real Linear workspace or a local Things database asserts nothing on a runner and must
+not run there. Gate those blocks on the credential or the file existing - and prove the
+condition flips, because a skip that is always true is not a skip, it is a deletion.
+
+**A test that needs git history.** `actions/checkout` clones at depth 1. `gauge`'s
+golden test runs `git archive` against a baseline commit to prove the v2 contract is a
+fixed point, and at depth 1 that commit is "not a tree object". `fetch-depth: 0`.
+
+**A package that declares a platform.** `@howells/thingscli` sets `"os": ["darwin"]`,
+so the fresh-consumer install dies with `EBADPLATFORM` on ubuntu before it can check
+anything. npm's `--os` flag steers optional dependency selection rather than the root
+install target, so it does not help: run the job on a runner matching the platform the
+package targets.
+
+**Removing a CI workflow can lock the branch.** A workflow that is a required status
+check leaves the requirement behind when the file goes, and every pull request then
+waits forever on a check that can never report. `stow` did this. Delete the requirement
+in the same change - branch protection or ruleset, whichever carries it.
+
