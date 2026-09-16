@@ -3,11 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prepare": "howells-husky",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "source": "fumadocs-mdx",
-    "lint": "howells-check src next.config.mjs source.config.ts",
+    "lint": "node scripts/check-lint-baseline.mjs",
+    "lint:all": "howells-check src next.config.mjs source.config.ts",
     "lint:fix": "howells-fix src next.config.mjs source.config.ts",
     "format": "howells-oxfmt --write AGENTS.md README.md package.json pnpm-workspace.yaml next.config.mjs source.config.ts postcss.config.mjs tsconfig.json scripts/check-docs-integrity.ts src",
     "typecheck": "pnpm run source && tsc --noEmit",
@@ -35,15 +37,21 @@
     "tailwindcss": "4.3.3"
   },
   "devDependencies": {
+    "@howells/husky": "^0.2.3",
     "@howells/lint": "^3.3.2",
     "@howells/typescript-config": "0.1.6",
     "@types/mdx": "2.0.14",
     "@types/node": "24.13.3",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.5",
+    "lint-staged": "^17.5.1",
     "shadcn": "4.19.0",
     "typescript": "7.0.2",
     "zod": "4.4.3"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": "howells-fix",
+    "*.{json,jsonc,css,md,mdx}": "howells-oxfmt --write"
   },
   "engines": {
     "node": ">=24 <25"
