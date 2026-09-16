@@ -39,7 +39,8 @@ Adjust names and filters while preserving the script and workspace contracts.
     "vitest": "latest"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx,json,jsonc,css,md}": "howells-fix"
+    "*.{js,ts,jsx,tsx}": "howells-fix",
+    "*.{json,jsonc,css,md,mdx}": "howells-oxfmt --write"
   },
   "engines": {
     "node": ">=24 <25"
@@ -286,6 +287,42 @@ Commit this, merged into any existing settings. It formats only the file an `Edi
   }
 }
 ```
+
+### Staging is format-only, always
+
+`lint-staged` runs one glob and one command:
+
+```json
+"lint-staged": {
+  "*.{js,ts,jsx,tsx,json,jsonc,css,md,mdx}": "howells-oxfmt --write"
+}
+```
+
+Never `howells-fix`. It applies every autofix Oxlint offers, and four of those change what a test asserts:
+
+```
+expect(x).toEqual(y)   ->  toStrictEqual(y)
+expect(x).toBe(true)   ->  toBeTruthy()
+expect(x).toBe(false)  ->  toBeFalsy()
+describe("name", ...)  ->  describe(name, ...)
+```
+
+The two truthiness rewrites weaken the assertion. A test written to check a value is exactly true starts passing for any truthy value, and it happens on commit, to staged files, with nothing in the output saying so. Measured on 2026-09-16: colorscope carried 276 assertions weakened this way and motif 121, 39 of motif's arriving in a single session's commits, one of which broke an env test.
+
+`howells-fix` also exits 1 on any finding it cannot repair, so in a repo with a lint backlog it failed every commit that staged an affected file, leaving `--no-verify` as the only route out, which disables every hook at once.
+
+Lint still gates on push, where a person reads the findings and decides. Biome repos use `biome format --write`, never `check --write`.
+
+### A lint backlog gets a ratchet, not an exemption
+
+A repo whose `lint` script reports more than roughly 40 findings still adopts the hooks - it does not skip them. Its `lint` script becomes a ratchet instead of a bare `howells-check`:
+
+- Copy `scripts/check-lint-baseline.mjs` from a repo that already carries it (originally MaterialGraph's). It re-runs everything the repo's own lint script ran, compares Oxlint error counts per unit and per rule against a checked-in `scripts/lint-baseline.json`, and fails only when a count rises above its baseline. Formatting is never baselined - it must still pass outright.
+- Wire `"lint": "node scripts/check-lint-baseline.mjs"` and keep the unratcheted run as `"lint:all"`.
+- Generate the baseline with `node scripts/check-lint-baseline.mjs --update`, and record in the commit message how many findings it recorded and the top rules by count.
+- Prove the ratchet actually bites before shipping it: temporarily lower one baselined count, confirm the gate fails, then restore it.
+
+The backlog can then only fall, and the push gate is real from the first commit rather than deferred until the backlog is clear.
 
 ## Envy env boundary
 
