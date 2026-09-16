@@ -7,6 +7,7 @@ allowBuilds:
 minimumReleaseAge: 1440
 
 minimumReleaseAgeExclude:
+  - "@howells/lint"
   - "browserslist@4.28.7"
   - "@next/env@16.3.3"
   - "@next/swc-darwin-arm64@16.3.3"

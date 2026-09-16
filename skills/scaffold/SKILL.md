@@ -46,7 +46,7 @@ When invoked:
    - `package.json`
    - workspace config
    - `turbo.json`
-   - `oxlint.config.ts`
+   - `oxlint.config.ts` (the `.ts` spelling is the only one Oxlint reads; a `.mjs` or `.json` beside it, or no file at all, means the preset never loaded)
    - `oxfmt.config.ts`
    - `tsconfig.json`
    - app/package folders

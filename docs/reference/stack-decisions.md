@@ -154,6 +154,8 @@ Default approach:
 - `pre-commit`: run `lint-staged`
 - `pre-push`: run `typecheck` and `lint` when the pushed ref is the checked-out `HEAD`
 
+`lint-staged` runs one glob and one command, `howells-oxfmt --write` over `*.{js,ts,jsx,tsx,json,jsonc,css,md,mdx}`. Staging formats and never lint-fixes. A repo whose lint findings sit above the house threshold (~40) still adopts the hooks: its `lint` script becomes the house ratchet (`scripts/check-lint-baseline.mjs`, comparing per-rule Oxlint counts against a checked-in baseline that can only fall) rather than an exemption. See `config-snippets.md` for the exact shapes.
+
 Change the shared package when the house hook contract needs to change. Don't edit generated `.husky` files in consuming repositories.
 
 ## Agent hooks
@@ -161,10 +163,10 @@ Change the shared package when the house hook contract needs to change. Don't ed
 Git hooks are the enforcement layer, because they see every change whichever tool made it: Claude Code, Codex, or a person. Agent hooks only tidy a session.
 
 - **Claude Code:** commit one `PostToolUse` hook, matcher `Edit|Write`, that formats the file just edited and nothing else. The snippet is in `config-snippets.md`. It follows the documented format-after-edit pattern and runs inside subagents too.
-- **No lint fixes in agent hooks.** A lint autofix can change what code means: `vitest/prefer-to-be-truthy` rewrites `toBe(true)` to `toBeTruthy()`, and a hook ran it on every edit. Lint fixes happen at commit, through `lint-staged`, on staged files only.
+- **No lint fixes anywhere automatic.** A lint autofix can change what code means. Four Vitest rules rewrite what a test asserts, and two of them weaken it: `prefer-to-be-truthy` turns `toBe(true)` into `toBeTruthy()`, `prefer-to-be-falsy` turns `toBe(false)` into `toBeFalsy()`, `prefer-strict-equal` turns `toEqual` into `toStrictEqual`, and `prefer-describe-function-title` turns a string title into a bare identifier. A test written to check a value is exactly true then passes for any truthy value. This ran first on every agent edit, then at every commit, and was found in both places on 2026-09-16: colorscope carried 276 weakened assertions and motif 121, one of which broke an env test. Autofix now runs only when a person asks for it, through `lint:fix`. Agent hooks format. Commits format. Lint reports on push and a person decides.
 - **Nothing that writes files on `Stop` or `SubagentStop`.** Those fire for every session and subagent in the checkout, so a repo-wide fix or format rewrites files other agents are still editing.
 - **No `|| true` or `2>/dev/null` on a formatter.** Four repos ran formatters that did not exist, and nobody saw, because the failure was hidden.
-- **Codex:** no project `.codex/hooks.json`. Codex passes `apply_patch` edits as `tool_input.command` with no file path, and most of its writes go through shell commands that tool hooks don't reliably see. `lint-staged` formats and fixes Codex's changes at commit.
+- **Codex:** no project `.codex/hooks.json`. Codex passes `apply_patch` edits as `tool_input.command` with no file path, and most of its writes go through shell commands that tool hooks don't reliably see. `lint-staged` formats Codex's changes at commit.
 
 ## UI stack
 
