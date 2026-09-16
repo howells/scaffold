@@ -50,8 +50,7 @@
     "zod": "4.4.3"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": "howells-fix",
-    "*.{json,jsonc,css,md,mdx}": "howells-oxfmt --write"
+    "*.{js,ts,jsx,tsx,json,jsonc,css,md,mdx}": "howells-oxfmt --write"
   },
   "engines": {
     "node": ">=24 <25"
