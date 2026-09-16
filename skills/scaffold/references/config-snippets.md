@@ -319,6 +319,8 @@ A repo whose `lint` script reports more than roughly 40 findings still adopts th
 
 The backlog can then only fall, and the push gate is real from the first commit rather than deferred until the backlog is clear.
 
+Generate the baseline against the same tree CI lints. Type-aware rules read generated type declarations, so if a repo generates any (Fumadocs writes `.source/`, Prisma writes a client), a baseline recorded on a machine that already has them will be far too low on a fresh runner: every import from the missing directory resolves to `any` and `no-unsafe-*` floods. Make the `lint` script generate them first, the way `typecheck` already does, rather than baselining the degraded numbers. Prove it by deleting the generated directory and running `lint` before you push.
+
 ## Envy env boundary
 
 Use this shape for repos with runtime env:
