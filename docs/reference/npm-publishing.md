@@ -379,3 +379,25 @@ check leaves the requirement behind when the file goes, and every pull request t
 waits forever on a check that can never report. `stow` did this. Delete the requirement
 in the same change - branch protection or ruleset, whichever carries it.
 
+**A missing `repository` field fails the publish, and no dry run can tell you.**
+npm validates `repository.url` against the OIDC repository before it attaches a
+provenance attestation; absent reads as `""` and the publish 422s. A dry run never
+reaches Publish, so the gate is green right up to the moment it matters. Check every
+manifest that publishes: `@howells/srcfull`, `@howells/wiredeck` and
+`@howells/routerbase-mcp` all lacked one.
+
+**A tag filter's `*` does not match `/`.** A monorepo pattern of
+`"*@[0-9]+.[0-9]+.[0-9]+"` can never fire for a scoped package - `@howells/stow-cli@3.2.1`
+contains a slash. Worse, an unscoped `stow-cli@3.2.1` *does* match, starts a run, and
+the resolver then throws on a name no workspace package has. `**` matches `/`. Five
+workflows shipped with the broken pattern and nobody noticed, because no repo had ever
+pushed a tag.
+
+**`--if-present` makes an absent script look exactly like a passing one.** It is right
+for the dependency closure, whose packages legitimately differ, and wrong as a silence
+over the package being published. It was hiding that `@howells/routerbase-mcp` named
+its type check `check-types`, and that four `@howells/stow-*` packages had no typecheck
+at all while building with tsup, which does not typecheck. Name what the gate could not
+run, in the log, every time - and expect adding a real typecheck to find real errors:
+`@howells/stow-cli` had 31, in a package published at 3.0.5.
+
