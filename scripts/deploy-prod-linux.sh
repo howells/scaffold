@@ -8,13 +8,11 @@
 # HEAD into an OrbStack machine, installs the pinned toolchain there, runs the
 # deploy:prod chain, and promotes the result.
 #
-# The GitHub Actions workflow does the same thing on a hosted x86_64 runner,
-# but it needs a VERCEL_TOKEN secret and Vercel has no OIDC route for CLI
-# deploys. This script is the path that works from the Mac with no token,
-# reading the Vercel CLI's own login.
+# Deploys are local commands; nothing ships from hosted CI.
 #
-# Requirements on the Mac: OrbStack, and a logged-in Vercel CLI with access to
-# the danielhowells team.
+# Requirements on the Mac: OrbStack, and VERCEL_TOKEN_HOWELLS in the shell
+# (macOS keychain service: vercel-token-howells), which is the token for the
+# danielhowells team.
 #
 # Usage: pnpm deploy:prod:linux [--no-publish]
 set -eu
@@ -29,8 +27,8 @@ PUBLISH=1
 
 command -v orb >/dev/null || { echo "deploy-prod-linux: OrbStack (orb) is not installed" >&2; exit 1; }
 [ -f "$REPO/.vercel/project.json" ] || { echo "deploy-prod-linux: run vercel link first" >&2; exit 1; }
-AUTH="$HOME/Library/Application Support/com.vercel.cli/auth.json"
-[ -f "$AUTH" ] || { echo "deploy-prod-linux: vercel login first" >&2; exit 1; }
+: "${VERCEL_TOKEN:=${VERCEL_TOKEN_HOWELLS:-}}"
+[ -n "$VERCEL_TOKEN" ] || { echo "deploy-prod-linux: VERCEL_TOKEN_HOWELLS is not set (macOS keychain: vercel-token-howells)" >&2; exit 1; }
 
 if ! orb list 2>/dev/null | grep -q "^$MACHINE "; then
   echo "deploy-prod-linux: creating amd64 machine $MACHINE"
@@ -60,7 +58,6 @@ cd ~/scaffold
 git remote set-url origin https://github.com/howells/scaffold.git
 mkdir -p .vercel && cp "$REPO/.vercel/project.json" .vercel/project.json
 
-export VERCEL_TOKEN=\$(python3 -c "import json;print(json.load(open('$AUTH'))['token'])")
 export VERCEL_GIT_COMMIT_SHA=\$(git rev-parse HEAD)
 echo "deploy-prod-linux: building \$VERCEL_GIT_COMMIT_SHA on \$(uname -m)"
 
@@ -76,4 +73,5 @@ else
 fi
 EOF
 
-orb -m "$MACHINE" sh "$REMOTE"
+# The token is passed through the environment rather than written into $REMOTE.
+orb -m "$MACHINE" env VERCEL_TOKEN="$VERCEL_TOKEN" sh "$REMOTE"
