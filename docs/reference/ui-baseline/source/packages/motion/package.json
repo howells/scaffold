@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@howells/lint": "^1.0.0",
+    "@howells/lint": "^3.3.2",
     "@howells/typescript-config": "^0.1.6",
     "typescript": "7.0.2"
   }

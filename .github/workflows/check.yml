@@ -26,6 +26,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Run required CI gates
-        run: pnpm check:ci
+        run: pnpm prepush
       - name: Audit production dependencies
         run: pnpm audit --prod --audit-level high

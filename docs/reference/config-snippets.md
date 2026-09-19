@@ -179,6 +179,10 @@ export default {
 
 For a non-UI or mixed repo, start with `@howells/lint/oxlint/core` or add targeted overrides.
 
+Every package that lints carries its own `oxlint.config.ts` extending the closest preset (`core`, `react` or `next`), and the file is spelled `.ts`. Oxlint reads only `oxlint.config.ts` and `oxlint.config.mts`. A config named `.mjs`, `.js`, `.cjs` or `.json` is never read, the run is quiet and it exits 0. MaterialGraph and five sibling repos linted on Oxlint's defaults for months that way, and a repo that depends on `@howells/lint` with no config at all looks identical from outside.
+
+The preset ships as ultracite ships it: no config-level rule disposals, no compat shim, no old version aliased under another name. Verify a fresh setup by reading the rule names in the first `pnpm lint` run - `anti-slop(...)` and `unicorn(...)` present means the preset loaded. A large first-load backlog is held with a ratchet against a committed baseline, so the count can only fall. The `howells-lint` skill carries the sweep and the fixer.
+
 ## Root `oxfmt.config.ts`
 
 ```ts

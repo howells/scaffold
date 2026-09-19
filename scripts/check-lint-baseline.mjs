@@ -16,8 +16,9 @@
  *   - every other `&&` segment of the unit's own lint script (class scanners,
  *     workspace checks), so no check the old gate ran is lost.
  *
- * Wiring: the root `lint` script runs this gate, so every hook and `pnpm check`
- * that calls `pnpm lint` gets it; `lint:all` keeps the unratcheted full run.
+ * Wiring:
+ * `lint:ratchet` runs this gate and `prepush` calls it; `lint` is the
+ * unratcheted full run.
  *
  * `--update` rewrites the baseline. Use it only in a commit whose message
  * says why the baseline moved.
@@ -46,13 +47,13 @@ function lintBin(dir, name) {
 
 // A unit is a directory whose own lint script runs howells-check. Its targets
 // are that command's arguments; its other `&&` segments are extra checks.
-// At the repo root, `lint` is this gate and `lint:all` holds the full run it
-// replaced, so the root unit is read from `lint:all`.
+// That holds at the repo root too: `lint` is the full run everywhere and this
+// gate is `lint:ratchet`.
 function unitFrom(dir) {
   const manifestPath = join(dir, "package.json");
   if (!existsSync(manifestPath)) return undefined;
   const scripts = JSON.parse(readFileSync(manifestPath, "utf8")).scripts ?? {};
-  const lint = (dir === root ? scripts["lint:all"] : scripts.lint) ?? "";
+  const lint = scripts.lint ?? "";
   const segments = lint
     .split("&&")
     .map((s) => s.trim())

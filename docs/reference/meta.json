@@ -11,6 +11,7 @@
     "deployment-defaults",
     "npm-publishing",
     "default-dependencies",
+    "package-scripts",
     "config-snippets",
     "ui-projects",
     "ui-baseline",
