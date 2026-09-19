@@ -84,10 +84,10 @@ Agents should be able to rely on these commands:
 - `pnpm dev`
 - `pnpm build`
 - `pnpm lint`
-- `pnpm format`
+- `pnpm lint:fix`
 - `pnpm typecheck`
 - `pnpm test`
-- `pnpm check`
+- `pnpm prepush`
 
 Record any different command names and why they exist.
 

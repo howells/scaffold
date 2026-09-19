@@ -22,12 +22,12 @@ Packages inside a monorepo carry only the subset they need of `dev`, `build`, `t
 
 ## Banned
 
-`check`, `check:*`, `check-types`, `verify*`, `validate*`, `audit:*`, `ci:*`, `smoke*`, `sanity`, `doctor`, `guard*`, `gate*`, `format`, `format:check`, `clean`, `precommit*`, `prepush:strict`, `knip` as a named script, and any script whose body is only another script with a flag. Migrate each one:
+`check`, `check:*`, `check-types`, `verify*`, `validate*`, `ci:*`, `smoke*`, `sanity`, `doctor`, `guard*`, `gate*`, `format`, `format:check`, `clean`, `precommit*`, `prepush:strict`, `knip` as a named script, and any script whose body is only another script with a flag. Migrate each one:
 
 - It asserts a shape or a boundary in source: a lint rule. House rules go into `@howells/lint`'s policy plugin (`~/Sites/lint/oxlint/howells-policy-plugin.mjs`) so every repo gets them; repo-local ones become an oxlint config entry, not a script.
 - It asserts something the compiler can see: a type. Delete the script.
 - It asserts a fact about generated output, data, or a built artefact (freshness of a generated file, a tarball's contents, an API's shape, a taxonomy's invariants): a test in the suite. A freshness test regenerates into a temp dir and diffs.
-- It runs a real tool over real data for a human to read (a corpus audit, a deployment inventory): keep it, name it by its verb (`audit:corpus` is fine when it produces a report a person reads), and never wire it into a gate.
+- It runs a real tool over real data and produces a report a person reads (a corpus audit, a deployment inventory): keep it as `audit:<subject>`, and never wire it into a gate. An `audit:*` that only exits non-zero is a check in disguise and is banned like the rest.
 - `check-types` is `typecheck`. `format` is `lint:fix`. `clean` is `git clean -fdX` or nothing.
 
 `prepare` exists only to run `howells-husky`. `prepack`/`prepublishOnly` exist only in published packages and only to build.

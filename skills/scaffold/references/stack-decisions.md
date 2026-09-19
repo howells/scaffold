@@ -134,7 +134,7 @@ Default approach:
 - parse explicitly by default
 - expose separate server and client env modules
 - allow direct `process.env` only inside the env boundary
-- run local env checks in `pnpm check`
+- run local env checks in `pnpm test`
 - run Vercel or Railway env checks before deploy
 
 Do not keep hand-written dotenv loading, ad hoc `process.env` reads, or provider env setup scripts once Envy can own that surface.

@@ -10,7 +10,7 @@ Read `docs/README.md` first, then open only the reference page the task needs. `
 
 - `docs/principles.md` comes from `src/content/principles.ts` via `pnpm generate:principles`. The homepage renders the same module, so they can't drift.
 - `skills/scaffold/references/` comes from `docs/` via `pnpm sync:skill`. Edit the docs once, then sync.
-- `pnpm check` runs both with `--check`, so a docs edit without a regenerate breaks the gate.
+- `pnpm test` runs both with `--check`, so a docs edit without a regenerate breaks the gate.
 
 ## Editing this repo
 
@@ -25,5 +25,7 @@ Read `docs/README.md` first, then open only the reference page the task needs. `
 
 - `pnpm dev` - the Next.js docs site.
 - `pnpm typecheck` regenerates the Fumadocs source, then runs `tsc --noEmit`.
-- `pnpm lint`, `pnpm lint:fix`, `pnpm format`, `pnpm build`.
-- `pnpm check` - lint, typecheck, test, build, plus the two drift checks.
+- `pnpm lint`, `pnpm lint:fix`, `pnpm build`.
+- `pnpm lint:ratchet` is the lint gate: it fails only when a rule rises above `scripts/lint-baseline.json`.
+- `pnpm test` - the documentation-integrity script plus the two drift checks.
+- `pnpm prepush` - typecheck, the lint ratchet and test. The pre-push hook runs it.
