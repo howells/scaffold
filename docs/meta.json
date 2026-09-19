@@ -1,11 +1,4 @@
 {
   "title": "Scaffold",
-  "pages": [
-    "README",
-    "principles",
-    "getting-started",
-    "reference",
-    "adr",
-    "reviews"
-  ]
+  "pages": ["README", "principles", "getting-started", "reference", "adr"]
 }
