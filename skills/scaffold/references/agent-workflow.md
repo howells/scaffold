@@ -4,16 +4,20 @@ The model owns the development loop. Repo instructions supply local constraints;
 
 ## AGENTS.md
 
-Every repo should have a small `AGENTS.md`.
+Every repo has one instruction file, `AGENTS.md`, and no `CLAUDE.md`. Claude Code reads `AGENTS.md` when a directory has no `CLAUDE.md`, and Codex reads `AGENTS.md` already, so a second file or a symlink to one is duplication that drifts. Delete any `CLAUDE.md` a repo still carries. A nested `AGENTS.md` that `next dev` writes is machine-written: commit it, don't curate it.
 
 It should cover:
 
-- communication expectations
-- editing constraints
-- search preferences
-- repo-specific rules that are easy for an agent to violate
+- what the project is, in one line
+- how to run, test and deploy it, with real commands
+- non-obvious layout
+- domain terms and constraints only this project can supply
+- the issue-tracker team it uses
+- links to deeper `docs/` pages
 
-Keep it short, direct, and operational.
+Keep it short, direct and operational: under 300 words, or a short page that links `docs/` pages when the irreducible content is genuinely larger. Split rather than shrink.
+
+Leave out anything the global instructions already say, any version number in prose, and any incident story. A trap is fixed at source, or it is a tracker issue, or it is one line stating the external constraint.
 
 ## General development skills
 
@@ -121,7 +125,7 @@ It should not default to taste-based nitpicks.
 
 For substantial work, keep documentation and progress lightweight but real:
 
-- `AGENTS.md` owns concise operational rules
+- `AGENTS.md` owns concise operational rules, and is the only instruction file in the repo
 - `CONTEXT.md` owns durable product language, invariants, and expensive lessons when the project needs it
 - ADRs and specs own lasting decisions or contracts
 - the issue tracker owns active narrative and handoff state
