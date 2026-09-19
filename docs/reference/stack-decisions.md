@@ -154,7 +154,7 @@ Default approach:
 - `pre-commit`: run `lint-staged`
 - `pre-push`: run `typecheck` and `lint` when the pushed ref is the checked-out `HEAD`
 
-`lint-staged` runs one glob and one command, `howells-oxfmt --write` over `*.{js,ts,jsx,tsx,json,jsonc,css,md,mdx}`. Staging formats and never lint-fixes. A repo whose lint findings sit above the house threshold (~40) still adopts the hooks: its `lint` script becomes the house ratchet (`scripts/check-lint-baseline.mjs`, comparing per-rule Oxlint counts against a checked-in baseline that can only fall) rather than an exemption. See `config-snippets.md` for the exact shapes.
+`lint-staged` runs one glob and one command, `howells-oxfmt --write` over `*.{js,ts,jsx,tsx,json,jsonc,css,md,mdx}`. Staging formats and never lint-fixes. A repo whose lint findings sit above the house threshold (~40) still adopts the hooks: it gets a `lint:ratchet` script running `howells-ratchet` (comparing per-rule Oxlint counts against a checked-in `lint-baseline.json` that can only fall) rather than an exemption, and `prepush` calls that instead of the unratcheted `lint`. See `config-snippets.md` for the exact shapes.
 
 Change the shared package when the house hook contract needs to change. Don't edit generated `.husky` files in consuming repositories.
 

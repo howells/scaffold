@@ -16,7 +16,8 @@
     "generate:source": "fumadocs-mdx",
     "lint": "pnpm generate:source && howells-check src next.config.mjs source.config.ts",
     "lint:fix": "pnpm generate:source && howells-fix src next.config.mjs source.config.ts",
-    "lint:ratchet": "pnpm generate:source && node scripts/check-lint-baseline.mjs",
+    "lint:ratchet": "pnpm generate:source && howells-ratchet",
+    "lint:rebaseline": "pnpm generate:source && howells-ratchet --write",
     "prepare": "howells-husky",
     "prepush": "pnpm typecheck && pnpm lint:ratchet && pnpm test",
     "start": "next start",
@@ -38,7 +39,7 @@
   },
   "devDependencies": {
     "@howells/husky": "^0.2.5",
-    "@howells/lint": "^3.3.2",
+    "@howells/lint": "^3.5.1",
     "@howells/typescript-config": "0.1.6",
     "@types/mdx": "2.0.14",
     "@types/node": "24.13.3",

@@ -46,8 +46,8 @@ importers:
         specifier: ^0.2.5
         version: 0.2.5
       '@howells/lint':
-        specifier: ^3.3.2
-        version: 3.3.2(prettier@3.9.4)
+        specifier: ^3.5.1
+        version: 3.5.1(prettier@3.9.4)
       '@howells/typescript-config':
         specifier: 0.1.6
         version: 0.1.6
@@ -432,8 +432,8 @@ packages:
     engines: {node: '>=24.15.0'}
     hasBin: true
 
-  '@howells/lint@3.3.2':
-    resolution: {integrity: sha512-2LeN0eA7fBpvfniglMFg1425GDV+v7uEuo3FJOKdmKTCTPX31keqIBIED6iEMrNsx37bAMCgMJAq+jH8gimnlg==}
+  '@howells/lint@3.5.1':
+    resolution: {integrity: sha512-UeJebg3oxAfF/ynM+H/SVgQRLdmtM92+drZdO/wHwXLHb7FZddULWzh+KCFB9jgss94Quwylke0o9nhWNsJZDA==}
     engines: {node: '>=24.15.0'}
     hasBin: true
 
@@ -2185,11 +2185,6 @@ packages:
   clsx@2.1.1:
     resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
     engines: {node: '>=6'}
-
-  cn@0.2.6:
-    resolution: {integrity: sha512-+i4L0zUGgRcEnhsxueVrP7iBGxBx5iD0WOTYg1MwFEu2ZyCmH5Ov2V1cul2Ht5UchRQQgftCf4be/RxspuW6QQ==}
-    engines: {node: '>=20'}
-    hasBin: true
 
   cn@0.3.0:
     resolution: {integrity: sha512-qRoU0ARrZD3Bbj1wKFftEKxPjSnzTEdFkf22NVhW+zU9D/wajhoP+qUZ5DChhhSOBCH1onV12hrmGqfu1+5Z2Q==}
@@ -4673,11 +4668,11 @@ snapshots:
     dependencies:
       husky: 9.1.7
 
-  '@howells/lint@3.3.2(prettier@3.9.4)':
+  '@howells/lint@3.5.1(prettier@3.9.4)':
     dependencies:
       '@howells/neon': 0.2.0
       '@manypkg/cli': 0.25.1
-      cn: 0.2.6
+      cn: 0.3.0
       globals: 17.12.0
       oxc-parser: 0.148.0
       oxfmt: 0.67.0
@@ -5980,8 +5975,6 @@ snapshots:
   client-only@0.0.1: {}
 
   clsx@2.1.1: {}
-
-  cn@0.2.6: {}
 
   cn@0.3.0: {}
 

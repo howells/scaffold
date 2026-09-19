@@ -321,9 +321,9 @@ Lint still gates on push, where a person reads the findings and decides. Biome r
 
 A repo whose `lint` script reports more than roughly 40 findings still adopts the hooks - it does not skip them. Its `lint` script becomes a ratchet instead of a bare `howells-check`:
 
-- Copy `scripts/check-lint-baseline.mjs` from a repo that already carries it (originally MaterialGraph's). It re-runs everything the repo's own lint script ran, compares Oxlint error counts per unit and per rule against a checked-in `scripts/lint-baseline.json`, and fails only when a count rises above its baseline. Formatting is never baselined - it must still pass outright.
-- Wire `"lint": "node scripts/check-lint-baseline.mjs"` and keep the unratcheted run as `"lint:all"`.
-- Generate the baseline with `node scripts/check-lint-baseline.mjs --update`, and record in the commit message how many findings it recorded and the top rules by count.
+- Adopt `howells-ratchet` (from `@howells/lint`, see `~/Sites/lint/docs/lint-ratchet.md`). It measures each unit from its own `lint` script's targets, compares every diagnostic per unit and per rule against a checked-in `lint-baseline.json` at the repo root, and fails only when a count rises above its baseline. Formatting is never baselined - it must still pass outright.
+- Keep `"lint"` as the unratcheted `howells-check` run, and wire `"lint:ratchet": "howells-ratchet"` and `"lint:rebaseline": "howells-ratchet --write"`. `prepush` calls `lint:ratchet`.
+- Generate the baseline with `pnpm lint:rebaseline`, and record in the commit message how many findings it recorded and the top rules by count.
 - Prove the ratchet actually bites before shipping it: temporarily lower one baselined count, confirm the gate fails, then restore it.
 
 The backlog can then only fall, and the push gate is real from the first commit rather than deferred until the backlog is clear.

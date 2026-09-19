@@ -26,6 +26,6 @@ Read `docs/README.md` first, then open only the reference page the task needs. `
 - `pnpm dev` - the Next.js docs site.
 - `pnpm typecheck` regenerates the Fumadocs source, then runs `tsc --noEmit`.
 - `pnpm lint`, `pnpm lint:fix`, `pnpm build`.
-- `pnpm lint:ratchet` is the lint gate: it fails only when a rule rises above `scripts/lint-baseline.json`.
+- `pnpm lint:ratchet` (`howells-ratchet`) is the lint gate: it fails only when a rule rises above `lint-baseline.json`.
 - `pnpm test` - the documentation-integrity script plus the two drift checks.
 - `pnpm prepush` - typecheck, the lint ratchet and test. The pre-push hook runs it.
