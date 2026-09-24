@@ -266,7 +266,6 @@ For media-heavy projects, there is also a platform-level default:
 - use `@howells/motif-sdk` for product image generation, editing, and fal utility integration
 - use `@howells/motif-cli` for scriptable and agent-facing creative automation; prefer its JSON/NDJSON output, semantic exit codes, and live `--describe` schema
 - prefer the house media storage platform for image, vector, and general media storage/delivery
-- use `files-sdk` behind storage/upload packages when project code needs a portable object/blob API across S3-compatible storage, R2, GCS, Azure Blob, Vercel Blob, Netlify Blobs, MinIO, or similar providers
 
 Full-stack apps also share this architecture:
 

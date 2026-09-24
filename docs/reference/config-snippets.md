@@ -346,16 +346,17 @@ export const envSchema = defineEnv({
 });
 ```
 
+The env check has no script of its own. It runs as the first step of each deploy verb, so a deploy with a missing or malformed variable stops before it builds:
+
 ```json
 {
   "scripts": {
-    "env:check": "envy check local --schema packages/env/src/schema.ts",
-    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm env:check"
+    "deploy:prod": "envy check local --schema packages/env/src/schema.ts --from .env.production && pnpm deploy:prod:pull && pnpm deploy:prod:build && pnpm deploy:prod:publish"
   }
 }
 ```
 
-For provider checks, prefer Envy's Vercel or Railway adapters over hand-written shell scripts.
+To check the provider's own variables, call `vercel` or `railway` from `@howells/envy/adapters/*` inside the deploy script rather than writing a shell pipeline. There is no `audit:env` or `env:check` script; a check that only asserts is not a script.
 
 ## Drizzle + Neon db client
 

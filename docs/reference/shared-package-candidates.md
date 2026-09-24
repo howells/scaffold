@@ -101,7 +101,7 @@ For new projects, the default decision should be:
 
 - if the repo needs image, vector, or media storage, start by asking whether it should use the house media storage platform
 - if the repo needs typed server-side integration, reach for `@howells/stow-server`
-- if package code needs portable object/blob operations, put `files-sdk` inside the storage/upload package rather than calling S3, R2, GCS, Azure Blob, Vercel Blob, or similar provider clients directly from apps
+- keep provider clients inside the storage/upload package rather than calling them from apps
 
 ## Standardisation order
 

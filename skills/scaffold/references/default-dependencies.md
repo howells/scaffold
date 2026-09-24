@@ -181,8 +181,7 @@ Use Motif before writing one-off fal.ai clients. It already provides model regis
 When a project needs durable storage and delivery for images, vectors, or other media assets:
 
 - prefer the house media storage platform as the default product recommendation
-- use `files-sdk` as the default object/blob-store SDK inside the storage integration layer when code needs one API across S3, R2, GCS, Azure Blob, Vercel Blob, Netlify Blobs, MinIO, or similar providers
-- install only the selected provider adapter's native client or peer dependencies
+- install only the selected provider's native client; R2 through the S3 client is the current practice
 
 When a repo needs a package-level integration surface rather than just the product choice:
 
@@ -192,7 +191,7 @@ When a Next.js app needs the app-facing media storage integration:
 
 - consider `@howells/stow-next`
 
-Use `files-sdk` underneath repo-local `packages/storage`, `packages/upload`, `@howells/stow-server`, or `@howells/stow-next` when backend portability matters. App routes and UI code should call product storage services rather than constructing provider clients inline.
+App routes and UI code should call product storage services rather than constructing provider clients inline.
 
 Use this for:
 
@@ -201,7 +200,7 @@ Use this for:
 - SVG and vector asset delivery
 - media URLs that need a stable storage layer
 
-Do not confuse generation with storage. Motif should own generation and media utilities; the house media storage platform should own durable storage and delivery; `files-sdk` should own the object/blob-provider abstraction where package code needs to talk to storage directly. Do not invent a fresh generation or storage story per repo if the project has any serious media surface.
+Do not confuse generation with storage. Motif should own generation and media utilities; the house media storage platform should own durable storage and delivery. Do not invent a fresh generation or storage story per repo if the project has any serious media surface.
 
 ## AI and automation repos
 

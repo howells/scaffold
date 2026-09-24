@@ -60,7 +60,6 @@ Do not create a separate API app by reflex.
 If the repo has serious image, vector, or media behavior:
 
 - default to the house media storage platform for storage and delivery
-- use `files-sdk` inside the storage/upload integration layer when the app needs a portable object/blob API across the selected storage provider
 
 The runtime and deployment boundary must agree.
 
@@ -124,7 +123,7 @@ The deploy should fail before it reaches the provider if required env is missing
 - Next.js app or docs surface: Vercel
 - Storybook surface: Vercel
 - worker-heavy or service-heavy backend: Railway-style deployment
-- media storage and delivery: house media storage platform plus the relevant `@howells/*` integration package, with `files-sdk` underneath when code needs provider-neutral object/blob operations
+- media storage and delivery: house media storage platform plus the relevant `@howells/*` integration package
 - runtime env preflight: Envy
 
 Record any deviation.
