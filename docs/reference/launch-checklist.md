@@ -45,8 +45,8 @@ Use this for a new repo or before releasing an aligned existing repo.
 - brand expression is handled through tokens and compositions, not component duplication
 - `motion`, `lucide-react`, `zod`, `cn`, and `sonner` are installed when the repo is UI-first
 - `@tanstack/react-query` is used for client server-state and `nuqs` for meaningful URL state
-- `@howells/stacksheet` is used for stacked sheet workflows instead of overextending a basic drawer
-- `@howells/aperto` is considered for thumbnail-to-expanded media transitions instead of rebuilding that interaction locally
+- `@patternmode/stacksheet` is used for stacked sheet workflows instead of overextending a basic drawer
+- `@patternmode/aperto` is considered for thumbnail-to-expanded media transitions instead of rebuilding that interaction locally
 
 ## Full-stack and AI projects
 
@@ -99,6 +99,6 @@ Use this for a new repo or before releasing an aligned existing repo.
 - there is no generic local tsconfig base hiding runtime assumptions
 - there is no duplicate component system growing beside `packages/ui` in a new UI repo
 - there is no second local motion/transition mini-framework appearing without a strong reason
-- there is no local clone of `@howells/stacksheet` or `@howells/aperto` behavior without a strong product-specific reason
+- there is no local clone of `@patternmode/stacksheet` or `@patternmode/aperto` behavior without a strong product-specific reason
 - there are no raw AI provider clients scattered through app routes
 - there are no new-project defaults derived from legacy PHP/Craft dependencies

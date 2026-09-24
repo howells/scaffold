@@ -35,7 +35,7 @@ The package graph should have an obvious direction:
 - cross-package imports go through deliberate public exports, not another package's internal files
 - lower-level infrastructure does not depend on product-specific UI or route code
 
-Prefer a named domain boundary over a generic `shared` package. Enforce the graph in code with `@howells/boundaries` and the `fenceline` skill when a repo has enough packages for accidental imports to become likely.
+Prefer a named domain boundary over a generic `shared` package. Enforce the graph in code with `@howells/boundaries` when a repo has enough packages for accidental imports to become likely.
 
 ## `packages/db`
 

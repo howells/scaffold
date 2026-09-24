@@ -1,6 +1,6 @@
 # Development skills
 
-This map was checked on 26 August 2026 against `~/.agents/skills`, `~/.codex/skills`, and `~/Sites/skills`. Skill availability changes; verify the installed name before relying on it in automation.
+This map was checked on 24 September 2026 against `~/.agents/skills`, `~/.codex/skills`, and `~/Sites/skills`. Skill availability changes; verify the installed name before relying on it in automation.
 
 The coding assistant still owns the normal development loop. Use a skill when its method changes the work, not merely because it is installed.
 
@@ -31,12 +31,15 @@ The coding assistant still owns the normal development loop. Use a skill when it
 
 ## Howells specialists
 
-- **Understand and recover:** `survey` for a codebase-wide health audit, `inquest` for intent or provenance, `muster` for concurrent work, `memento` for one task, and `salvage` for at-risk Git state.
-- **Structure:** `aperture` for package extraction, `componentize` for repeated UI, `heathen` for overloaded modules, `fenceline` for enforced boundaries, and `fail-fast` for hidden fallback behaviour.
+- **Understand and recover:** `simplify` for a codebase-wide health review, `muster` for concurrent work, `memento` for one task, `what` to restate the last reply, and `salvage` for at-risk Git state.
+- **Structure:** `componentize` for repeated UI, overloaded files and package extraction, `armature` for app shells with fixed chrome, and `fail-fast` for hidden fallback behaviour.
+- **Plan and ship:** `next` to claim and deliver the next backlog item, `rebalance` to reprioritise a backlog, and `plimsoll` to cut process weight near a deadline.
 - **Implement and verify:** `foreman` for substantial delegated implementation when delegation is authorized, `fieldtest` for rendered browser QA, and `product-description` for an outside-in behavioural specification.
+- **Review:** `fable-review` for a hard judgement call and `glm-review` for a cheap bounded check.
 - **Code and docs quality:** `marginalia` for public API documentation, `writing-for-agents` for skills and agent instructions, `unslop` for behaviour-neutral code ceremony, and `deslop` for synthetic prose.
-- **Design and naming:** `foundry` for brand systems, `chiaroscuro` for screen-level UI direction, and `nomen` for names and current availability checks.
-- **Agent-facing systems:** `surface` for agent legibility, `agent-dx-cli-scale` for CLI review, `mastraudit` for Mastra audits, and `polyplugin` for cross-host plugin packaging.
+- **Design and naming:** `maquette` for page directions, `chiaroscuro` for screen-level UI, `zoetrope` for animation, `reflow` for screen sizes, `typecase` for type roles, `signage` for interface copy, `paste-up` for Paper files, and `nomen` for names and current availability checks.
+- **Agent-facing systems:** `surface` for agent legibility, `agent-dx-cli-scale` for CLI review, and `mastraudit` for Mastra audits.
+- **Research:** `web-research` for cited open-web answers.
 
 These skills remain independent packages. Scaffold documents when to use them; it does not embed their procedures.
 
@@ -66,7 +69,7 @@ Provider-specific skills supplement the project's recorded architecture; they do
 ## Explicit opt-ins and conflicts
 
 - `setup-pre-commit` installs a generic Husky, Prettier, typecheck, and test setup. Scaffold defaults to `@howells/husky`, `@howells/lint`, and Oxfmt, so adapt the intent rather than running it unchanged.
-- `setup-ts-deep-modules` installs dependency-cruiser. Scaffold's default TypeScript boundary route is `@howells/boundaries` with `fenceline`; use dependency-cruiser only as a recorded exception.
+- `setup-ts-deep-modules` installs dependency-cruiser. Scaffold's default TypeScript boundary route is `@howells/boundaries`; use dependency-cruiser only as a recorded exception.
 - `git-guardrails-claude-code` blocks push, destructive reset, clean, and branch deletion. Because rotated Claude accounts share one settings file, install it only when the user wants those operations blocked for every Claude account; it conflicts with owner-controlled release and cleanup work.
 - `migrate-to-shoehorn` applies only to test fixtures that need partial typed data. It is not a default dependency.
 - Full tracker flows, delegated implementation, external mutations, and deployments still require the authority implied by the user's request. A skill does not grant it.

@@ -230,8 +230,8 @@ For source-heavy or scraper-heavy repos:
 Use the overlay primitives deliberately:
 
 - ordinary drawer or sheet: shared `vaul`-backed drawer layer
-- stacked sheets or nested panel drills: `@howells/stacksheet`
-- thumbnail-to-expanded image or video transitions: `@howells/aperto`
+- stacked sheets or nested panel drills: `@patternmode/stacksheet`
+- thumbnail-to-expanded image or video transitions: `@patternmode/aperto`
 
 Do not stretch a basic drawer into a multi-layer workflow.
 

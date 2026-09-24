@@ -67,13 +67,63 @@ When building a shared UI package, these keep recurring:
 
 - `@base-ui/react`
 - `class-variance-authority`
-- `embla-carousel-react`
+- `@blossom-carousel/react`
 - `react-day-picker`
 - `vaul`
 
-Use these first when the package needs the capability.
+Use these first when the package needs the capability. Blossom replaces `embla-carousel-react` for new carousels; existing Embla carousels move when their repo is next worked on.
 
 `@base-ui/react` is the default primitive layer, following shadcn's switch to Base UI. Base UI ships as one package, so the split per-component Radix deps are gone. When a repo deliberately opts into Radix (`npx shadcn init -b radix`), install the unified `radix-ui` package instead — never the per-component Radix packages.
+
+## Library picks by task
+
+Name the task before the library, and use the pick below. When a repo already uses a competitor, leave it until the repo is next worked on. These started from Emil Kowalski's [pick-ui-library](https://github.com/emilkowalski/skills/tree/main/skills/pick-ui-library) list and were checked against the libraries in active repos.
+
+| Task | Pick |
+| --- | --- |
+| Accessible primitives: dialogs, popovers, menus, selects | `@base-ui/react` |
+| Command menu (⌘K) | `cmdk` |
+| Toasts | `sonner` |
+| Drawers and bottom sheets | `vaul`, through the repo's UI package |
+| Stacked sheets and drill-in panels | `@patternmode/stacksheet` |
+| Thumbnail-to-expanded media | `@patternmode/aperto` |
+| Carousels | `@blossom-carousel/react` |
+| Date pickers | `react-day-picker` |
+| One-time code inputs | `input-otp` |
+| Forms | `react-hook-form` with `zod` |
+| Animation: springs, layout, enter and exit | `motion`; plain CSS transitions for hovers and fades |
+| Tailwind enter and exit keyframes | `tw-animate-css` |
+| Animated numbers | `@number-flow/react` |
+| Animated text | `torph` |
+| Syntax highlighting | `shiki` |
+| Streaming Markdown from a model | `streamdown` |
+| Open Graph images | `ImageResponse` from `next/og` |
+| Node graphs and canvases | `@xyflow/react` |
+| 3D scenes | `three` with `@react-three/fiber` |
+| 3D globes | `cobe` |
+| Dashboard charts | `recharts` |
+| Bespoke data visualisation | the individual `d3-*` modules it needs |
+| Live streaming charts | `liveline` |
+| Data tables | `@tanstack/react-table` |
+| Long lists and large tables | `@tanstack/react-virtual` |
+| Drag and drop | `@dnd-kit/core` with `@dnd-kit/sortable` |
+| Server state | `@tanstack/react-query` |
+| Shared client state | `zustand` |
+| URL state | `nuqs` |
+| Class names | `cn` |
+| Component variants | `class-variance-authority` |
+| Theme switching without a flash | `next-themes` |
+| Tuning panels during development | `dialkit`; `leva` inside React Three Fiber scenes |
+
+Common mismatches:
+
+- A hand-built toast, or a toast built on a modal library: use Sonner.
+- A `<div>` dropdown or dialog with manual focus handling: use Base UI.
+- A number animated by re-rendering its text: use NumberFlow.
+- A list of a thousand or more rows rendered directly: virtualise it before adding pagination.
+- Shared state passed through `useState` and props across many components: use zustand.
+- Class-name ternaries nested three deep: use `cn`, or cva when the component has real variants.
+- A chart library bent into a designed graphic: use d3 modules.
 
 ## Recurring Turborepo packages
 
@@ -214,16 +264,16 @@ For drawer-like UI:
 
 For stacked sheets and drill-in panel flows:
 
-- use `@howells/stacksheet`
+- use `@patternmode/stacksheet`
 
 Choose by interaction:
 
 - `vaul` is the primitive
-- `@howells/stacksheet` is the stronger product abstraction when you need actual sheet stack orchestration
+- `@patternmode/stacksheet` is the stronger product abstraction when you need actual sheet stack orchestration
 
 For thumbnail-to-expanded media transitions:
 
-- use `@howells/aperto`
+- use `@patternmode/aperto`
 
 Treat these as specific installable components, not as a reason to depend on an old shared UI upstream or design-system project.
 
@@ -264,13 +314,13 @@ pnpm add @trpc/server @trpc/client @trpc/tanstack-react-query
 ### Add stacked sheets to a UI repo
 
 ```bash
-pnpm add @howells/stacksheet
+pnpm add @patternmode/stacksheet
 ```
 
 ### Add media expansion transitions to a UI repo
 
 ```bash
-pnpm add @howells/aperto
+pnpm add @patternmode/aperto
 ```
 
 ### Add AI support
@@ -326,8 +376,8 @@ The direct-manifest scan found these repeatedly:
 - `usehooks-ts`
 - `@howells/ai`
 - `@howells/envy`
-- `@howells/stacksheet`
-- `@howells/aperto`
+- `@patternmode/stacksheet`
+- `@patternmode/aperto`
 - `@howells/stow-server`
 - `@howells/stow-next`
 

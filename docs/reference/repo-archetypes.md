@@ -127,8 +127,8 @@ Default stack:
 
 Examples in your ecosystem:
 
-- `@howells/stacksheet`
-- `@howells/aperto`
+- `@patternmode/stacksheet`
+- `@patternmode/aperto`
 - `@howells/envelope`
 - `@howells/envy`
 - `@howells/lint`

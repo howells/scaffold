@@ -205,7 +205,6 @@ Every repo below publishes over OIDC from `.github/workflows/release.yml`, and e
 | `howells/revolutcli` | `@howells/revolutcli` |
 | `howells/wisecli` | `@howells/wisecli` |
 | `howells/envelope` | `@howells/envelope` |
-| `howells/stacksheet` | `@howells/stacksheet` |
 | `howells/srcfull` | `@howells/srcfull` |
 | `howells/boubakikid` | `boubakikid` |
 | `howells/gauge` | `@howells/gauge` |

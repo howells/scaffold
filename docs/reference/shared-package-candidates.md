@@ -15,7 +15,7 @@ These should be treated as canonical shared packages now:
   - pinned Oxlint/Oxfmt, Ultracite, and React Doctor presets
 - `@howells/typescript-config`
   - explicit thin tsconfig presets
-- `@howells/stacksheet`
+- `@patternmode/stacksheet`
   - the preferred abstraction for stacked sheet flows
 - `@howells/envelope`
   - strict structured IO wrapper for CLI-model workflows
@@ -111,7 +111,7 @@ Recommendation:
 For now:
 
 - keep simple drawers in shared UI packages
-- use `@howells/stacksheet` when the flow becomes stack-oriented
+- use `@patternmode/stacksheet` when the flow becomes stack-oriented
 
 ## Keep local for now
 
@@ -147,6 +147,6 @@ Reduce duplicated package work in this order:
 2. use `@howells/envy` for repo-local env boundaries instead of creating more package-specific env tooling
 3. keep `@howells/ai` as the shared AI/provider baseline instead of scattering raw provider clients
 4. use `howells/motif` for image generation and media utility workflows instead of scattering raw fal.ai clients
-5. standardize `@howells/stacksheet` as the default stacked-panel abstraction
+5. standardize `@patternmode/stacksheet` as the default stacked-panel abstraction
 6. unify motion tokens into one shared package
 7. stabilize the bundled UI baseline through real consuming repos before publishing more UI internals

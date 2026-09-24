@@ -75,8 +75,8 @@ Do not use an old shared UI upstream as the UI layer for new projects. Only use 
 
 Use:
 
-- `@howells/stacksheet` for typed stacked sheets, drill-in panels, and multi-layer modal flows
-- `@howells/aperto` for styled thumbnail-to-expanded media transitions and media lightboxes
+- `@patternmode/stacksheet` for typed stacked sheets, drill-in panels, and multi-layer modal flows
+- `@patternmode/aperto` for styled thumbnail-to-expanded media transitions and media lightboxes
 
 Do not use legacy provenance as a reason to skip a repo-local `packages/ui` boundary when the repo owns shared primitives. The reusable packages are relevant as specific installable components, not as a shared UI system.
 
@@ -91,19 +91,19 @@ For a simple drawer or mobile bottom sheet:
 
 For stacked sheets, panel drills, or multi-layer modal flows:
 
-- prefer `@howells/stacksheet`
+- prefer `@patternmode/stacksheet`
 - do not try to stretch a plain `vaul` drawer into a stacked workflow
 
 For thumbnail-to-expanded media interactions:
 
-- prefer `@howells/aperto`
+- prefer `@patternmode/aperto`
 - keep custom gallery/product behavior local to the app around the package
 
 This distinction already shows up in your ecosystem:
 
 - `vaul` wrappers recur inside shared UI packages
-- `@howells/stacksheet` is the stronger abstraction when the interface needs real stack orchestration
-- `@howells/aperto` is the reusable media-transition component when the interface needs a polished image or video expansion pattern
+- `@patternmode/stacksheet` is the stronger abstraction when the interface needs real stack orchestration
+- `@patternmode/aperto` is the reusable media-transition component when the interface needs a polished image or video expansion pattern
 
 ## Storybook rule
 
