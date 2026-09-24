@@ -56,7 +56,7 @@ Use this for a new repo or before releasing an aligned existing repo.
 - `howells/motif` packages are used before adding raw fal.ai clients for image generation or media utilities
 - `files-sdk` is used behind a storage/upload boundary when object/blob storage needs provider portability or agent-facing file operations
 - Mastra is added only when the repo has real agent/workflow structure
-- MCP contracts live in `packages/mcp` or `packages/mcp-server`, not hidden in app routes
+- the MCP server lives in `packages/mastra`, or in `packages/mcp` when it is standalone, and is only served from an app route
 - `zod` validates model IO, tool schemas, env schemas, and API boundaries where appropriate
 
 ## Verification

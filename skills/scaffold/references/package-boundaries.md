@@ -121,7 +121,7 @@ Use when:
 
 This shows up often enough that it should be a deliberate choice when a repo has more than one surface.
 
-Generated asset metadata can point at Motif runs, model IDs, prompts, references, or output files, but do not put Motif client implementation here. Keep generation calls in `packages/ai`, `packages/agents`, `packages/mastra`, `packages/mcp`, or a product service that uses `@howells/motif-sdk`.
+Generated asset metadata can point at Motif runs, model IDs, prompts, references, or output files, but do not put Motif client implementation here. Keep generation calls in `packages/mastra` or a product service that uses `@howells/motif-sdk`.
 
 ### `packages/upload` or `packages/storage`
 
@@ -133,61 +133,27 @@ Use when:
 
 Use `files-sdk` as the default SDK inside this boundary when the repo needs to talk to S3, R2, GCS, Azure Blob, Vercel Blob, Netlify Blobs, MinIO, or similar providers through one API. Keep the `Files` instance, provider adapter configuration, key naming, metadata policy, and approval-sensitive operations here. Export product-level functions; do not leak native provider clients or adapter setup into app routes.
 
-### `packages/ai`
-
-Use when:
-
-- repo-specific models, prompts, adapters, or orchestration logic need a home above one app
-- more than one surface depends on the same model logic
-
-Use `@howells/ai` as the shared baseline before creating fresh provider wrappers here. This package can compose `ai`, provider adapters, model registries, and app-specific structured-output helpers, but it should not become a place for domain business logic.
-
-When repo-specific image generation belongs with the model layer, use `@howells/motif-sdk` here instead of raw fal.ai clients.
-
-### `packages/agents`
-
-Use when:
-
-- agent definitions, evaluators, prompts, or tool wiring are reused by more than one surface
-- model-facing orchestration has become more than a single app feature
-
-Keep provider setup behind `@howells/ai`; this package should own product-specific agent behavior.
-
-Use this for non-Mastra agent assets. When Mastra owns runtime orchestration, prefer `packages/mastra`.
-
 ### `packages/mastra`
 
-Use when:
+Use when the repo needs agents, tools, workflows, memory, storage, observability, scorers or processors, and agent behaviour is more than a single prompt or server action.
 
-- the repo needs Mastra agents, tools, workflows, memory, storage, observability, scorers, processors, or Studio inspection
-- agent behavior is more than a single prompt or simple server action
-- workflows need durable runs, traces, or background execution
-- app code needs to dispatch jobs to a local or remote Mastra runtime
-
-Keep `packages/mastra` organized by runtime concern: `agents`, `tools`, `workflows`, `schemas`, `prompts`, `runtime`, `observability`, `scorers`, and `processors`.
+Keep it organised by runtime concern: `agents`, `tools`, `workflows`, `schemas`, `prompts`, `runtime`, `observability`, `scorers`, `processors` and `mcp` for the Mastra MCP server. Models come from `@howells/ai` by size. Run Studio from this package; add `apps/mastra-studio` only when the Studio is deployed.
 
 App routes and React components should not import Mastra internals. Put dispatch and polling behind product services, and expose only deliberate package exports.
 
 See [Agentic Development](./agentic-development.md) before adding this package.
 
-### `packages/mcp` or `packages/mcp-server`
+### `packages/mcp`
 
-Use when:
+Use only for a standalone MCP server that serves product tools without Mastra, built on `@modelcontextprotocol/sdk` and served from an app route. A repo whose MCP surface is its Mastra tools keeps the server in `packages/mastra`.
 
-- the repo exposes MCP tools or resources
-- tool schemas, transports, or server setup need to be shared with apps, CLIs, or tests
-
-Do not bury MCP server contracts inside a web app route if another surface needs to consume or test them.
-
-Use `@modelcontextprotocol/sdk` here rather than hand-rolling protocol objects.
-
-For image-generation tools, prefer Motif's maintained SDK or agent-readable CLI before creating a fresh protocol surface. Add an MCP server only when the product has a demonstrated MCP client need that the CLI cannot serve.
+For image-generation tools, prefer Motif's SDK or CLI before creating a fresh protocol surface. Add an MCP server only when a client needs it and the CLI cannot serve it.
 
 ### `packages/cli`
 
 Use when:
 
-- ingestion, agent, or operations workflows need a first-class command line
+- agent or operations workflows need a first-class command line
 - scripts have grown into reusable commands with options, validation, and tests
 
 Do not create this for one-off maintenance scripts.
@@ -255,4 +221,4 @@ Create boundaries in this order:
 4. `tailwind-config`
 5. `motion`
 6. `trpc` when a same-workspace typed API needs it
-7. `ai` / `mastra` / `agents` / `mcp` when agent behavior is part of the product
+7. `mastra` when agent behavior is part of the product; `mcp` only for a standalone read-only server

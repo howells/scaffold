@@ -10,7 +10,7 @@ Counts are approximate repo footprints; use them to identify defaults, not as ad
 | --- | --- | --- |
 | **Hosting** | Vercel | Docker for containerised services; Cloudflare Workers occasionally |
 | **Database** | Neon (Postgres) + Drizzle ORM | Upstash Redis for caching/rate-limits; Turso once |
-| **LLM access** | Provider access through `@howells/ai` | Choose Gateway, OpenRouter, or a direct `@ai-sdk/*` provider explicitly when the product needs a particular route |
+| **LLM access** | `@howells/ai`, routed through OpenRouter | Vercel AI Gateway or a direct `@ai-sdk/*` provider, chosen explicitly behind the same boundary |
 | **Embeddings** | Voyage | — |
 | **Search / scraping** | Exa + Firecrawl (usually paired) | Tavily, Bright Data, ScrapingBee |
 | **Agent browsing** | Kernel | the `agent-browser` skill for local automation |
@@ -26,7 +26,7 @@ Two prospective defaults are not yet widespread:
 - **Errors:** Sentry.
 - **Transactional email:** Resend.
 
-A note on LLM access: `@howells/ai` is the authority for provider and model selection. Its current package-level default route is Vercel AI Gateway, selected after an April 2026 benchmark, with OpenRouter and direct providers available behind the same boundary. That is an implementation default inside `@howells/ai`, not a portfolio-wide requirement or evidence that every consuming project explicitly chose Gateway. Revalidate it when models and routing systems materially change.
+A note on LLM access: a September 2026 survey found that nearly every active repo routes through OpenRouter, by six different mechanisms, while `@howells/ai` still defaulted to Vercel AI Gateway from an April 2026 benchmark. The default is now OpenRouter, and model choice is consolidated in `@howells/ai`.
 
 ## Models and media
 

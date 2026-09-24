@@ -256,7 +256,7 @@ The packages that recur most often in UI work are:
 Repeated package names across Turborepos define these default boundaries:
 
 - first tier: `db`, `ui`, `env`
-- second tier: `tailwind-config`, `utils`, `motion`, `auth`, `mastra`, `agents`, `mcp`, repo-local `ai` packages above `@howells/ai`, and `trpc` when a same-workspace API needs it
+- second tier: `tailwind-config`, `utils`, `motion`, `auth`, `mastra`, and `trpc` when a same-workspace API needs it
 - optional but frequent: `assets`, `upload`, `storage`, `config`
 
 The detailed policy lives in [Default Dependencies](./default-dependencies.md).
@@ -292,19 +292,17 @@ Default package choices:
 
 ### Model access
 
-`@howells/ai` is the authority for this choice. Its current package-level default is Vercel AI Gateway, selected after an April 2026 benchmark, but this is not a portfolio-wide requirement. OpenRouter and direct providers remain deliberate route choices behind the same boundary, and the default should be revalidated as models and routing systems change.
+`@howells/ai` owns model choice: sizes (nano to reasoning), catalogues and provider routing. Its default route is OpenRouter, which is what the active repos use; Vercel AI Gateway and direct providers stay available behind the same boundary. Repos ask for a size, never a model string, and pass the result to Mastra. `@howells/mastra` carries no model code of its own.
 
-Per-provider `@ai-sdk/*` packages are the escape hatch for direct-provider needs, and they still sit behind `@howells/ai`. Keep model-string selection behind that boundary rather than hardcoding provider strings across app routes.
+Per-provider `@ai-sdk/*` packages are the escape hatch for direct-provider needs, and they still sit behind `@howells/ai`.
 
 Default boundaries:
 
-- `packages/ai` for repo-specific model/provider composition above `@howells/ai`
-- `packages/mastra` for Mastra runtime code, agents, tools, workflows, storage, memory, observability, scorers, and runtime routes
-- `packages/agents` for reusable non-Mastra product agents, evaluators, prompts, and tool wiring
-- `packages/mcp` or `packages/mcp-server` for MCP contracts and server code
-- `packages/cli` when ingestion or model workflows need a real command line
+- `packages/mastra` for agents, tools, workflows, storage, memory, observability, scorers and the Mastra MCP server
+- `packages/mcp` only for a standalone read-only MCP server without Mastra
+- `packages/cli` when operations need a real command line
 
-Do not scatter raw provider clients through app routes. Keep provider plumbing behind `@howells/ai` or a repo-local `packages/ai` boundary.
+Do not scatter raw provider clients or model strings through app routes.
 
 Use [Agentic Development](./agentic-development.md) for Mastra, agentsurface.dev, MCP, tool design, workflows, memory, and observability guidance.
 

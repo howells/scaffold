@@ -143,9 +143,7 @@ The next tier that recurs often enough to plan for up front is:
 - `utils`
 - `motion`
 - `auth`
-- repo-local `ai` packages above `@howells/ai`
-- `agents`
-- `mcp`
+- `mastra`
 - `trpc` when a same-workspace typed API needs it
 
 Optional defaults:
@@ -236,7 +234,7 @@ When the repo exposes model tools or resources to other agents, also consider:
 
 - `@modelcontextprotocol/sdk`
 
-Use `@howells/ai` as the provider boundary. Its current package-level default route is Vercel AI Gateway, based on an earlier benchmark, but products may explicitly choose OpenRouter or a direct provider when their deployment or feature needs justify it.
+`@howells/ai` owns model choice: sizes (nano to reasoning), catalogues and provider routing. Its default route is OpenRouter, which is what the active repos use; Vercel AI Gateway and direct providers stay available behind the same boundary. Repos ask for a size, never a model string, and pass the result to Mastra. `@howells/mastra` carries no model code of its own.
 
 Provider packages are the escape hatch for direct-provider needs, chosen only when required and kept behind `@howells/ai`:
 
@@ -249,13 +247,11 @@ If the repo is orchestrating CLI-first model workflows or wants stricter IO cont
 
 ## Agent, MCP, and ingestion repos
 
-When the repo exposes agent tooling, MCP servers, or ingestion workflows, these package boundaries now recur enough to consider early:
+When the repo exposes agent tooling or MCP servers:
 
-- `agents`
-- `mastra`
-- `mcp`
-- `cli`
-- `ingestion` or `enrichment` when pipeline work is substantial
+- `mastra` for agents, tools, workflows, storage and the Mastra MCP server
+- `mcp` only for a standalone read-only server without Mastra
+- `cli` when operations need a command line
 
 For browser/page-source ingestion, consider `@howells/srcfull` before writing a fresh source-fetching layer.
 

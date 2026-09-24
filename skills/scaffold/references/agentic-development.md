@@ -73,15 +73,12 @@ When Mastra becomes part of a product, give it a dedicated workspace package:
 
 ```text
 packages/
-  ai/          # provider/model composition above @howells/ai
-  mastra/      # Mastra runtime, agents, tools, workflows, memory, storage, observability
-  mcp/         # MCP contracts and transports when exposed externally
+  mastra/      # agents, tools, workflows, memory, storage, observability, MCP server
+  mcp/         # only a standalone read-only server without Mastra
   sessions/    # app-facing job/session orchestration when needed
 ```
 
-Put Mastra in `packages/mastra`. App code should call product services or a small dispatch surface.
-
-Use `packages/agents` only when the repo has reusable non-Mastra agent definitions, prompts, evaluators, or tool wiring that should not live in the Mastra runtime package. If Mastra owns the runtime, `packages/mastra` should be the main agent/workflow boundary.
+Put Mastra in `packages/mastra`. App code should call product services or a small dispatch surface. Models come from `@howells/ai` by size.
 
 ## Mastra package shape
 
@@ -272,12 +269,11 @@ Avoid:
 - adding Mastra for one prompt
 - creating a catch-all agent with dozens of unrelated responsibilities
 - putting Mastra runtime code directly in a Next.js route
-- using `packages/agents` and `packages/mastra` for the same runtime concern
 - hiding tool schemas inside implementation files
 - exposing broad transport tools instead of intent-shaped tools
 - skipping `.commit()` on workflows
 - letting app components depend on Mastra internals
-- using raw provider SDKs inside agents when `@howells/ai` should own provider defaults
+- using raw provider SDKs or model strings inside agents when `@howells/ai` owns model choice
 - relying on remembered Mastra API details instead of current docs
 
 ## Checklist

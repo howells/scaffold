@@ -174,7 +174,7 @@ Default stack:
 - `@modelcontextprotocol/sdk` when the repo exposes MCP tools or resources
 - Drizzle if persistence is needed
 - the house media storage packages if generated assets are stored
-- `mastra`, `agents`, `mcp`, or `cli` packages when the repo exposes reusable agent tooling
+- a `mastra` package when the repo exposes reusable agent tooling; `cli` when operations need a command line
 - `@howells/srcfull` if browser or page-source ingestion is central
 
 Define script and data-pipeline conventions explicitly.

@@ -24,7 +24,7 @@ These are the current Howells project defaults:
 - Default linting and formatting: prefer the `@howells/lint` Oxlint/Oxfmt lane
 - Default task runner: Turborepo with cache disabled until a repo proves it is deterministic
 - Default data stack for product apps: Drizzle and Neon, with the narrowest typed API boundary that fits and React Query when client server-state exists
-- Default AI-capable shape: shared provider baseline through `@howells/ai`, image generation through Motif, product orchestration through repo-local `ai` or `agents`, and MCP in its own package only when the product needs that protocol surface
+- Default AI-capable shape: shared provider baseline through `@howells/ai`, image generation through Motif, product orchestration in `packages/mastra`, and a separate `packages/mcp` only for a standalone read-only server
 
 ## Sections
 

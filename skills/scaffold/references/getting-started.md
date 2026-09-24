@@ -38,13 +38,13 @@ If this is a full-stack product app rather than a simple UI shell:
 - choose the narrowest typed API boundary: server composition for app-internal work, `tRPC` for same-workspace consumers, and a versioned OpenAPI/oRPC contract for separately deployed or non-TypeScript consumers
 - split shared infra into packages instead of burying it in one app
 - use `@howells/envy` for typed env parsing and deployment env checks when runtime env exists
-- default package boundaries to `db`, `ui`, `env`, `tailwind-config` and `motion`; add `trpc`, `auth`, repo-local `ai`, `agents`, `mcp`, `assets`, or `upload` only where the repo actually needs them
+- default package boundaries to `db`, `ui`, `env`, `tailwind-config` and `motion`; add `trpc`, `auth`, `mastra`, `assets`, or `upload` only where the repo actually needs them
 
 If the repo is AI-capable, agent-heavy, or ingestion-heavy:
 
 - use `@howells/ai` as the provider baseline before adding raw provider SDKs
 - use `@howells/motif-sdk` and `@howells/motif-cli` for fal.ai image generation, editing, utility media tools, and agent-facing creative automation
-- add repo-local `ai`, `mastra`, `agents`, `mcp`, `cli`, `ingestion`, or `enrichment` packages based on real reuse boundaries
+- put agent code in `packages/mastra`; add `mcp` only for a standalone read-only server and `cli` only for a real command line
 - use Mastra when the work is agent orchestration, memory, observability, or MCP-adjacent workflow, not for one-off model calls
 - use `zod` for tool, model IO, and transport contracts
 - use [Agentic Development](./agentic-development.md) before scaffolding agent-facing surfaces

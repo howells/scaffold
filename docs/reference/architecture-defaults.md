@@ -177,7 +177,7 @@ For apps with AI features:
 - `howells/motif` for fal.ai image-generation and media-utility surfaces
 - `zod` for structured input and output contracts
 
-Keep model access behind `@howells/ai`. Its current package-level default route is Vercel AI Gateway, but that benchmark-informed default is not an architectural requirement for every product. Choose Gateway, OpenRouter, or a direct provider deliberately when deployment, first-party features, routing policy, credentials, or observability make the distinction material. Keep that choice in `@howells/ai` or `packages/ai`, not scattered through app routes.
+Keep model access behind `@howells/ai`. It owns sizes, catalogues and provider routing, and its default route is OpenRouter. Choose Vercel AI Gateway or a direct provider deliberately, inside `@howells/ai`, when deployment, credentials or observability make the distinction material. Repos ask for a size, never a model string.
 
 If the repo is doing CLI-model orchestration or needs stricter typed IO around agent calls:
 
@@ -189,12 +189,11 @@ Add Mastra when the repo needs agent orchestration:
 - `mastra` for the CLI/dev runtime
 - `@mastra/pg`, `@mastra/memory`, or `@mastra/observability` only when those capabilities are present
 
-Put substantial Mastra code in `packages/mastra`, not inside an app route or a generic `packages/agents` boundary. See [Agentic Development](./agentic-development.md).
+Put substantial Mastra code in `packages/mastra`, not inside an app route. See [Agentic Development](./agentic-development.md).
 
 Use raw provider SDKs only behind a boundary:
 
-- default provider wiring belongs in `@howells/ai`
-- project-specific provider composition belongs in `packages/ai`
+- provider wiring and model choice belong in `@howells/ai`
 - app routes should call product services, not create raw OpenAI, Anthropic, or OpenRouter clients inline
 
 ## Runtime environment
@@ -205,24 +204,15 @@ The default shape is a `packages/env` boundary that owns schema definition, pars
 
 ## Agent and MCP surfaces
 
-Agent-heavy repos use explicit package boundaries for tool surfaces:
+Agent code lives in one package:
 
-- `packages/ai` for repo-specific model/provider composition above `@howells/ai`
-- `packages/mastra` for Mastra runtime code, agents, tools, workflows, storage, memory, observability, scorers, and runtime routes
-- `packages/agents` for reusable non-Mastra agent definitions, evaluators, prompts, and tool wiring
-- `packages/mcp` or `packages/mcp-server` for MCP server contracts and transport code
-- `packages/cli` when the agent or ingestion surface needs a first-class command line
+- `packages/mastra` holds agents, tools, workflows, storage, memory, observability, scorers, processors and the repo's Mastra MCP server. Run Studio from this package with `mastra dev`; add an `apps/mastra-studio` only when the Studio is deployed.
+- `packages/mcp` only for a standalone MCP server built on `@modelcontextprotocol/sdk` that serves read-only product tools without Mastra, as materialgraph's does. Serve it from an app route.
+- `packages/cli` when operations need a first-class command line.
 
-Use `zod` for tool and transport schemas, and keep provider plumbing behind `@howells/ai` instead of scattering raw AI SDK clients through app code.
+There is no `packages/ai`, `packages/agents`, `packages/ingestion` or `packages/enrichment`. Model choice belongs in `@howells/ai`; pipeline code belongs in a named domain package.
 
-Use `@modelcontextprotocol/sdk` when the repo exposes MCP tools or resources. Do not bury MCP tool contracts inside a Next.js route unless the route is the only consumer and there is no expected CLI, test, or agent reuse.
-
-## Ingestion and enrichment
-
-For source-heavy or scraper-heavy repos:
-
-- use a dedicated `ingestion`, `enrichment`, or `scraper` package when pipeline behavior becomes substantial
-- consider `@howells/srcfull` for browser/page-source extraction before building a fresh source-fetching layer
+Use `zod` for tool and transport schemas. For browser and page-source extraction, use `@howells/srcfull` before building a fresh source-fetching layer.
 
 ## Overlay model
 

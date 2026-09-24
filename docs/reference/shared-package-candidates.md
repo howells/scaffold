@@ -42,8 +42,8 @@ These should be treated as canonical shared packages now:
 
 Recommendation:
 
-- keep provider selection, model defaults, and shared AI SDK wiring in `@howells/ai`
-- keep product-specific prompts, tools, and workflows in repo-local `packages/ai` or `packages/agents`
+- keep provider selection, sizes, model defaults and shared AI SDK wiring in `@howells/ai`; `@howells/mastra` hands those models to Mastra and carries no model code of its own
+- keep product-specific prompts, tools, and workflows in repo-local `packages/mastra`
 - do not publish repo-specific agent packages just because several repos use Mastra
 
 Mastra and MCP should standardize as architecture choices before becoming more shared package surface.

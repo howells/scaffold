@@ -58,10 +58,8 @@ For AI-capable repos, keep the agent surface explicit:
 
 - use `@howells/ai` before raw provider SDKs in app code
 - use Motif's SDK or agent-readable CLI before raw fal.ai clients for image generation, image editing, media utilities, or creative automation
-- use repo-local `packages/ai` for product-specific model and provider composition
-- use `packages/agents` when prompts, evaluators, tools, or agent definitions are shared
-- use Mastra when the repo needs real agent orchestration, memory, workflow state, or observability
-- use `packages/mcp` or `packages/mcp-server` for MCP contracts and transports
+- use Mastra, in `packages/mastra`, when the repo needs real agent orchestration, memory, workflow state, or observability; its MCP server lives there too
+- use `packages/mcp` only for a standalone read-only MCP server without Mastra
 - validate model IO and tool schemas with `zod`
 
 Do not hide reusable agent or MCP contracts inside a route handler. That makes them harder to test, harder to expose to coding assistants, and harder to reuse from CLIs.
