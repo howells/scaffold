@@ -9,12 +9,20 @@ description: "Patternmode as the starting point for UI: theme, motion, pattern c
 
 ## Start a UI repo
 
-1. Scaffold Base UI-backed components with `npx shadcn init`.
-2. Install the theme: `npx shadcn add https://patternmode.com/r/theme.json`. It supplies light and dark colour tokens, self-hosted Inter Variable with its OpenType features, radii, shadows and the body base.
-3. Register the `@patternmode` namespace in `components.json` (see [Config snippets](./config-snippets.md)).
-4. Follow the [Patternmode style guide](https://github.com/howells/patternmode/blob/main/docs/style.md) for typography roles and recipes. Apply the recipes in app code, so installed components stay upgradeable.
-5. Install `@howells/motion` for durations, easings, springs and presets rather than defining them locally.
-6. Add a `@patternmode/*` package when the interaction matches one. Pin it once in the workspace catalogue.
+This sequence was run end to end in a fresh repo on 24 September 2026 and checked in a browser: the computed font is Inter Variable and a two-sheet Stacksheet opens.
+
+```bash
+pnpm create next-app@latest . --typescript --tailwind --app --no-src-dir --import-alias "@/*" --use-pnpm
+npx shadcn@latest init -d
+npx shadcn@latest add https://patternmode.com/r/theme.json -y
+pnpm add @patternmode/stacksheet @howells/motion
+```
+
+- `shadcn init` without `-d` stops at interactive prompts for the component library and design preset. `-d` takes the defaults, which are Base UI and the Nova preset.
+- The theme item writes `app/globals.css` (light and dark tokens, radii, shadows, the 14px body base with Inter's `cv` features) and adds `@fontsource-variable/inter`. Remove the Geist `next/font/google` wiring that create-next-app leaves in `app/layout.tsx`; the theme's `--font-sans` already points at Inter.
+- Components are npm packages, pinned once in the workspace catalogue. The registry namespace (`"registries": { "@patternmode": "https://patternmode.com/r/{name}.json" }` in `components.json`, then `npx shadcn add @patternmode/<name>`) vendors a component's source for the rare repo that needs to edit it; a vendored copy no longer receives fixes.
+- Follow the [Patternmode style guide](https://github.com/howells/patternmode/blob/main/docs/style.md) for typography roles. Apply the recipes in app code, so installed components stay upgradeable.
+- Add a `@patternmode/*` package when the interaction matches one, and take durations, easings and springs from `@howells/motion` rather than defining them locally.
 
 ## Pattern components
 
