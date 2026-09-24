@@ -17,7 +17,7 @@ Do not make every product repo carry a copy of that guidance. Link to agentsurfa
 
 ## When agent infrastructure is warranted
 
-Do not add agent infrastructure for a single prompt, one route handler, or a simple model completion. Use ordinary app/service code with `@howells/ai`, `ai`, and `zod` until the behavior needs agent structure.
+Do not add agent infrastructure for a single prompt, one route handler, or a simple model completion. Use ordinary app/service code with `ai`, `zod` and a model from `@howells/ai` until the behavior needs agent structure.
 
 Add agentic infrastructure when at least one of these is true:
 
@@ -38,7 +38,7 @@ Keep an existing deliberate agent framework unless its constraints no longer fit
 
 Default choices:
 
-- simple model calls: `ai` plus `@howells/ai`
+- simple model calls: `ai` and `@openrouter/ai-sdk-provider`, with the model from `@howells/ai`
 - image generation, image editing, and media utilities: `howells/motif`
 - structured model IO or CLI-model calls: consider `@howells/envelope`
 - app-owned tool-using agents and workflows: Mastra
@@ -78,7 +78,7 @@ packages/
   sessions/    # app-facing job/session orchestration when needed
 ```
 
-Put Mastra in `packages/mastra`. App code should call product services or a small dispatch surface. Models come from `@howells/ai` by size.
+Put Mastra in `packages/mastra`. App code should call product services or a small dispatch surface. Models come from `@howells/ai` by job.
 
 ## Mastra package shape
 
@@ -273,7 +273,7 @@ Avoid:
 - exposing broad transport tools instead of intent-shaped tools
 - skipping `.commit()` on workflows
 - letting app components depend on Mastra internals
-- using raw provider SDKs or model strings inside agents when `@howells/ai` owns model choice
+- writing model strings inside agents when `@howells/ai` owns model choice
 - relying on remembered Mastra API details instead of current docs
 
 ## Checklist

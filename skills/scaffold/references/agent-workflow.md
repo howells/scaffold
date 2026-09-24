@@ -51,7 +51,7 @@ Do not copy an independent skill's instructions into every repo. Install or invo
 
 For AI-capable repos, keep the agent surface explicit:
 
-- use `@howells/ai` before raw provider SDKs in app code
+- take model IDs from `@howells/ai`; never write model strings in app code
 - use Motif's SDK or agent-readable CLI before raw fal.ai clients for image generation, image editing, media utilities, or creative automation
 - use Mastra, in `packages/mastra`, when the repo needs real agent orchestration, memory, workflow state, or observability; its MCP server lives there too
 - use `packages/mcp` only for a standalone read-only MCP server without Mastra

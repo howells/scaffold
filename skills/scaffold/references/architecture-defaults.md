@@ -167,11 +167,12 @@ Keep the distinction clear: Motif owns generation, editing, upscaling, backgroun
 For apps with AI features:
 
 - `ai` (the AI SDK) for the application-facing AI SDK surface
-- `@howells/ai` as the shared AI SDK/provider baseline
+- `@howells/ai` for the model to use for each job
+- `@openrouter/ai-sdk-provider` when AI SDK code calls a model directly
 - `howells/motif` for fal.ai image-generation and media-utility surfaces
 - `zod` for structured input and output contracts
 
-Keep model access behind `@howells/ai`. It owns sizes, catalogues and provider routing, and its default route is OpenRouter. Choose Vercel AI Gateway or a direct provider deliberately, inside `@howells/ai`, when deployment, credentials or observability make the distinction material. Repos ask for a size, never a model string.
+`@howells/ai` is a lookup: it names the model for each job (agent, extract, judge, vision, triage, write, reason, embed) as an OpenRouter model ID, with the request settings measured alongside it. It carries no provider code. Mastra takes a pick as `openrouter/${models.agent}`; AI SDK code passes it to `@openrouter/ai-sdk-provider`. Repos never write a model string of their own, so changing a pick is one edit and one release. Routerbase holds the comparisons behind each pick.
 
 If the repo is doing CLI-model orchestration or needs stricter typed IO around agent calls:
 
@@ -187,7 +188,7 @@ Put substantial Mastra code in `packages/mastra`, not inside an app route. See [
 
 Use raw provider SDKs only behind a boundary:
 
-- provider wiring and model choice belong in `@howells/ai`
+- model choice belongs in `@howells/ai`; OpenRouter is the one provider route
 - app routes should call product services, not create raw OpenAI, Anthropic, or OpenRouter clients inline
 
 ## Runtime environment

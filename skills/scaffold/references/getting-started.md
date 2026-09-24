@@ -42,7 +42,7 @@ If this is a full-stack product app rather than a simple UI shell:
 
 If the repo is AI-capable, agent-heavy, or ingestion-heavy:
 
-- use `@howells/ai` as the provider baseline before adding raw provider SDKs
+- take model IDs from `@howells/ai` rather than writing model strings in app code
 - use `@howells/motif-sdk` and `@howells/motif-cli` for fal.ai image generation, editing, utility media tools, and agent-facing creative automation
 - put agent code in `packages/mastra`; add `mcp` only for a standalone read-only server and `cli` only for a real command line
 - use Mastra when the work is agent orchestration, memory, observability, or MCP-adjacent workflow, not for one-off model calls
@@ -120,7 +120,7 @@ If you do not use the default stack, write down the reason early:
 - why not Next.js for a UI app
 - why not Drizzle and Neon for persistence
 - why the chosen API boundary fits its consumers and deployment shape
-- why not `@howells/ai` for AI provider plumbing
+- why not `@howells/ai` for model choice
 - why not `@howells/envy` for runtime env
 - why not the Patternmode theme and components
 

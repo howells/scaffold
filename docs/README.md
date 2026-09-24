@@ -13,7 +13,7 @@ These are the current Howells project defaults:
 - `@howells/lint` for pinned Oxlint/Oxfmt linting and formatting
 - `@howells/typescript-config` for thin, explicit tsconfig presets
 - `@howells/envy` for typed env parsing and deployment env checks
-- `@howells/ai`, Mastra, and deliberately scoped MCP packages for AI-capable product and agent work
+- `@howells/ai` for model choice, Mastra, and deliberately scoped MCP packages for AI-capable product and agent work
 - Motif's SDK and agent-readable CLI for image generation, image editing, utility media tools, and creative automation
 - conservative Turborepo defaults through the root `turbo.json` snippet
 
@@ -24,7 +24,7 @@ These are the current Howells project defaults:
 - Default linting and formatting: prefer the `@howells/lint` Oxlint/Oxfmt lane
 - Default task runner: Turborepo with cache disabled until a repo proves it is deterministic
 - Default data stack for product apps: Drizzle and Neon, with the narrowest typed API boundary that fits and React Query when client server-state exists
-- Default AI-capable shape: shared provider baseline through `@howells/ai`, image generation through Motif, product orchestration in `packages/mastra`, and a separate `packages/mcp` only for a standalone read-only server
+- Default AI-capable shape: model choice from `@howells/ai` over OpenRouter, image generation through Motif, product orchestration in `packages/mastra`, and a separate `packages/mcp` only for a standalone read-only server
 
 ## Sections
 

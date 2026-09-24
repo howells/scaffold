@@ -287,18 +287,18 @@ AI-capable repos use this starting shape.
 Default package choices:
 
 - `ai` for the Vercel AI SDK surface
-- `@howells/ai` for shared provider defaults and house wrappers
+- `@howells/ai` for the model to use for each job
 - Motif's SDK or CLI when image generation, image editing, media utilities, or agent-facing automation are part of the product
 - `zod` for structured model IO and tool schemas
 - `@mastra/core` and `mastra` when the repo needs agent orchestration, memory, observability, or workflow structure
 - `@modelcontextprotocol/sdk` when the repo exposes MCP tools, resources, or transports
-- provider packages such as `@ai-sdk/openai`, `@ai-sdk/anthropic`, `@ai-sdk/google`, and `@openrouter/ai-sdk-provider` only when a direct-provider need justifies them
+- provider packages such as `@ai-sdk/openai`, `@ai-sdk/anthropic`, `@ai-sdk/google`, only when OpenRouter can't serve a need; `@openrouter/ai-sdk-provider` is the route for AI SDK code
 
 ### Model access
 
-`@howells/ai` owns model choice: sizes (nano to reasoning), catalogues and provider routing. Its default route is OpenRouter, which is what the active repos use; Vercel AI Gateway and direct providers stay available behind the same boundary. Repos ask for a size, never a model string, and pass the result to Mastra. `@howells/mastra` carries no model code of its own.
+`@howells/ai` is a lookup: it names the model for each job (agent, extract, judge, vision, triage, write, reason, embed) as an OpenRouter model ID, with the request settings measured alongside it. It carries no provider code. Mastra takes a pick as `openrouter/${models.agent}`; AI SDK code passes it to `@openrouter/ai-sdk-provider`. Repos never write a model string of their own, so changing a pick is one edit and one release. Routerbase holds the comparisons behind each pick. `@howells/mastra` carries no model code of its own.
 
-Per-provider `@ai-sdk/*` packages are the escape hatch for direct-provider needs, and they still sit behind `@howells/ai`.
+OpenRouter is the only route. A direct `@ai-sdk/*` provider is the escape hatch for a capability OpenRouter lacks, and it still takes its model ID from the lookup.
 
 Default boundaries:
 

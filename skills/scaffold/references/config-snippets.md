@@ -76,7 +76,7 @@ apps/
   storybook/              # only for complex shared UI
 packages/
   auth/                   # when auth is shared
-  ai/                     # only for repo-specific logic above @howells/ai
+  ai/                     # only for repo-specific model logic; picks come from @howells/ai
   mastra/                 # when Mastra owns agent/workflow runtime behavior
   agents/                 # when non-Mastra agent behavior is shared
   mcp/                    # when the repo exposes MCP tools or resources

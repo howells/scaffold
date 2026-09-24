@@ -22,7 +22,7 @@ These should be treated as canonical shared packages now:
 - `@howells/envelope`
   - strict structured IO wrapper for CLI-model workflows
 - `@howells/ai`
-  - shared AI SDK/provider baseline for AI-capable apps and agent packages
+  - the model for each job, read by AI-capable apps and agent packages
 - `@howells/motif-sdk`
   - shared fal.ai image-generation, editing, utility media, model registry, and cost-estimation surface
 - `@howells/motif-cli`
@@ -36,13 +36,13 @@ These should be treated as canonical shared packages now:
 - `@howells/srcfull`
   - shared source-fetching layer for browser/page-source ingestion workflows
 
-## Continue standardising: AI provider baseline
+## Continue standardising: model choice
 
-`@howells/ai` is already common enough to be the default provider baseline for AI-capable repos.
+`@howells/ai` is the model lookup every AI-capable repo reads from.
 
 Recommendation:
 
-- keep provider selection, sizes, model defaults and shared AI SDK wiring in `@howells/ai`; `@howells/mastra` hands those models to Mastra and carries no model code of its own
+- keep the pick for each job and its measured settings in `@howells/ai`, and nothing else; provider wiring stays with Mastra's model router or the OpenRouter AI SDK provider
 - keep product-specific prompts, tools, and workflows in repo-local `packages/mastra`
 - do not publish repo-specific agent packages just because several repos use Mastra
 
@@ -109,7 +109,7 @@ Reduce duplicated package work in this order:
 
 1. prefer `@howells/lint` and `@howells/typescript-config` everywhere
 2. use `@howells/envy` for repo-local env boundaries instead of creating more package-specific env tooling
-3. keep `@howells/ai` as the shared AI/provider baseline instead of scattering raw provider clients
+3. read model IDs from `@howells/ai` instead of scattering model strings
 4. use `howells/motif` for image generation and media utility workflows instead of scattering raw fal.ai clients
 5. standardize `@patternmode/stacksheet` as the default stacked-panel abstraction
 6. use `@howells/motion` for motion tokens

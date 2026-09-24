@@ -142,7 +142,7 @@ Keep the provider client, key naming, metadata policy and approval-sensitive ope
 
 Use when the repo needs agents, tools, workflows, memory, storage, observability, scorers or processors, and agent behaviour is more than a single prompt or server action.
 
-Keep it organised by runtime concern: `agents`, `tools`, `workflows`, `schemas`, `prompts`, `runtime`, `observability`, `scorers`, `processors` and `mcp` for the Mastra MCP server. Models come from `@howells/ai` by size. Run Studio from this package; add `apps/mastra-studio` only when the Studio is deployed.
+Keep it organised by runtime concern: `agents`, `tools`, `workflows`, `schemas`, `prompts`, `runtime`, `observability`, `scorers`, `processors` and `mcp` for the Mastra MCP server. Models come from `@howells/ai` by job. Run Studio from this package; add `apps/mastra-studio` only when the Studio is deployed.
 
 App routes and React components should not import Mastra internals. Put dispatch and polling behind product services, and expose only deliberate package exports.
 

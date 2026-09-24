@@ -233,14 +233,13 @@ When the repo exposes model tools or resources to other agents, also consider:
 
 - `@modelcontextprotocol/sdk`
 
-`@howells/ai` owns model choice: sizes (nano to reasoning), catalogues and provider routing. Its default route is OpenRouter, which is what the active repos use; Vercel AI Gateway and direct providers stay available behind the same boundary. Repos ask for a size, never a model string, and pass the result to Mastra. `@howells/mastra` carries no model code of its own.
+`@howells/ai` is a lookup: it names the model for each job (agent, extract, judge, vision, triage, write, reason, embed) as an OpenRouter model ID, with the request settings measured alongside it. It carries no provider code. Mastra takes a pick as `openrouter/${models.agent}`; AI SDK code passes it to `@openrouter/ai-sdk-provider`. Repos never write a model string of their own, so changing a pick is one edit and one release. Routerbase holds the comparisons behind each pick. `@howells/mastra` carries no model code of its own.
 
-Provider packages are the escape hatch for direct-provider needs, chosen only when required and kept behind `@howells/ai`:
+AI SDK code that calls a model directly uses `@openrouter/ai-sdk-provider`. Direct provider packages are the escape hatch for a capability OpenRouter lacks, and still take their model ID from the lookup:
 
 - `@ai-sdk/openai`
 - `@ai-sdk/anthropic`
 - `@ai-sdk/google`
-- `@openrouter/ai-sdk-provider`
 
 If the repo is orchestrating CLI-first model workflows or wants stricter IO contracts, also consider `@howells/envelope`.
 
@@ -324,7 +323,7 @@ pnpm add @patternmode/aperto
 ### Add AI support
 
 ```bash
-pnpm add @howells/ai ai zod
+pnpm add @howells/ai ai @openrouter/ai-sdk-provider zod
 ```
 
 ### Add image generation support

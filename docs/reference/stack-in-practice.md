@@ -15,7 +15,7 @@ Counts are approximate repo footprints; use them to identify defaults, not as ad
 | --- | --- | --- |
 | **Hosting** | Vercel | Docker for containerised services; Cloudflare Workers occasionally |
 | **Database** | Neon (Postgres) + Drizzle ORM | Upstash Redis for caching/rate-limits; Turso once |
-| **LLM access** | `@howells/ai`, routed through OpenRouter | Vercel AI Gateway or a direct `@ai-sdk/*` provider, chosen explicitly behind the same boundary |
+| **LLM access** | OpenRouter, with the model for each job from `@howells/ai` | a direct `@ai-sdk/*` provider for a capability OpenRouter lacks |
 | **Embeddings** | Voyage | — |
 | **Search / scraping** | Exa + Firecrawl (usually paired) | Tavily, Bright Data, ScrapingBee |
 | **Agent browsing** | Kernel | the `agent-browser` skill for local automation |
@@ -31,11 +31,11 @@ Two prospective defaults are not yet widespread:
 - **Errors:** Sentry.
 - **Transactional email:** Resend.
 
-A note on LLM access: a September 2026 survey found that nearly every active repo routes through OpenRouter, by six different mechanisms, while `@howells/ai` still defaulted to Vercel AI Gateway from an April 2026 benchmark. The default is now OpenRouter, and model choice is consolidated in `@howells/ai`.
+A note on LLM access: a September 2026 survey found that nearly every active repo routes through OpenRouter, by six different mechanisms, while `@howells/ai` still defaulted to Vercel AI Gateway from an April 2026 benchmark. OpenRouter is now the only route, and `@howells/ai` is a lookup of the model for each job.
 
 ## Models and media
 
-Do not duplicate exact model rosters here. Language and embedding choices live in `@howells/ai`; media-generation and transformation choices live in `howells/motif`. Product code asks those packages for a tier or task instead of scattering fast-decaying model IDs through routes, prompts, and documentation.
+Do not duplicate exact model rosters here. Language and embedding choices live in `@howells/ai`; media-generation and transformation choices live in `howells/motif`. Product code asks those packages for a job or task instead of scattering fast-decaying model IDs through routes, prompts, and documentation.
 
 New AI work starts on AI SDK 7. Existing AI SDK 6 products migrate deliberately because the provider and tool APIs are a compatibility-significant change, not a fleet-wide cosmetic bump.
 
