@@ -7,7 +7,7 @@ description: "Howells defaults for repo shape, stack, package boundaries, agent 
 
 These are the current Howells project defaults:
 
-- the bundled UI baseline for shared UI, tokens, motion, and Storybook
+- Patternmode as the starting point for UI: theme, motion tokens and pattern components
 - native coding-assistant workflows and Matt Pocock's skills for general software development
 - the independent skills collection for specialist work that should not live inside one product repo
 - `@howells/lint` for pinned Oxlint/Oxfmt linting and formatting
@@ -20,7 +20,7 @@ These are the current Howells project defaults:
 ## Defaults
 
 - Default repo shape: `pnpm` monorepo, usually with `apps/*` and `packages/*`
-- Default UI stack: Next.js App Router, React, Tailwind CSS v4, Base UI, and Storybook when the repo exports reusable UI; unified Radix is the deliberate opt-out
+- Default UI stack: Next.js App Router, React, Tailwind CSS v4, Base UI and the Patternmode theme, with Storybook only for complex shared UI; unified Radix is the deliberate opt-out
 - Default linting and formatting: prefer the `@howells/lint` Oxlint/Oxfmt lane
 - Default task runner: Turborepo with cache disabled until a repo proves it is deterministic
 - Default data stack for product apps: Drizzle and Neon, with the narrowest typed API boundary that fits and React Query when client server-state exists
@@ -35,8 +35,10 @@ These are the current Howells project defaults:
 - [Repo Archetypes](./reference/repo-archetypes.md)
 - [Package Boundaries](./reference/package-boundaries.md)
 - [Deployment Defaults](./reference/deployment-defaults.md)
+- [Neon](./reference/neon.md)
 - [Default Dependencies](./reference/default-dependencies.md)
 - [Config Snippets](./reference/config-snippets.md)
+- [package.json: Scripts and Versions](./reference/package-scripts.md)
 - [UI Projects](./reference/ui-projects.md)
 - [Shared Package Candidates](./reference/shared-package-candidates.md)
 - [Agent Workflow](./reference/agent-workflow.md)

@@ -33,9 +33,8 @@ Use this for a new repo or before releasing an aligned existing repo.
 
 ## UI projects
 
-- the bundled UI baseline is the starting assumption
+- the Patternmode theme is installed, and matching `@patternmode/*` packages are used instead of local copies
 - shared primitives live in a package, not in the app
-- Storybook exists for exported reusable UI
 - local wrappers are preferred over primitive forks
 - brand expression is handled through tokens and compositions, not component duplication
 - `motion`, `lucide-react`, `zod`, `cn`, and `sonner` are installed when the repo is UI-first

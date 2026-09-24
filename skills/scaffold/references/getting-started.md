@@ -22,10 +22,10 @@ Before creating files, choose the repo archetype from [Repo Archetypes](./repo-a
 
 If the project ships a UI:
 
-- start from the bundled UI baseline in [UI Projects](./ui-projects.md)
+- start from Patternmode as described in [UI Projects](./ui-projects.md)
 - default to Next.js App Router
 - keep shared primitives in a package, not in the app
-- include Storybook when the repo exports reusable UI
+- add Storybook only when a complex shared UI package needs reviewing in isolation
 
 If the project is not UI-first:
 
@@ -38,12 +38,12 @@ If this is a full-stack product app rather than a simple UI shell:
 - choose the narrowest typed API boundary: server composition for app-internal work, `tRPC` for same-workspace consumers, and a versioned OpenAPI/oRPC contract for separately deployed or non-TypeScript consumers
 - split shared infra into packages instead of burying it in one app
 - use `@howells/envy` for typed env parsing and deployment env checks when runtime env exists
-- default package boundaries to `db`, `ui`, `typescript-config`, `tailwind-config`, `env`, and `motion`; add `trpc`, `auth`, repo-local `ai`, `agents`, `mcp`, `assets`, or `upload` only where the repo actually needs them
+- default package boundaries to `db`, `ui`, `env`, `tailwind-config` and `motion`; add `trpc`, `auth`, repo-local `ai`, `agents`, `mcp`, `assets`, or `upload` only where the repo actually needs them
 
 If the repo is AI-capable, agent-heavy, or ingestion-heavy:
 
 - use `@howells/ai` as the provider baseline before adding raw provider SDKs
-- use `howells/motif` packages for fal.ai image generation, editing, utility media tools, and agent-facing creative automation
+- use `@howells/motif-sdk` and `@howells/motif-cli` for fal.ai image generation, editing, utility media tools, and agent-facing creative automation
 - add repo-local `ai`, `mastra`, `agents`, `mcp`, `cli`, `ingestion`, or `enrichment` packages based on real reuse boundaries
 - use Mastra when the work is agent orchestration, memory, observability, or MCP-adjacent workflow, not for one-off model calls
 - use `zod` for tool, model IO, and transport contracts
@@ -85,21 +85,7 @@ Do not install direct `oxlint` or `oxfmt` dependencies. Use the `@howells/lint` 
 
 ## 5. Keep the scripts standard
 
-Keep these root script names unless the repo records a reason to differ:
-
-- `dev`
-- `dev:all`
-- `build`
-- `lint`
-- `format`
-- `typecheck`
-- `test`
-- `check`
-- `check:affected`
-- `clean`
-- `prepare`
-
-The exact commands can vary by repo, but the script contract should stay stable.
+Use the fixed root vocabulary: `dev`, `build`, `test`, `typecheck`, `lint`, `lint:fix`, `prepush` and `prepare`, plus verbs that act, such as `db:*`, `deploy:*` and `generate:*`. [package.json: scripts and versions](./package-scripts.md) defines each one and lists the banned names.
 
 ## 6. Add the agent and rules layer deliberately
 
@@ -136,7 +122,7 @@ If you do not use the default stack, write down the reason early:
 - why the chosen API boundary fits its consumers and deployment shape
 - why not `@howells/ai` for AI provider plumbing
 - why not `@howells/envy` for runtime env
-- why not the bundled UI baseline for shared UI primitives
+- why not the Patternmode theme and components
 
 Recorded deviations prevent the same decision from being reopened in every repo.
 

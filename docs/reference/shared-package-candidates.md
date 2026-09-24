@@ -15,6 +15,8 @@ These should be treated as canonical shared packages now:
   - pinned Oxlint/Oxfmt, Ultracite, and React Doctor presets
 - `@howells/typescript-config`
   - explicit thin tsconfig presets
+- `@howells/motion`
+  - shared durations, easings, springs and presets
 - `@patternmode/stacksheet`
   - the preferred abstraction for stacked sheet flows
 - `@howells/envelope`
@@ -57,44 +59,6 @@ Recommendation:
 - use the CLI's JSON/NDJSON output, semantic exit codes, and live `--describe` schema when an agent needs the tool surface
 - keep durable media storage separate through the house media storage platform
 - do not write raw fal.ai clients in app routes unless Motif cannot cover the endpoint yet
-
-## Strong candidate: motion tokens
-
-This is the clearest next shared package candidate.
-
-Why:
-
-- `motion` is one of the highest-frequency UI dependencies
-- the bundled UI baseline includes a small motion package snapshot
-- both repos are solving the same problem: durations, easings, springs, presets
-
-Recommendation:
-
-- converge on one shared motion token package instead of letting every major UI repo carry its own copy
-
-This package should be small and boring:
-
-- durations
-- easings
-- springs
-- a few named presets
-
-It should not become a second animation library.
-
-## Strong candidate: transition primitives
-
-The bundled transition snapshot suggests another promising shared layer.
-
-Why:
-
-- transitions and overlay enter/exit behavior are recurring
-- the same interaction patterns reappear across UI repos
-- keeping transition primitives separate from raw components is cleaner than burying them inside each app
-
-Recommendation:
-
-- stabilize transition primitives inside repos that need them
-- only publish them separately if they prove reusable outside one product family
 
 ## Medium candidate: drawer and side-panel layer
 
@@ -148,5 +112,5 @@ Reduce duplicated package work in this order:
 3. keep `@howells/ai` as the shared AI/provider baseline instead of scattering raw provider clients
 4. use `howells/motif` for image generation and media utility workflows instead of scattering raw fal.ai clients
 5. standardize `@patternmode/stacksheet` as the default stacked-panel abstraction
-6. unify motion tokens into one shared package
-7. stabilize the bundled UI baseline through real consuming repos before publishing more UI internals
+6. use `@howells/motion` for motion tokens
+7. add recurring UI patterns to Patternmode rather than copying them between repos

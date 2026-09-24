@@ -1,5 +1,5 @@
-// Root docs and reference docs lose frontmatter. UI baseline sources are copied
-// byte-for-byte. Root-doc links are flattened to match the generated tree.
+// Root docs and reference docs lose frontmatter. Root-doc links are flattened
+// to match the generated tree.
 
 import {
   existsSync,
@@ -17,9 +17,6 @@ const SCRIPT_DIR = import.meta.dirname;
 const ROOT = join(SCRIPT_DIR, "..");
 const DOCS = join(ROOT, "docs");
 const OUT = join(ROOT, "skills", "scaffold", "references");
-
-const UI_BASELINE_SRC = join(DOCS, "reference", "ui-baseline");
-const UI_BASELINE_OUT = "ui-baseline";
 
 function stripFrontmatter(text: string, sourceLabel: string): string {
   if (!text.startsWith("---\n")) {
@@ -124,40 +121,6 @@ function generate(): Map<string, Buffer> {
       `docs/reference/${name}`
     );
     add(name, Buffer.from(stripped, "utf8"));
-  }
-
-  for (const rel of walk(UI_BASELINE_SRC)) {
-    const segments = rel.split(/[/\\]/);
-    const outRel = join(UI_BASELINE_OUT, rel);
-    const abs = join(UI_BASELINE_SRC, rel);
-
-    if (segments.length === 1) {
-      if (rel === "README.md") {
-        const stripped = stripFrontmatter(
-          readFileSync(abs, "utf8"),
-          "docs/reference/ui-baseline/README.md"
-        );
-        add(outRel, Buffer.from(stripped, "utf8"));
-      } else if (rel === "meta.json") {
-        continue;
-      } else {
-        throw new Error(
-          `Unexpected file at ui-baseline root: ${rel}. ` +
-            `Expected only README.md, meta.json, and source/.`
-        );
-      }
-      continue;
-    }
-
-    if (segments[0] === "source") {
-      add(outRel, readFileSync(abs));
-      continue;
-    }
-
-    throw new Error(
-      `Unexpected path under ui-baseline: ${rel}. ` +
-        `Expected files under source/ only (plus root README.md / meta.json).`
-    );
   }
 
   return tree;

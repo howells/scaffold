@@ -18,9 +18,8 @@ packages/
   db/
   trpc/             # only when the app uses tRPC
   ui/
-  typescript-config/
-  tailwind-config/
   env/
+  tailwind-config/
   motion/
 ```
 
@@ -71,15 +70,9 @@ Put these here:
 
 Do not put page-specific product UI here just because it uses shared components.
 
-## `packages/typescript-config`
+## TypeScript config
 
-Put this here when the repo has multiple leaves that should share explicit presets:
-
-- app presets
-- package presets
-- test-specific presets only if the repo truly needs them
-
-This now recurs enough that it should be considered part of the default monorepo shape, not an afterthought.
+Don't create a local `packages/typescript-config`. Each app and package `tsconfig.json` extends the matching `@howells/typescript-config` preset directly.
 
 ## `packages/tailwind-config`
 
@@ -263,9 +256,8 @@ Create boundaries in this order:
 
 1. `db`
 2. `ui`
-3. `typescript-config`
+3. `env`
 4. `tailwind-config`
 5. `motion`
-6. `env`
-7. `trpc` when a same-workspace typed API needs it
-8. `ai` / `mastra` / `agents` / `mcp` when agent behavior is part of the product
+6. `trpc` when a same-workspace typed API needs it
+7. `ai` / `mastra` / `agents` / `mcp` when agent behavior is part of the product

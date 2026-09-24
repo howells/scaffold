@@ -21,7 +21,7 @@ The full baseline would add unused configuration. This repo has one package, no 
 - **No `vitest`.** The documentation-integrity script and static build are the test surface.
 - **`pnpm-workspace.yaml` with empty `packages`.** The workspace file exists for pnpm settings (build allowlists, minimum-release-age exclusions), but declares no workspace packages because there are none.
 - **No `oxlint.config.ts`.** Lint targets are passed as CLI arguments instead: `howells-check src next.config.mjs source.config.ts`. Scoping on the command line keeps the small, fixed set of lint targets visible in `package.json` without a separate config file.
-- **The lint scripts name their targets.** That excludes generated output and the vendored reference tree under `docs/reference/ui-baseline`.
+- **The lint scripts name their targets.** That excludes generated output.
 
 ## Consequence
 

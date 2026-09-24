@@ -20,7 +20,7 @@ Load only the references needed for the current task:
 - `references/package-boundaries.md` for workspace package layout.
 - `references/default-dependencies.md` for package selection.
 - `references/config-snippets.md` when generating baseline files.
-- `references/ui-projects.md` for UI baseline decisions.
+- `references/ui-projects.md` for UI decisions and the Patternmode starting point.
 - `references/agent-workflow.md` for AGENTS.md, coding-assistant, and reusable-skill setup.
 - `references/development-skills.md` for routing work through installed engineering, specialist, and stack-specific skills.
 - `references/worktree-coordination.md` for shared Codex, Claude, account-profile, branch, stash, and cleanup policy.

@@ -1,131 +1,84 @@
 ---
 title: "UI projects"
-description: "The local UI package baseline: Tailwind v4, Base UI, design tokens, motion, and Storybook."
+description: "Patternmode as the starting point for UI: theme, motion, pattern components, and where Storybook earns its place."
 ---
 
 # UI projects
 
-Seed new UI packages from Scaffold's bundled baseline. The shared source lives here rather than in a separate upstream repo.
+[Patternmode](https://patternmode.com) is the starting point for every new UI. It's a live, tested, published catalogue in `~/Sites/patternmode`, and it owns the house theme, motion tokens and pattern components. Scaffold documents when to use it; it doesn't carry a copy.
 
-## What the bundled baseline owns
+## Start a UI repo
 
-The scaffold now includes the old UI-system files directly under [Bundled UI Baseline](./ui-baseline/README.md). Use those files as a starting point for:
+1. Scaffold Base UI-backed components with `npx shadcn init`.
+2. Install the theme: `npx shadcn add https://patternmode.com/r/theme.json`. It supplies light and dark colour tokens, self-hosted Inter Variable with its OpenType features, radii, shadows and the body base.
+3. Register the `@patternmode` namespace in `components.json` (see [Config snippets](./config-snippets.md)).
+4. Follow the [Patternmode style guide](https://github.com/howells/patternmode/blob/main/docs/style.md) for typography roles and recipes. Apply the recipes in app code, so installed components stay upgradeable.
+5. Install `@howells/motion` for durations, easings, springs and presets rather than defining them locally.
+6. Add a `@patternmode/*` package when the interaction matches one. Pin it once in the workspace catalogue.
 
-- `packages/ui` for primitives and shared compositions
-- `packages/tailwind-config` for tokens and shared CSS entrypoint
-- `packages/motion` for shared motion constants and helpers
-- `packages/transition` for transition primitives
-- `apps/storybook` as the visual contract
-- `apps/playground` or a docs app as integration and system surfaces
+## Pattern components
 
-## Default rule
+Use the package when the interface needs the pattern:
 
-If a new project has a UI, do not start by inventing a fresh component system.
+- `@patternmode/stacksheet` for typed stacked sheets, drill-in panels and multi-layer modal flows
+- `@patternmode/aperto` for thumbnail-to-expanded media transitions and lightboxes
+- `@patternmode/deck` for card decks with finite or cyclic advance
+- `@patternmode/scrollframe` for scroll areas with measured fades and movement controls
+- `@patternmode/swatch`, `halo`, `channel`, `briolette` and `parquet` for colour display and colour picking
+- `@patternmode/thumbnail` for framed images
+- `@patternmode/verge` for controls that reveal on hover, focus or touch
+- `@patternmode/tags` for tags and tag inputs
+- `@patternmode/status` for animated status marks
+- `@patternmode/system` for sizing, composition and weighted-distribution utilities
 
-Start from the bundled UI baseline and only diverge when one of these is true:
+Keep product-specific behaviour in the app around the package. A pattern that recurs across repos belongs in Patternmode, not in a second copy.
 
-- the product has a domain-specific component that does not belong in shared UI
-- the project needs an app-local composition over shared primitives
-- the visual language needs new tokens or wrappers but not new primitive behavior
+## Local ownership
 
-## Reuse and local ownership
+Own these in the project:
 
-Reuse from the bundled baseline:
+- `packages/ui` for the repo's shadcn components and shared compositions, once more than one app needs them
+- brand-specific token values layered over the Patternmode theme
+- page-level compositions and domain-specific compound components
+- thin wrappers around shared primitives
 
-- primitive controls
-- base form fields
-- common overlays and menus
-- shared motion timing and transition patterns
-- token structure
-- Storybook conventions
+Avoid:
 
-Own locally in the project:
-
-- page-level compositions
-- brand-specific token values
-- domain-specific compound components
-- app-specific wrappers around shared primitives
-
-## Avoid
-
-- do not copy-paste shared components into app code as a default workflow after the repo has a `packages/ui` boundary
-- do not fork primitives just to tweak spacing or visual tone
-- do not let every UI repo invent its own Tailwind token naming
-- do not treat shadcn output as the final design system
-
-The structural baseline is bundled in this scaffold. The aesthetic layer remains project-specific.
+- copying Patternmode components into app code instead of installing them
+- forking a primitive to change spacing or tone; change tokens or wrap it
+- inventing a new token vocabulary; Patternmode components read the standard shadcn variables
 
 ## Baseline UI stack
-
-For a new UI repo, prefer:
 
 - Next.js App Router
 - React
 - Tailwind CSS v4
 - Base UI primitives (`@base-ui/react`)
-- `motion`
+- the Patternmode theme
+- `motion` and `@howells/motion`
 - `lucide-react`
-- Storybook for reusable exported components
 
-Base UI is the house default primitive layer. shadcn scaffolds Base UI-backed components by default (`npx shadcn init`), and Base UI ships as one package — `@base-ui/react`. Radix is a supported opt-out via `npx shadcn init -b radix`; on Radix, use the unified `radix-ui` package, never the split per-component Radix packages.
+Base UI is the house primitive layer. shadcn scaffolds Base UI-backed components by default, and Base UI ships as one package, `@base-ui/react`. Radix is a supported opt-out via `npx shadcn init -b radix`; on Radix, use the unified `radix-ui` package, never the split per-component Radix packages.
 
-## Reusable Howells UI packages
+For task-by-task library choices, see [Library picks by task](./default-dependencies.md#library-picks-by-task).
 
-Do not use an old shared UI upstream as the UI layer for new projects. Only use specific installable components when the interaction matches the package.
+## Overlays
 
-Use:
+Use different primitives for different overlay jobs:
 
-- `@patternmode/stacksheet` for typed stacked sheets, drill-in panels, and multi-layer modal flows
-- `@patternmode/aperto` for styled thumbnail-to-expanded media transitions and media lightboxes
+- a simple drawer or mobile bottom sheet: the repo's `vaul`-backed drawer
+- stacked sheets, panel drills or multi-layer modal flows: `@patternmode/stacksheet`; don't stretch a `vaul` drawer into a stack
+- thumbnail-to-expanded media: `@patternmode/aperto`
 
-Do not use legacy provenance as a reason to skip a repo-local `packages/ui` boundary when the repo owns shared primitives. The reusable packages are relevant as specific installable components, not as a shared UI system.
+## Storybook
 
-## Overlay standard
-
-Use different primitives for different overlay jobs.
-
-For a simple drawer or mobile bottom sheet:
-
-- use the shared drawer component from the repo UI package
-- that drawer can stay `vaul`-backed under the hood
-
-For stacked sheets, panel drills, or multi-layer modal flows:
-
-- prefer `@patternmode/stacksheet`
-- do not try to stretch a plain `vaul` drawer into a stacked workflow
-
-For thumbnail-to-expanded media interactions:
-
-- prefer `@patternmode/aperto`
-- keep custom gallery/product behavior local to the app around the package
-
-This distinction already shows up in your ecosystem:
-
-- `vaul` wrappers recur inside shared UI packages
-- `@patternmode/stacksheet` is the stronger abstraction when the interface needs real stack orchestration
-- `@patternmode/aperto` is the reusable media-transition component when the interface needs a polished image or video expansion pattern
-
-## Storybook rule
-
-If the repo exports user-facing reusable UI, Storybook is required.
-
-Keep the Storybook surface proportionate, but give shared UI a visible contract and visual regression checks.
-
-## Maintaining the bundled baseline
-
-The bundled baseline is still a starting point, not a frozen design system:
-
-- keep generic primitives in `packages/ui`
-- keep local wrappers thin until repeated needs prove a stronger shared primitive
-- update the scaffold baseline when the same improvement appears across multiple active repos
+Storybook is for complex projects only: a repo whose shared UI package is large enough that its components need reviewing in isolation. materia and openground have one; most repos don't need it. Patternmode's own catalogue site is its visual contract.
 
 ## Migrate an existing project
 
-When moving an older UI repo toward the new standard:
+1. Install the Patternmode theme and replace local token definitions with overrides on top of it.
+2. Replace local motion constants with `@howells/motion`.
+3. Swap local copies of a Patternmode pattern for the package.
+4. Keep page-level product code local.
 
-1. adopt the bundled token structure and shared CSS entrypoint first
-2. migrate obvious primitives second
-3. migrate shared compositions only after the primitive contract is stable
-4. keep page-level product code local
-
-Migrate in stages; alignment does not require a one-shot visual rewrite.
+Migrate in stages; alignment doesn't require a one-shot visual rewrite.

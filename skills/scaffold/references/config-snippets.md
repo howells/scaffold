@@ -11,16 +11,12 @@ Adjust names and filters while preserving the script and workspace contracts.
   "packageManager": "pnpm@latest",
   "scripts": {
     "dev": "turbo run dev --filter=web",
-    "dev:all": "turbo run dev",
     "build": "turbo run build",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
     "lint": "turbo run lint && howells-workspace-check",
     "lint:fix": "turbo run lint:fix && howells-workspace-fix",
-    "format": "howells-fix .",
-    "typecheck": "turbo run typecheck",
-    "test": "turbo run test",
-    "check": "pnpm lint && pnpm typecheck && pnpm test",
-    "check:affected": "turbo run build lint typecheck test --affected",
-    "clean": "turbo run clean --continue=always && rm -rf .turbo",
+    "prepush": "pnpm typecheck && pnpm lint",
     "prepare": "howells-husky"
   },
   "devDependencies": {
@@ -34,8 +30,7 @@ Adjust names and filters while preserving the script and workspace contracts.
     "vitest": "latest"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": "howells-fix",
-    "*.{json,jsonc,css,md,mdx}": "howells-oxfmt --write"
+    "*.{js,ts,jsx,tsx,json,jsonc,css,md,mdx}": "howells-oxfmt --write"
   },
   "engines": {
     "node": ">=24 <25"
@@ -46,7 +41,7 @@ Adjust names and filters while preserving the script and workspace contracts.
 Notes:
 
 - replace `web` with the primary app package when needed
-- if `test` is expensive, keep `check` light and create a heavier CI-only job
+- [package.json: scripts and versions](./package-scripts.md) is the full script vocabulary and the list of banned names
 - `pnpm` is the current house baseline
 - for published packages that can support Node 22, use `"node": ">=22"` in the package itself while keeping repo tooling on Node 24
 
@@ -69,7 +64,6 @@ packages/
   db/
   trpc/                   # optional: same-workspace typed API
   ui/
-  typescript-config/
   tailwind-config/
   env/                    # when typed env is centralized
   motion/                 # when motion tokens/presets are shared
@@ -79,7 +73,7 @@ Add capability packages only when the repo needs them:
 
 ```text
 apps/
-  storybook/              # when shared UI exists
+  storybook/              # only for complex shared UI
 packages/
   auth/                   # when auth is shared
   ai/                     # only for repo-specific logic above @howells/ai
@@ -235,7 +229,7 @@ For a non-DOM package:
 
 ## `components.json` for UI repos
 
-Use this when the repo owns a local shared UI package seeded from the bundled UI baseline:
+Use this when the repo owns a local shared UI package. The `registries` entry lets `npx shadcn add @patternmode/<name>` install Patternmode items:
 
 ```json
 {
@@ -250,6 +244,9 @@ Use this when the repo owns a local shared UI package seeded from the bundled UI
     "cssVariables": true
   },
   "iconLibrary": "lucide",
+  "registries": {
+    "@patternmode": "https://patternmode.com/r/{name}.json"
+  },
   "aliases": {
     "components": "packages/ui/src/components",
     "utils": "packages/ui/src/lib",
@@ -263,7 +260,7 @@ If the repo has its own local UI package, keep aliases aligned to that package r
 
 ## Git hooks
 
-`@howells/husky` writes the immutable `.husky/pre-commit` and `.husky/pre-push` files during `prepare`. Don't hand-edit the generated hooks in a consumer repository. Pre-commit runs `lint-staged`; pre-push runs `typecheck` and `lint` when the pushed ref is the checked-out `HEAD`.
+`@howells/husky` writes the immutable `.husky/pre-commit` and `.husky/pre-push` files during `prepare`. Don't hand-edit the generated hooks in a consumer repository. Pre-commit runs `lint-staged`; pre-push runs `pnpm prepush` (or `typecheck` and `lint` when a repo has no `prepush`) when the pushed ref is the checked-out `HEAD`.
 
 ## Claude Code hooks: `.claude/settings.json`
 

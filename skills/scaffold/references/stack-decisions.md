@@ -30,7 +30,7 @@ Review this table when a compatibility-significant major changes; keep exact min
 | TypeScript   |                          7 | 2026-09-07       |
 | Tailwind CSS |                          4 | 2026-08-26       |
 | Turborepo    |                          2 | 2026-08-26       |
-| Vitest       |                          4 | 2026-08-26       |
+| Vitest       |                          5 | 2026-09-24       |
 | Storybook    |                         10 | 2026-08-26       |
 | AI SDK       |                          7 | 2026-08-26       |
 
@@ -180,8 +180,8 @@ For new UI repos:
 - Tailwind CSS v4
 - Base UI primitives (`@base-ui/react`)
 - `motion` for animation, imported from `motion/react` in React code
-- Storybook for reusable exported components
-- the bundled UI baseline as the starting point for shared UI packages
+- the Patternmode theme, `@howells/motion` and `@patternmode/*` components as the starting point
+- Storybook only for complex shared UI
 
 Use Base UI as the primitive layer for new repos. shadcn now defaults to Base UI, so `npx shadcn init` scaffolds Base UI-backed components. Base UI ships as a single package, `@base-ui/react` — do not split it into per-component packages.
 
@@ -255,9 +255,9 @@ The packages that recur most often in UI work are:
 
 Repeated package names across Turborepos define these default boundaries:
 
-- first tier: `db`, `ui`, `typescript-config`, `tailwind-config`
-- second tier: `utils`, `motion`, `auth`, `mastra`, `agents`, `mcp`, repo-local `ai` packages above `@howells/ai`, and `trpc` when a same-workspace API needs it
-- optional but frequent: `assets`, `upload`, `storage`, `env`, `config`
+- first tier: `db`, `ui`, `env`
+- second tier: `tailwind-config`, `utils`, `motion`, `auth`, `mastra`, `agents`, `mcp`, repo-local `ai` packages above `@howells/ai`, and `trpc` when a same-workspace API needs it
+- optional but frequent: `assets`, `upload`, `storage`, `config`
 
 The detailed policy lives in [Default Dependencies](./default-dependencies.md).
 

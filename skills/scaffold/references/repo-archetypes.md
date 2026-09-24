@@ -19,7 +19,7 @@ Default stack:
 - Drizzle
 - Neon
 - WorkOS by default; Clerk only when a lighter existing or consumer-oriented app has a concrete reason
-- bundled UI baseline
+- the Patternmode theme and components
 - `@howells/envy` when runtime env exists
 - `@howells/ai`, Mastra, and MCP packages when agent behavior is product behavior
 
@@ -28,12 +28,11 @@ Typical workspace:
 ```text
 apps/
   web/
-  storybook/        # only if shared UI exists
+  storybook/        # only for complex shared UI
 packages/
   db/
   trpc/             # only for a same-workspace typed API
   ui/
-  typescript-config/
   tailwind-config/
   env/
   motion/
@@ -48,35 +47,22 @@ packages/
 
 ## 2. UI system or design-system repo
 
-Use this for:
+Patternmode is the house UI system. Add a new shared pattern there instead of starting another design-system repo. Use this shape only for a genuinely separate component catalogue:
 
-- shared UI foundations
-- component libraries
-- token systems
-- motion and transition primitives
-
-Default stack:
-
-- scaffold UI-baseline monorepo shape
-- Storybook
-- playground or docs app
+- one independently versioned package per pattern
+- a catalogue site that also serves the shadcn registry
+- a preview app that installs the registry output the way a consumer would
 
 Typical workspace:
 
 ```text
 apps/
-  playground/
-  storybook/
-  web/              # optional docs/system site
+  web/              # catalogue site and /r registry
+  preview/          # registry consumer check
 packages/
-  ui/
-  typescript-config/
-  tailwind-config/
-  motion/
-  transition/
+  theme/            # private; distributed through the registry
+  <pattern>/        # one published package per pattern
 ```
-
-Use this model for new shared UI work.
 
 ## 3. Docs or content site
 

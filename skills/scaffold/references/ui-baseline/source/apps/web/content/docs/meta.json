@@ -1,5 +1,0 @@
-{
-  "root": true,
-  "title": "Getting Started",
-  "pages": ["index", "installation", "tokens", "responsive", "motion"]
-}

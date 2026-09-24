@@ -54,12 +54,11 @@ Default to:
 
 If the repo exports shared UI, also include:
 
-- `storybook`
-- `@storybook/react-vite`
 - `@testing-library/react`
 - `@testing-library/jest-dom`
 - `@testing-library/user-event`
 - `@playwright/test`
+- `storybook` and `@storybook/react-vite` only for a complex shared UI package
 
 ## Shared UI package baseline
 
@@ -131,11 +130,11 @@ Across the active monorepos, the package names that repeat most often are:
 
 - `db`
 - `ui`
-- `typescript-config`
-- `tailwind-config`
+- `env`
 
 The next tier that recurs often enough to plan for up front is:
 
+- `tailwind-config`
 - `utils`
 - `motion`
 - `auth`
@@ -149,7 +148,6 @@ Optional defaults:
 - `assets`
 - `upload`
 - `storage`
-- `env`
 - `config`
 - `cli`
 
@@ -292,10 +290,10 @@ pnpm add -D @howells/lint @howells/typescript-config @howells/husky turbo typesc
 pnpm add next react react-dom tailwindcss @tailwindcss/postcss motion lucide-react zod cn sonner @tanstack/react-query next-themes date-fns usehooks-ts nuqs @howells/envy
 ```
 
-When the repo exports reusable UI, also add Storybook and browser/component test tooling:
+When the repo exports reusable UI, also add browser and component test tooling:
 
 ```bash
-pnpm add -D storybook @storybook/react-vite @testing-library/react @testing-library/jest-dom @testing-library/user-event @playwright/test
+pnpm add -D @testing-library/react @testing-library/jest-dom @testing-library/user-event @playwright/test
 ```
 
 ### New full-stack product app

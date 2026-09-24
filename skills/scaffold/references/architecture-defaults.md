@@ -132,10 +132,9 @@ Do not scaffold a docs framework into every repo by default.
 When the repo owns reusable UI:
 
 - keep shared components in a package
-- use Storybook as the visual contract
-- seed new UI-first work from the bundled UI baseline
+- start new UI-first work from Patternmode, as described in [UI Projects](./ui-projects.md)
 
-Storybook is not mandatory for every app. It is mandatory when the repo exports reusable UI that should be reviewed and regression-checked in isolation.
+Storybook is for complex projects only, where a large shared UI package needs reviewing in isolation.
 
 ## Component scaffolding
 
@@ -240,10 +239,10 @@ For a new product app, use:
 - Drizzle
 - Neon
 - WorkOS by default; Clerk for a lighter existing or consumer-oriented app with a recorded reason
-- the bundled UI baseline
+- the Patternmode theme and components
 - `@howells/ai` plus Mastra/MCP packages when agent behavior is part of the product
 - Envy if runtime env exists
-- Storybook if shared UI exists
+- Storybook only for complex shared UI
 - Fumadocs if the repo needs docs
 - the house media storage packages if the repo needs media storage
 
