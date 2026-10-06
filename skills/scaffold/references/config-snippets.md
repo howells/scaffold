@@ -264,7 +264,7 @@ If the repo has its own local UI package, keep aliases aligned to that package r
 
 ## Claude Code hooks: `.claude/settings.json`
 
-Commit this, merged into any existing settings. It formats only the file an `Edit` or `Write` touched. It `cd`s into the file's directory so `howells-oxfmt` picks up the nearest package's config, and calls the binary through `$CLAUDE_PROJECT_DIR` because the hook runs wherever the session last changed directory. Needs `jq`. Repos still on Biome call `biome format --write` in the same place, never `check --fix`. `stack-decisions.md` explains why there is no Stop hook, no lint fix and no Codex hook.
+Commit this, merged into any existing settings. It formats only the file an `Edit` or `Write` touched, and only inside the project: a session also edits files in other repositories (a global `AGENTS.md`, a sibling package), and this repo's formatter has no business rewriting those. It `cd`s into the file's directory so `howells-oxfmt` picks up the nearest package's config, and calls the binary through `$CLAUDE_PROJECT_DIR` because the hook runs wherever the session last changed directory. Needs `jq`. Repos still on Biome call `biome format --write` in the same place, never `check --fix`. `stack-decisions.md` explains why there is no Stop hook, no lint fix and no Codex hook.
 
 ```json
 {
@@ -275,7 +275,7 @@ Commit this, merged into any existing settings. It formats only the file an `Edi
         "hooks": [
           {
             "type": "command",
-            "command": "f=$(jq -r '.tool_input.file_path // empty'); [ -f \"$f\" ] || exit 0; case \"$f\" in *.js|*.jsx|*.ts|*.tsx|*.mjs|*.cjs|*.mts|*.cts|*.json|*.jsonc|*.css|*.md|*.mdx) cd \"$(dirname \"$f\")\" && \"$CLAUDE_PROJECT_DIR/node_modules/.bin/howells-oxfmt\" --write \"$f\" >/dev/null ;; esac"
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); [ -f \"$f\" ] || exit 0; case \"$f\" in \"$CLAUDE_PROJECT_DIR\"/*) ;; *) exit 0 ;; esac; case \"$f\" in *.js|*.jsx|*.ts|*.tsx|*.mjs|*.cjs|*.mts|*.cts|*.json|*.jsonc|*.css|*.md|*.mdx) cd \"$(dirname \"$f\")\" && \"$CLAUDE_PROJECT_DIR/node_modules/.bin/howells-oxfmt\" --write \"$f\" >/dev/null ;; esac"
           }
         ]
       }
