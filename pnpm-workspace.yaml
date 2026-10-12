@@ -7,6 +7,7 @@ allowBuilds:
 minimumReleaseAge: 1440
 
 minimumReleaseAgeExclude:
+  - "@howells/typescript-config"
   - "@howells/lint"
   - "browserslist@4.28.7"
   - "@next/env@16.3.3"
