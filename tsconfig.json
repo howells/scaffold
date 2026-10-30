@@ -1,6 +1,7 @@
 {
   "extends": "@howells/typescript-config/nextjs",
   "compilerOptions": {
+    "allowImportingTsExtensions": true,
     "paths": {
       "@/*": ["./src/*"],
       "collections/*": ["./.source/*"]
@@ -9,6 +10,8 @@
   "include": [
     "next-env.d.ts",
     "source.config.ts",
+    "scripts/build-source*.ts",
+    "scripts/build-source*.mts",
     "src/**/*.ts",
     "src/**/*.tsx",
     ".source/**/*.ts",
