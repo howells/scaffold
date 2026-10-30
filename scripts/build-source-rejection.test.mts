@@ -43,6 +43,55 @@ await test("a credential embedded in required JSON configuration fails without l
   assert.equal(existsSync(f.archive), false);
 });
 
+await test("literal credentials in every allowed environment template fail capture without disclosure", (t) => {
+  for (const name of [".env.example", ".env.sample", ".env.template"]) {
+    const f = fixture(t);
+    const value = "fixture-unexported-credential-739c";
+    mkdirSync(nodePath.join(f.repo, "config"));
+    for (const assignment of [
+      `API_KEY=${value}`,
+      `export ACCESS_TOKEN="${value}"`,
+      `DATABASE_URL='${value}'`,
+    ]) {
+      writeFileSync(nodePath.join(f.repo, "config", name), `${assignment}\n`);
+      const result = run("capture", "--repo", f.repo, "--archive", f.archive);
+      rejects(result, /unsafe required input.*config\/\.env\./u);
+      assert.equal(`${result.stdout}${result.stderr}`.includes(value), false);
+      assert.equal(existsSync(f.archive), false);
+    }
+  }
+});
+
+await test("placeholder-only environment templates survive an exact restore round trip", (t) => {
+  const f = fixture(t);
+  const names = [".env.example", ".env.sample", ".env.template"];
+  const template = `# Example inputs\nAPI_KEY=\${API_KEY}\nexport ACCESS_TOKEN="$ACCESS_TOKEN"\nDATABASE_URL=<DATABASE_URL>\nPRIVATE_KEY=REPLACE_ME\nPASSWORD=\n`;
+  for (const name of names) {
+    writeFileSync(nodePath.join(f.repo, name), template);
+  }
+  const receipt = succeeds(
+    run("capture", "--repo", f.repo, "--archive", f.archive)
+  );
+  const restored = succeeds(
+    run(
+      "restore",
+      "--archive",
+      f.archive,
+      "--expected-sha256",
+      receipt.archiveSha256,
+      "--destination",
+      f.destination
+    )
+  );
+  assert.equal(restored.sourceTreeSha256, receipt.sourceTreeSha256);
+  for (const name of names) {
+    assert.equal(
+      readFileSync(nodePath.join(f.destination, name), "utf-8"),
+      template
+    );
+  }
+});
+
 await test("a symlink cannot stand in for source outside the captured tree", (t) => {
   const f = fixture(t);
   writeFileSync(

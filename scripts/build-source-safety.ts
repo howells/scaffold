@@ -250,6 +250,12 @@ export const sourceSafety = (declaredNames: string[] = []) => {
         /^\s*(?<name>[^#;=]+)=\s*(?<value>.*?)\s*$/u
       );
     }
+    if (/(?:^|\/)\.env\.(?:example|sample|template)$/u.test(path)) {
+      configurationCredential = assignedCredential(
+        text,
+        /^\s*(?:export\s+)?(?<name>[a-z0-9_.-]+)\s*=\s*(?<value>.*?)\s*$/iu
+      );
+    }
     if (
       /\.(?:ya?ml|toml|ini|jsonc)$/u.test(path) &&
       !/(?:^|\/)pnpm-lock\.yaml$/u.test(path)
