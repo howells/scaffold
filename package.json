@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "next build",
-    "deploy:prod": "pnpm deploy:prod:pull && pnpm deploy:prod:stamp && pnpm deploy:prod:build && pnpm deploy:prod:verify && pnpm deploy:prod:publish",
+    "deploy:prod": "node scripts/build-source-deploy.ts",
     "deploy:prod:build": "vercel build --prod --scope danielhowells",
     "deploy:prod:capture": "pnpm generate:source && pnpm deploy:prod:stamp && node scripts/build-source.ts capture --repo . --include .source --build-config .vercel/project.json",
     "deploy:prod:linux": "sh scripts/deploy-prod-linux.sh",

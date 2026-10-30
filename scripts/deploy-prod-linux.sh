@@ -62,14 +62,10 @@ export VERCEL_GIT_COMMIT_SHA=\$(git rev-parse HEAD)
 echo "deploy-prod-linux: building \$VERCEL_GIT_COMMIT_SHA on \$(uname -m)"
 
 pnpm install --frozen-lockfile
-pnpm deploy:prod:pull
-pnpm deploy:prod:stamp
-pnpm deploy:prod:build
-pnpm deploy:prod:verify
 if [ "$PUBLISH" = "1" ]; then
-  pnpm deploy:prod:publish
+  pnpm deploy:prod --evidence-dir "\$HOME/.local/share/scaffold/releases"
 else
-  echo "deploy-prod-linux: built and verified; skipped publish"
+  pnpm deploy:prod --no-publish --evidence-dir "\$HOME/.local/share/scaffold/releases"
 fi
 EOF
 

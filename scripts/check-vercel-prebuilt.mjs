@@ -7,6 +7,13 @@ import {
   statSync,
 } from "node:fs";
 import { join } from "node:path";
+import {
+  readPrebuilt,
+  recordPrebuilt,
+  releaseArguments,
+} from "./build-source-release.ts";
+
+const options = releaseArguments();
 
 const outputDir = ".vercel/output";
 const config = JSON.parse(readFileSync(`${outputDir}/config.json`, "utf8"));
@@ -67,3 +74,5 @@ for (const path of nativeBinaries) {
 process.stdout.write(
   `Build Output API v3; ${functionConfigs.length} x86_64 functions; ${nativeBinaries.length} Linux ELF64 x86-64 native binaries\n`
 );
+const evidence = options.check ? readPrebuilt(options) : recordPrebuilt(options);
+process.stdout.write(`${JSON.stringify(evidence)}\n`);

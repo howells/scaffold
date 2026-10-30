@@ -1,4 +1,15 @@
-import { spawn } from "node:child_process";
+import { execFileSync, spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
+
+import {
+  assertReleaseInputs,
+  releaseArguments,
+  updateRelease,
+} from "./build-source-release.ts";
+import {
+  inspectedIdentity,
+  releaseSchema,
+} from "./build-source-release-schema.ts";
 
 const DEADLINE_MS = 7 * 60 * 1000;
 const CLEANUP_MS = 45 * 1000;
@@ -8,6 +19,9 @@ let deploymentId;
 let deploymentUrl;
 let child;
 let terminating = false;
+let options;
+let evidence;
+let promoted = false;
 
 class TimeoutError extends Error {}
 const remaining = () => Math.max(0, DEADLINE_MS - (Date.now() - startedAt));
@@ -83,9 +97,7 @@ const remove = async (reason) => {
       ).stdout,
       "cleanup inspection"
     );
-    if (typeof inspected.id === "string" && inspected.id.startsWith("dpl_")) {
-      deploymentId = inspected.id;
-    }
+    deploymentId = inspectedIdentity(inspected, deploymentUrl).id;
   }
   if (!deploymentId) {
     process.stderr.write(`${reason}; no exact deployment exists to remove\n`);
@@ -105,7 +117,7 @@ const stop = async (signal) => {
   terminating = true;
   child?.kill("SIGTERM");
   try {
-    await remove(`received ${signal}`);
+    if (!promoted) await remove(`received ${signal}`);
   } finally {
     process.exit(1);
   }
@@ -114,6 +126,23 @@ process.on("SIGINT", () => void stop("SIGINT"));
 process.on("SIGTERM", () => void stop("SIGTERM"));
 
 try {
+  options = releaseArguments();
+  const checked = execFileSync(
+    process.execPath,
+    [
+      fileURLToPath(new URL("./check-vercel-prebuilt.mjs", import.meta.url)),
+      ...process.argv.slice(2),
+      "--check",
+    ],
+    { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }
+  );
+  evidence = releaseSchema.parse(
+    json(checked.trim().split("\n").at(-1), "prebuilt receipt")
+  );
+  const expectedSha = process.env.VERCEL_GIT_COMMIT_SHA ?? process.env.GITHUB_SHA;
+  if (expectedSha !== evidence.source.baseCommit) {
+    throw new Error("runtime verification requires the captured source Git SHA");
+  }
   const submitted = await run(
     [
       "deploy",
@@ -137,10 +166,10 @@ try {
       .stdout,
     "initial inspection"
   );
-  if (typeof initial.id !== "string" || !initial.id.startsWith("dpl_")) {
-    throw new Error("Vercel did not report an exact deployment id");
-  }
-  deploymentId = initial.id;
+  deploymentId = inspectedIdentity(initial, deploymentUrl).id;
+  evidence = updateRelease(options, evidence, {
+    deployment: { id: deploymentId, url: deploymentUrl },
+  });
   const readySeconds = Math.floor(remaining() / 1000);
   const ready = json(
     (
@@ -159,14 +188,12 @@ try {
     ).stdout,
     "final inspection"
   );
+  inspectedIdentity(ready, deploymentUrl, deploymentId);
   if (ready.id !== deploymentId || ready.readyState !== "READY") {
     throw new Error(
       `${deploymentId} finished in ${JSON.stringify(ready.readyState)}`
     );
   }
-  const expectedSha =
-    process.env.VERCEL_GIT_COMMIT_SHA ?? process.env.GITHUB_SHA;
-  if (!expectedSha) throw new Error("runtime verification requires a Git SHA");
   const version = json(
     await request(
       `/api/internal/version?expected=${encodeURIComponent(expectedSha)}`
@@ -182,6 +209,11 @@ try {
   if (!homepage.includes("Scaffold")) {
     throw new Error(`${deploymentId} failed the Scaffold homepage probe`);
   }
+  assertReleaseInputs(options, evidence);
+  evidence = updateRelease(options, evidence, {
+    checks: { acceptance: true, ready: true, revision: true },
+    status: "deployment-verified",
+  });
   const promotionSeconds = Math.floor(remaining() / 1000);
   if (promotionSeconds < 1)
     throw new TimeoutError("deadline reached before promotion");
@@ -197,16 +229,29 @@ try {
     remaining(),
     true
   );
+  promoted = true;
+  evidence = updateRelease(options, evidence, { status: "promoted" });
   process.stdout.write(
     `${deploymentId} READY, runtime-verified, and promoted (${deploymentUrl})\n`
   );
 } catch (error) {
-  if (deploymentUrl || deploymentId) {
-    await remove(
-      error instanceof TimeoutError || remaining() === 0
-        ? "seven-minute deadline reached"
-        : "publish failed before promotion completed"
-    );
+  if (evidence && options && !promoted) {
+    try {
+      evidence = updateRelease(options, evidence, { status: "failed" });
+    } catch (receiptError) {
+      process.stderr.write(`failure receipt could not be saved: ${receiptError.message}\n`);
+    }
+  }
+  if (!promoted && (deploymentUrl || deploymentId)) {
+    try {
+      await remove(
+        error instanceof TimeoutError || remaining() === 0
+          ? "seven-minute deadline reached"
+          : "publish failed before promotion completed"
+      );
+    } catch (cleanupError) {
+      process.stderr.write(`exact deployment cleanup rejected: ${cleanupError.message}\n`);
+    }
   }
   throw error;
 }
