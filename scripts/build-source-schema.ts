@@ -36,7 +36,7 @@ export interface SourceSnapshot {
 }
 export const manifestSchema = sourceSchema.extend({
   buildConfig: z
-    .strictObject({ path: z.string(), sha256: digestSchema })
+    .strictObject({ path: z.string().endsWith(".json"), sha256: digestSchema })
     .nullable(),
   lockfiles: z.array(fileEntrySchema).min(1),
   secretEnvironmentNames: z.array(z.string()),

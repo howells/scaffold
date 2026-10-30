@@ -303,3 +303,35 @@ await test("the release preparation command captures the files produced by gener
     new RegExp(f.git("rev-parse", "HEAD"), "u")
   );
 });
+
+await test("credential-shaped dependency names remain recoverable package metadata", (t) => {
+  const f = fixture(t);
+  const packageJson =
+    '{"packageManager":"pnpm@11.10.0","dependencies":{"cookie":"1.0.0","registry-auth-token":"5.1.0"}}\n';
+  const lock =
+    "lockfileVersion: '9.0'\nsnapshots:\n  package@1.0.0:\n    dependencies:\n      cookie: 1.0.0\n      registry-auth-token: 5.1.0\n";
+  writeFileSync(nodePath.join(f.repo, "package.json"), packageJson);
+  writeFileSync(nodePath.join(f.repo, "pnpm-lock.yaml"), lock);
+  const receipt = succeeds(
+    run("capture", "--repo", f.repo, "--archive", f.archive)
+  );
+  succeeds(
+    run(
+      "restore",
+      "--archive",
+      f.archive,
+      "--expected-sha256",
+      receipt.archiveSha256,
+      "--destination",
+      f.destination
+    )
+  );
+  assert.equal(
+    readFileSync(nodePath.join(f.destination, "package.json"), "utf-8"),
+    packageJson
+  );
+  assert.equal(
+    readFileSync(nodePath.join(f.destination, "pnpm-lock.yaml"), "utf-8"),
+    lock
+  );
+});

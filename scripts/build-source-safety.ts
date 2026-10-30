@@ -50,10 +50,19 @@ const sensitiveField = (name: string) =>
   secretName.test(
     name.replaceAll(/(?<lower>[a-z])(?<upper>[A-Z])/gu, "$<lower>_$<upper>")
   );
-const containsCredential = (value: JsonValue): boolean => {
+type JsonInputKind = "configuration" | "package";
+const dependencyFields = new Set([
+  "dependencies",
+  "devDependencies",
+  "optionalDependencies",
+  "peerDependencies",
+  "overrides",
+  "resolutions",
+]);
+const containsCredential = (value: JsonValue, kind: JsonInputKind): boolean => {
   const array = z.array(jsonSchema).safeParse(value);
   if (array.success) {
-    return array.data.some(containsCredential);
+    return array.data.some((child) => containsCredential(child, kind));
   }
   const object = z.record(z.string(), jsonSchema).safeParse(value);
   if (!object.success) {
@@ -61,7 +70,8 @@ const containsCredential = (value: JsonValue): boolean => {
   }
   return Object.entries(object.data).some(
     ([key, child]) =>
-      containsCredential(child) ||
+      (!(kind === "package" && dependencyFields.has(key)) &&
+        containsCredential(child, kind)) ||
       (sensitiveField(key) &&
         child !== "" &&
         child !== null &&
@@ -122,37 +132,44 @@ export const validateLinks = (entries: SourceEntry[]) => {
   const paths = new Map(
     entries.map((entry) => [sourcePath(entry.path), entry])
   );
-  const resolveTarget = (path: string, visited: Set<string>): string => {
-    if (path !== ".") {
-      sourcePath(path);
-    }
-    const parts = path.split("/");
-    for (let index = 1; index <= parts.length; index += 1) {
-      const prefix = parts.slice(0, index).join("/");
-      const entry = paths.get(prefix);
-      if (entry?.type !== "symlink") {
+  const resolveTarget = (input: string) => {
+    const pending = input.split("/");
+    const resolved: string[] = [];
+    let followed = 0;
+    while (pending.length > 0) {
+      const segment = pending.shift();
+      if (segment === undefined || segment === "" || segment === ".") {
         continue;
       }
-      if (
-        visited.has(prefix) ||
-        nodePath.isAbsolute(entry.target) ||
-        unsafeCharacters(entry.target)
-      ) {
-        throw new Error("unsafe source symlink");
+      if (segment === "..") {
+        if (resolved.length === 0) {
+          throw new Error("symlink escapes captured source");
+        }
+        resolved.pop();
+        continue;
       }
-      return resolveTarget(
-        nodePath.posix.join(
-          nodePath.posix.dirname(prefix),
-          entry.target,
-          ...parts.slice(index)
-        ),
-        new Set([...visited, prefix])
-      );
+      resolved.push(segment);
+      const prefix = resolved.join("/");
+      const entry = paths.get(prefix);
+      if (entry === undefined) {
+        throw new Error("symlink target is not captured");
+      }
+      if (entry.type === "symlink") {
+        followed += 1;
+        if (
+          followed > 40 ||
+          entry.target === "" ||
+          nodePath.isAbsolute(entry.target) ||
+          unsafeCharacters(entry.target)
+        ) {
+          throw new Error("unsafe source symlink");
+        }
+        resolved.pop();
+        pending.unshift(...entry.target.split("/"));
+      } else if (pending.length > 0 && entry.type !== "directory") {
+        throw new Error("symlink traverses a non-directory");
+      }
     }
-    if (path !== "." && !paths.has(path)) {
-      throw new Error("symlink target is not captured");
-    }
-    return path;
   };
   for (const entry of entries) {
     for (
@@ -166,7 +183,7 @@ export const validateLinks = (entries: SourceEntry[]) => {
     }
     if (entry.type === "symlink") {
       try {
-        resolveTarget(entry.path, new Set());
+        resolveTarget(entry.path);
       } catch (error) {
         throw new Error(`unsafe or uncaptured source symlink: ${entry.path}`, {
           cause: error,
@@ -175,6 +192,22 @@ export const validateLinks = (entries: SourceEntry[]) => {
     }
   }
 };
+
+const assignedCredential = (text: string, assignment: RegExp) =>
+  text.split(/\r?\n/u).some((line) => {
+    const match = assignment.exec(line)?.groups;
+    if (
+      match?.name === undefined ||
+      match.value === undefined ||
+      !sensitiveField(match.name)
+    ) {
+      return false;
+    }
+    const value =
+      /^(?<quote>["'])(?<value>.*)\k<quote>$/u.exec(match.value)?.groups
+        ?.value ?? match.value;
+    return value !== "" && !placeholder(value);
+  });
 
 export const sourceSafety = (declaredNames: string[] = []) => {
   if (declaredNames.some((name) => !/^[A-Z_][A-Z0-9_]*$/u.test(name))) {
@@ -206,21 +239,25 @@ export const sourceSafety = (declaredNames: string[] = []) => {
       } catch (error) {
         throw new Error(`invalid JSON input: ${path}`, { cause: error });
       }
-      configurationCredential = containsCredential(parsed);
+      configurationCredential = containsCredential(
+        parsed,
+        /(?:^|\/)package\.json$/u.test(path) ? "package" : "configuration"
+      );
     }
     if (path.endsWith(".npmrc")) {
-      configurationCredential = text.split(/\r?\n/u).some((line) => {
-        const match = /^\s*(?<name>[^#;=]+)=\s*(?<value>.*?)\s*$/u.exec(
-          line
-        )?.groups;
-        return (
-          match !== undefined &&
-          sensitiveField(match.name ?? "") &&
-          match.value !== undefined &&
-          match.value !== "" &&
-          !placeholder(match.value)
-        );
-      });
+      configurationCredential = assignedCredential(
+        text,
+        /^\s*(?<name>[^#;=]+)=\s*(?<value>.*?)\s*$/u
+      );
+    }
+    if (
+      /\.(?:ya?ml|toml|ini|jsonc)$/u.test(path) &&
+      !/(?:^|\/)pnpm-lock\.yaml$/u.test(path)
+    ) {
+      configurationCredential = assignedCredential(
+        text,
+        /^\s*(?:-\s*)?["']?(?<name>[a-z0-9_.-]+)["']?\s*[:=]\s*(?<value>.*?)\s*$/iu
+      );
     }
     if (
       configurationCredential ||

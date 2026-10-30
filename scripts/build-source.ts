@@ -83,6 +83,11 @@ try {
   if (command === "capture") {
     const root = nodePath.resolve(values.repo ?? ".");
     const configPath = values["build-config"];
+    if (configPath !== undefined && !configPath.endsWith(".json")) {
+      throw new Error(
+        `unsupported build configuration: ${configPath}; use JSON`
+      );
+    }
     const includes = [
       ...new Set([
         ...values.include,

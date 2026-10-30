@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import {
   chmodSync,
   existsSync,
+  mkdirSync,
   readFileSync,
   rmSync,
   symlinkSync,
@@ -86,6 +87,76 @@ await test("required environment files and exported secret values are rejected w
     "CUSTOM_BUILD_INPUT"
   );
   rejects(embedded, /unsafe required input.*app\.txt/u);
+  assert.equal(embedded.stderr.includes(value), false);
+  assert.equal(existsSync(f.archive), false);
+});
+
+await test("symlink parent traversal follows the resolved directory and requires its actual target", (t) => {
+  const f = fixture(t);
+  mkdirSync(nodePath.join(f.repo, "real", "nested"), { recursive: true });
+  writeFileSync(nodePath.join(f.repo, ".gitignore"), "real/target\n");
+  writeFileSync(
+    nodePath.join(f.repo, "real", "nested", "anchor.txt"),
+    "keep the directory\n"
+  );
+  writeFileSync(
+    nodePath.join(f.repo, "real", "target"),
+    "the actual consumed source\n"
+  );
+  writeFileSync(nodePath.join(f.repo, "target"), "a different root target\n");
+  symlinkSync("real/nested", nodePath.join(f.repo, "d"));
+  symlinkSync("d/../target", nodePath.join(f.repo, "link"));
+  rejects(
+    run("capture", "--repo", f.repo, "--archive", f.archive),
+    /unsafe or uncaptured source symlink.*link/u
+  );
+  assert.equal(existsSync(f.archive), false);
+  const receipt = succeeds(
+    run(
+      "capture",
+      "--repo",
+      f.repo,
+      "--archive",
+      f.archive,
+      "--include",
+      "real/target"
+    )
+  );
+  succeeds(
+    run(
+      "restore",
+      "--archive",
+      f.archive,
+      "--expected-sha256",
+      receipt.archiveSha256,
+      "--destination",
+      f.destination
+    )
+  );
+  assert.equal(
+    readFileSync(nodePath.join(f.destination, "link"), "utf-8"),
+    "the actual consumed source\n"
+  );
+});
+
+await test("unsupported build configuration and literal YAML credentials fail without disclosure", (t) => {
+  const f = fixture(t);
+  const value = "fixture-unexported-credential-632b";
+  writeFileSync(nodePath.join(f.repo, "build.yaml"), `apiKey: ${value}\n`);
+  const unsupported = run(
+    "capture",
+    "--repo",
+    f.repo,
+    "--archive",
+    f.archive,
+    "--build-config",
+    "build.yaml"
+  );
+  rejects(unsupported, /unsupported build configuration.*build\.yaml/u);
+  assert.equal(unsupported.stderr.includes(value), false);
+  assert.equal(existsSync(f.archive), false);
+  const embedded = run("capture", "--repo", f.repo, "--archive", f.archive);
+  rejects(embedded, /unsafe required input.*build\.yaml/u);
   assert.equal(embedded.stderr.includes(value), false);
   assert.equal(existsSync(f.archive), false);
 });

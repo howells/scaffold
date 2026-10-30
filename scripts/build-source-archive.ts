@@ -4,6 +4,7 @@ import {
   mkdirSync,
   readFileSync,
   readlinkSync,
+  realpathSync,
   symlinkSync,
   writeFileSync,
 } from "node:fs";
@@ -150,6 +151,7 @@ export const restoreArchive = (record: SourceArchive, destination: string) => {
       if (!lstatSync(target).isSymbolicLink()) {
         throw new Error(`restored symlink mismatch: ${entry.path}`);
       }
+      realpathSync(target);
       return { ...entry, target: readlinkSync(target) };
     }
     if (entry.type === "directory") {
