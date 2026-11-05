@@ -4,23 +4,16 @@
   "type": "module",
   "scripts": {
     "build": "next build",
-    "deploy:prod": "node scripts/build-source-deploy.ts",
-    "deploy:prod:build": "vercel build --prod --scope danielhowells",
-    "deploy:prod:capture": "pnpm generate:source && pnpm deploy:prod:stamp && node scripts/build-source.ts capture --repo . --include .source --build-config .vercel/project.json",
-    "deploy:prod:linux": "sh scripts/deploy-prod-linux.sh",
-    "deploy:prod:publish": "node scripts/publish-vercel-prebuilt.mjs",
-    "deploy:prod:pull": "vercel pull --yes --environment=production --scope danielhowells",
-    "deploy:prod:stamp": "node scripts/stamp-build.mjs",
-    "deploy:prod:verify": "node scripts/check-vercel-prebuilt.mjs",
+    "deploy:prod": "vercel pull --yes --environment=production --scope danielhowells && vercel build --prod --scope danielhowells && vercel deploy --prebuilt --prod --scope danielhowells",
     "dev": "next dev",
     "generate:principles": "node scripts/generate-principles.ts",
     "generate:source": "fumadocs-mdx",
-    "lint": "pnpm generate:source && howells-check src next.config.mjs source.config.ts scripts/build-source*.ts scripts/build-source*.mts",
-    "lint:fix": "pnpm generate:source && howells-fix src next.config.mjs source.config.ts scripts/build-source*.ts scripts/build-source*.mts",
+    "lint": "pnpm generate:source && howells-check src next.config.mjs source.config.ts",
+    "lint:fix": "pnpm generate:source && howells-fix src next.config.mjs source.config.ts",
     "prepare": "howells-husky",
     "start": "next start",
     "sync:skill": "node scripts/sync-skill.ts",
-    "test": "node --test scripts/build-source*.test.mts && node scripts/check-docs-integrity.ts && pnpm generate:principles --check && pnpm sync:skill --check",
+    "test": "node scripts/check-docs-integrity.ts && pnpm generate:principles --check && pnpm sync:skill --check",
     "typecheck": "pnpm generate:source && tsc --noEmit"
   },
   "dependencies": {
@@ -45,8 +38,7 @@
     "@types/react-dom": "19.2.5",
     "lint-staged": "^17.5.1",
     "shadcn": "4.19.0",
-    "typescript": "7.0.2",
-    "zod": "4.6.5"
+    "typescript": "7.0.2"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx,json,jsonc,css,md,mdx}": "howells-oxfmt --write"

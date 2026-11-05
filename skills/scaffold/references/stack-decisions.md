@@ -167,9 +167,8 @@ Git hooks are the enforcement layer, because they see every change whichever too
 
 Production deploys are manual. Nothing ships on a push.
 
-- **An arm64 Mac cannot build the artifact.** `vercel build` stamps the architecture of the machine it ran on, and `scripts/check-vercel-prebuilt.mjs` requires x86_64 functions, so a Mac build is rejected before it can be published. `pnpm deploy:prod:linux` clones HEAD into an amd64 OrbStack machine, installs the pinned Node, pnpm and Vercel CLI there, and runs the pull, stamp, build, verify and publish chain. Pass `--no-publish` to build and verify without promoting. It reads `VERCEL_TOKEN_HOWELLS` from the shell (macOS keychain service: vercel-token-howells).
-- **Nothing deploys from hosted CI.** Vercel has no OIDC route for CLI deploys, so a hosted deploy would need a long-lived token secret in the repository. The production deploy is `pnpm deploy:prod:linux`, run from the Mac with the team-scoped token in the shell.
-- **Verify the deployed SHA, not the deploy's exit code.** `scripts/publish-vercel-prebuilt.mjs` promotes and then confirms the running deployment; the site also answers `/api/internal/version` with the commit it was built from. A green deploy step is not evidence that the SHA you intended is serving.
+- **The deploy is one script.** `pnpm deploy:prod` runs `vercel pull --yes --environment=production`, `vercel build --prod` and `vercel deploy --prebuilt --prod`, each with `--scope`, on the Mac. Add a Linux-container build only where a project has native dependencies that must be built for Linux, and keep it as one script.
+- **Nothing deploys from hosted CI.** Vercel has no OIDC route for CLI deploys, so a hosted deploy would need a long-lived token secret in the repository. The production deploy is `pnpm deploy:prod`, run from the Mac.
 
 ## UI stack
 

@@ -72,9 +72,6 @@ importers:
       typescript:
         specifier: 7.0.2
         version: 7.0.2
-      zod:
-        specifier: 4.6.5
-        version: 4.6.5
 
 packages:
 

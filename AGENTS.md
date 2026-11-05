@@ -15,7 +15,7 @@ The house baseline for starting or standardising a project: repo shape, stack, p
 - Baseline policy goes in `docs/reference/`; project-specific guidance belongs in that project's `AGENTS.md`. Search before adding a page.
 - Terms in `CONTEXT.md` (Scaffold Baseline, Project Docs, Agent Skill, Agent Skill Distribution, Skill Wrapper) are fixed.
 - Lint config trap: see `docs/reference/config-snippets.md` before wiring lint anywhere.
-- Production deploys are local (`pnpm deploy:prod:linux`, needs OrbStack and `VERCEL_TOKEN_HOWELLS`); nothing ships from hosted CI.
+- Production deploys are local (`pnpm deploy:prod`: vercel pull, build and deploy --prebuilt); nothing ships from hosted CI.
 - Don't overwrite others' uncommitted work.
 
 ## Commands

@@ -341,12 +341,12 @@ export const envSchema = defineEnv({
 });
 ```
 
-The env check has no script of its own. It runs as the first step of each deploy verb, so a deploy with a missing or malformed variable stops before it builds:
+The env check has no script of its own. It runs as the first step of the deploy script, so a deploy with a missing or malformed variable stops before it builds:
 
 ```json
 {
   "scripts": {
-    "deploy:prod": "envy check local --schema packages/env/src/schema.ts --from .env.production && pnpm deploy:prod:pull && pnpm deploy:prod:build && pnpm deploy:prod:publish"
+    "deploy:prod": "envy check local --schema packages/env/src/schema.ts --from .env.production && vercel pull --yes --environment=production --scope TEAM && vercel build --prod --scope TEAM && vercel deploy --prebuilt --prod --scope TEAM"
   }
 }
 ```

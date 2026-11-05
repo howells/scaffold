@@ -106,31 +106,9 @@ Default checks:
 
 The deploy should fail before it reaches the provider if required env is missing.
 
-## Recoverable manual releases
+## Local prebuilt deploys
 
-Capture the actual builder's source after declared generation and stamping, before the build consumes it. Include required ignored or generated inputs explicitly. Keep credentials outside the archive; declare secret environment names through the project's typed environment boundary. Missing, unsafe or unresolved required inputs stop capture.
-
-The source archive preserves file contents, modes, symlinks, base revision, tracked changes, required untracked inputs, dependency locks, toolchain and non-secret configuration. Capture verifies a restore round trip and emits a trusted archive SHA-256 and source-tree SHA-256. Keep the archive and its capture receipt together in existing private release storage or owning-issue attachments.
-
-The prebuilt verifier checks that the source still matches the trusted archive, repeats restoration and verifies the existing platform requirements. It creates a private release receipt linking the source hashes to a digest of the local prebuilt output. A receipt cannot overwrite existing evidence. For separately owned adoption, use the existing operational commands with the capture receipt's trusted digest:
-
-```sh
-node scripts/check-vercel-prebuilt.mjs \
-  --source-archive ARCHIVE --source-sha256 TRUSTED_ARCHIVE_SHA256 \
-  --receipt NEW_RELEASE_RECEIPT
-
-node scripts/publish-vercel-prebuilt.mjs \
-  --source-archive ARCHIVE --source-sha256 TRUSTED_ARCHIVE_SHA256 \
-  --receipt NEW_RELEASE_RECEIPT
-```
-
-The publisher requires the captured base revision in `VERCEL_GIT_COMMIT_SHA` or `GITHUB_SHA`. It rechecks the source, receipt, platform and output before any provider command. Upload uses the existing domain-free production deployment path. Initial and final inspection must agree on the exact deployment ID and immutable URL. The runtime revision and project acceptance probes remain required. Source or output drift, incomplete identity or a failed probe prevents promotion. The receipt records successful promotion only after the provider accepts it; rejection records failure and retains the evidence.
-
-The digest describes the local prebuilt output submitted to the publisher. It does not establish byte-for-byte identity after provider packaging. Source restoration does not establish a deterministic rebuild. Both limits are explicit in the release receipt.
-
-Scaffold's `pnpm deploy:prod` runs pull, source generation, stamping, capture, build, verification and publication in that order. `--no-publish` stops after verification. Every run creates a new private evidence directory; `--evidence-dir PATH` selects its parent. The Linux wrapper uses the same command and retains evidence outside its disposable checkout. Preserve the source archive, capture receipt and final release receipt in the existing private evidence location before retiring a builder.
-
-Adoption in an owner-held application requires its own source scope and existing release authority. Tooling and passing fixture tests do not resolve historical source gaps or clear a release hold.
+Production deploys are local and prebuilt. One `deploy:prod` script runs `vercel pull --yes --environment=production`, `vercel build --prod` and `vercel deploy --prebuilt --prod`, each with the owning team's `--scope`. It builds on the machine that runs it and does not stamp, capture or verify the artifact.
 
 ## Deployment rules
 
