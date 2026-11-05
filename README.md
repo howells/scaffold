@@ -11,7 +11,8 @@ Start with [docs/README.md](docs/README.md). The philosophy behind the baseline 
 ```sh
 pnpm install
 pnpm dev
-pnpm prepush
+pnpm typecheck
+pnpm test
 ```
 
 ## Agent skill
