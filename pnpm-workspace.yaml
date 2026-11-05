@@ -7,6 +7,7 @@ allowBuilds:
 minimumReleaseAge: 1440
 
 minimumReleaseAgeExclude:
+  - "@howells/husky@0.3.0"
   - "@howells/typescript-config"
   - "@howells/lint"
   - "browserslist@4.28.7"

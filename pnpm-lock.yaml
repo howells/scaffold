@@ -43,8 +43,8 @@ importers:
         version: 4.3.3
     devDependencies:
       '@howells/husky':
-        specifier: ^0.2.5
-        version: 0.2.5
+        specifier: ^0.3.0
+        version: 0.3.0
       '@howells/lint':
         specifier: ^3.5.1
         version: 3.5.1(prettier@3.9.4)
@@ -427,8 +427,8 @@ packages:
     peerDependencies:
       hono: ^4
 
-  '@howells/husky@0.2.5':
-    resolution: {integrity: sha512-DPIb/00erhkhscc2UySTG1/8cxpMZn04VsN2jv5f4K1MAklOmSH0fbz7uucqd07SZZtPyq9p6Iprh/lf11bl1w==}
+  '@howells/husky@0.3.0':
+    resolution: {integrity: sha512-p8TmJQ6oIRSYbm3HS3xNjN2cnD287jkeuUz62vSwyjtgMeqQAsVuTuFziEgb1Usq992FFiiDKe2rPTfKAM75ow==}
     engines: {node: '>=24.15.0'}
     hasBin: true
 
@@ -4671,7 +4671,7 @@ snapshots:
     dependencies:
       hono: 4.12.29
 
-  '@howells/husky@0.2.5':
+  '@howells/husky@0.3.0':
     dependencies:
       husky: 9.1.7
 
