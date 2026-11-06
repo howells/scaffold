@@ -14,9 +14,9 @@ Project Docs are canonical. One generated Agent Skill Distribution exposes them 
 
 Separate hand-written skills were rejected because they would drift as the Scaffold Baseline changes.
 
-## Status
+## Consequences
 
-Accepted and partly shipped. `pnpm sync:skill` generates `skills/scaffold/references/` from `docs/`. No generated reference is maintained by hand.
+`pnpm sync:skill` generates `skills/scaffold/references/` from `docs/`. No generated reference is maintained by hand.
 
 - **Claude Code:** reads `skills/scaffold/SKILL.md` and `skills/scaffold/references/` directly.
 - **Codex:** uses `skills/scaffold/agents/openai.yaml`.

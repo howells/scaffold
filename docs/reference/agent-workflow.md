@@ -129,7 +129,7 @@ It should not default to taste-based nitpicks.
 For substantial work, keep documentation and progress lightweight but real:
 
 - `AGENTS.md` owns concise operational rules, and is the only instruction file in the repo
-- `CONTEXT.md` owns durable product language, invariants, and expensive lessons when the project needs it
+- `GLOSSARY.md` owns durable product language, invariants, and expensive lessons when the project needs it
 - ADRs and specs own lasting decisions or contracts
 - the issue tracker owns active narrative and handoff state
 - scripts and generated artifacts own executable probes and repeatable evidence

@@ -13,7 +13,7 @@ The house baseline for starting or standardising a project: repo shape, stack, p
 ## Editing
 
 - Baseline policy goes in `docs/reference/`; project-specific guidance belongs in that project's `AGENTS.md`. Search before adding a page.
-- Terms in `CONTEXT.md` (Scaffold Baseline, Project Docs, Agent Skill, Agent Skill Distribution, Skill Wrapper) are fixed.
+- Terms in `GLOSSARY.md` (Scaffold Baseline, Project Docs, Agent Skill, Agent Skill Distribution, Skill Wrapper) are fixed.
 - Lint config trap: see `docs/reference/config-snippets.md` before wiring lint anywhere.
 - Production deploys are local (`pnpm deploy:prod`: vercel pull, build and deploy --prebuilt); nothing ships from hosted CI.
 - Don't overwrite others' uncommitted work.
@@ -21,3 +21,17 @@ The house baseline for starting or standardising a project: repo shape, stack, p
 ## Commands
 
 `pnpm dev` (docs site), `pnpm typecheck`, `pnpm lint`, `pnpm lint:fix`, `pnpm build`, `pnpm test`.
+
+## Agent skills
+
+### Issue tracker
+
+Linear, workspace `howells`, team Howells (key `HOW`), through the `linear-howells` MCP server. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default triage labels. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context. See `docs/agents/domain.md`.
