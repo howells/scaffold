@@ -26,7 +26,7 @@ The house baseline for starting or standardising a project: repo shape, stack, p
 
 ### Issue tracker
 
-Linear, workspace `howells`, team Howells (key `HOW`), through the `linear-howells` MCP server. See `docs/agents/issue-tracker.md`.
+Linear, workspace `howells`, team `HOW`. See `~/Sites/home/docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
