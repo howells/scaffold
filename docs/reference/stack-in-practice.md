@@ -15,7 +15,7 @@ Counts are approximate repo footprints; use them to identify defaults, not as ad
 | --- | --- | --- |
 | **Hosting** | Vercel | Docker for containerised services; Cloudflare Workers occasionally |
 | **Database** | Neon (Postgres) + Drizzle ORM | Upstash Redis for caching/rate-limits; Turso once |
-| **LLM access** | OpenRouter, with the model for each job from `@howells/ai` | a direct `@ai-sdk/*` provider for a capability OpenRouter lacks |
+| **LLM access** | OpenRouter, with the model for each job in a repo-local `models.ts` | a direct `@ai-sdk/*` provider for a capability OpenRouter lacks |
 | **Embeddings** | Voyage | — |
 | **Search / scraping** | Exa + Firecrawl (usually paired) | Tavily, Bright Data, ScrapingBee |
 | **Agent browsing** | Kernel | the `agent-browser` skill for local automation |
@@ -31,11 +31,11 @@ Two prospective defaults are not yet widespread:
 - **Errors:** Sentry.
 - **Transactional email:** Resend.
 
-A note on LLM access: a September 2026 survey found that nearly every active repo routes through OpenRouter, by six different mechanisms, while `@howells/ai` still defaulted to Vercel AI Gateway from an April 2026 benchmark. OpenRouter is now the only route, and `@howells/ai` is a lookup of the model for each job.
+A note on LLM access: a September 2026 survey found that nearly every active repo routes through OpenRouter, by six different mechanisms. OpenRouter is now the only route, and each repo names the model for each job it does in its own `models.ts`.
 
 ## Models and media
 
-Do not duplicate exact model rosters here. Language and embedding choices live in `@howells/ai`; media-generation and transformation choices live in `howells/motif`. Product code asks those packages for a job or task instead of scattering fast-decaying model IDs through routes, prompts, and documentation.
+Do not duplicate exact model rosters here. Language and embedding choices live in each repo's `models.ts`; media-generation and transformation choices live in `howells/motif`. Product code asks that module for a job or task instead of scattering fast-decaying model IDs through routes, prompts, and documentation.
 
 New AI work starts on AI SDK 7. Existing AI SDK 6 products migrate deliberately because the provider and tool APIs are a compatibility-significant change, not a fleet-wide cosmetic bump.
 
@@ -46,7 +46,7 @@ The dependency baseline is consistent: the same ~15 packages carry most repos. A
 - **Tooling spine**: `typescript`, `@howells/lint`, `@howells/typescript-config`, `turbo`, `lint-staged`, `vitest`, `tsx`, `@howells/husky`, and `@howells/envy` where runtime configuration exists.
 - **UI repos**: `react` / `react-dom`, `tailwindcss` (+ `@tailwindcss/postcss`), `next`, `zod`, `lucide-react`, and `motion` (not `framer-motion` in current first-party work).
 - **Common UI**: `cn`, `class-variance-authority`, `@base-ui/react` / `@radix-ui/*`, `@tanstack/react-query`, `nuqs`, `next-themes`, `sonner`, `cmdk`, and the `@patternmode/*` kit (`stacksheet`, `scrollframe`, `swatch`, `aperto`).
-- **Data & AI**: `drizzle-orm` (+ `drizzle-kit`), `@neondatabase/serverless`, `ai` (Vercel AI SDK), `@howells/ai`, `@mastra/*` when orchestration is needed, `@modelcontextprotocol/sdk` for MCP.
+- **Data & AI**: `drizzle-orm` (+ `drizzle-kit`), `@neondatabase/serverless`, `ai` (Vercel AI SDK), `@mastra/*` when orchestration is needed, `@modelcontextprotocol/sdk` for MCP.
 - **Testing**: `vitest` for unit/integration, `@playwright/test` for E2E, `@testing-library/*`.
 
 `tRPC` is deliberately rare; most repos favour server actions, the AI SDK, or plain typed fetch over a tRPC layer.

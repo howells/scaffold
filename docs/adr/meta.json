@@ -1,4 +1,8 @@
 {
   "title": "ADR",
-  "pages": ["0001-agent-skill-packaging", "0002-scaffold-repo-deviations"]
+  "pages": [
+    "0001-agent-skill-packaging",
+    "0002-scaffold-repo-deviations",
+    "0003-model-choice-is-repo-local"
+  ]
 }

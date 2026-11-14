@@ -16,8 +16,6 @@ These should be treated as canonical shared packages now:
   - the preferred abstraction for stacked sheet flows
 - `@howells/envelope`
   - strict structured IO wrapper for CLI-model workflows
-- `@howells/ai`
-  - the model for each job, read by AI-capable apps and agent packages
 - `@howells/motif-sdk`
   - shared fal.ai image-generation, editing, utility media, model registry, and cost-estimation surface
 - `@howells/motif-cli`
@@ -31,13 +29,14 @@ These should be treated as canonical shared packages now:
 - `@howells/srcfull`
   - shared source-fetching layer for browser/page-source ingestion workflows
 
-## Continue standardising: model choice
+## Not shared: model choice
 
-`@howells/ai` is the model lookup every AI-capable repo reads from.
+Model choice stays repo-local. The table is a handful of OpenRouter IDs and the settings measured with them, and a repo is expected to overrule the house default on its own evidence. A shared lookup also moves a job between vendors underneath a repo that already pinned its providers, which is how one repo's triage and extraction broke.
 
-Recommendation:
+What to do instead:
 
-- keep the pick for each job and its measured settings in `@howells/ai`, and nothing else; provider wiring stays with Mastra's model router or the OpenRouter AI SDK provider
+- keep one `models.ts` in the repo naming the model for each job it does, with its measured settings; provider wiring stays with Mastra's model router or the OpenRouter AI SDK provider
+- record the comparison behind a pick in its JSDoc, with the date
 - keep product-specific prompts, tools, and workflows in repo-local `packages/mastra`
 - do not publish repo-specific agent packages just because several repos use Mastra
 
@@ -104,7 +103,7 @@ Reduce duplicated package work in this order:
 
 1. prefer `@howells/lint` and `@howells/typescript-config` everywhere
 2. use `@howells/envy` for repo-local env boundaries instead of creating more package-specific env tooling
-3. read model IDs from `@howells/ai` instead of scattering model strings
+3. keep model IDs in one repo-local `models.ts` instead of scattering model strings
 4. use `howells/motif` for image generation and media utility workflows instead of scattering raw fal.ai clients
 5. standardize `@patternmode/stacksheet` as the default stacked-panel abstraction
 6. use `@howells/motion` for motion tokens

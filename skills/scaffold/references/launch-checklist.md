@@ -47,7 +47,7 @@ Use this for a new repo or before releasing an aligned existing repo.
 - Drizzle and Neon are the default persistence choice for TypeScript product apps
 - the API uses the narrowest typed boundary that fits: server composition, same-workspace `tRPC`, or a versioned OpenAPI contract
 - `@howells/envy` owns env access and provider preflight checks
-- model IDs come from `@howells/ai`, with no model strings written in app code
+- model IDs come from one repo-local `models.ts`, with no model strings written in app code
 - `howells/motif` packages are used before adding raw fal.ai clients for image generation or media utilities
 - Mastra is added only when the repo has real agent/workflow structure
 - the MCP server lives in `packages/mastra`, or in `packages/mcp` when it is standalone, and is only served from an app route
