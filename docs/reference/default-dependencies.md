@@ -211,7 +211,6 @@ Do not confuse generation with storage. Motif should own generation and media ut
 
 These recur in the AI-heavy repos:
 
-- `@howells/ai`
 - `ai`
 - `zod`
 - `tsx`
@@ -233,9 +232,9 @@ When the repo exposes model tools or resources to other agents, also consider:
 
 - `@modelcontextprotocol/sdk`
 
-`@howells/ai` is a lookup: it names the model for each job (agent, extract, judge, vision, triage, write, reason, embed) as an OpenRouter model ID, with the request settings measured alongside it. It carries no provider code. Mastra takes a pick as `openrouter/${models.agent}`; AI SDK code passes it to `@openrouter/ai-sdk-provider`. Repos never write a model string of their own, so changing a pick is one edit and one release. Routerbase holds the comparisons behind each pick. `@howells/mastra` carries no model code of its own.
+Model picks are repo-local: one `models.ts` names the model for each job the repo does, as an OpenRouter model ID, with the request settings measured alongside it. Callers import it and never write a model string, so changing a pick is one edit. Mastra takes a pick as `openrouter/${models.agent}`; AI SDK code passes it to `@openrouter/ai-sdk-provider`. Formguide holds the comparisons behind each pick. [Architecture Defaults](./architecture-defaults.md) gives the module shape.
 
-AI SDK code that calls a model directly uses `@openrouter/ai-sdk-provider`. Direct provider packages are the escape hatch for a capability OpenRouter lacks, and still take their model ID from the lookup:
+AI SDK code that calls a model directly uses `@openrouter/ai-sdk-provider`. Direct provider packages are the escape hatch for a capability OpenRouter lacks, and still take their model ID from the repo's `models.ts`:
 
 - `@ai-sdk/openai`
 - `@ai-sdk/anthropic`
@@ -323,7 +322,7 @@ pnpm add @patternmode/aperto
 ### Add AI support
 
 ```bash
-pnpm add @howells/ai ai @openrouter/ai-sdk-provider zod
+pnpm add ai @openrouter/ai-sdk-provider zod
 ```
 
 ### Add image generation support
@@ -371,7 +370,6 @@ The direct-manifest scan found these repeatedly:
 - `next-themes`
 - `date-fns`
 - `usehooks-ts`
-- `@howells/ai`
 - `@howells/envy`
 - `@patternmode/stacksheet`
 - `@patternmode/aperto`

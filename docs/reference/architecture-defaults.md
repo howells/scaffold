@@ -172,12 +172,39 @@ Keep the distinction clear: Motif owns generation, editing, upscaling, backgroun
 For apps with AI features:
 
 - `ai` (the AI SDK) for the application-facing AI SDK surface
-- `@howells/ai` for the model to use for each job
 - `@openrouter/ai-sdk-provider` when AI SDK code calls a model directly
 - `howells/motif` for fal.ai image-generation and media-utility surfaces
 - `zod` for structured input and output contracts
 
-`@howells/ai` is a lookup: it names the model for each job (agent, extract, judge, vision, triage, write, reason, embed) as an OpenRouter model ID, with the request settings measured alongside it. It carries no provider code. Mastra takes a pick as `openrouter/${models.agent}`; AI SDK code passes it to `@openrouter/ai-sdk-provider`. Repos never write a model string of their own, so changing a pick is one edit and one release. Routerbase holds the comparisons behind each pick.
+Model picks are repo-local. One module names the model for each job the repo does, as an OpenRouter model ID, with the request settings measured alongside it. Callers import it, and a model string appears nowhere else, so changing a pick is one edit.
+
+```ts
+// packages/mastra/src/models.ts, or the package that owns model dispatch
+export const models = {
+  agent: "openai/gpt-6-luna",
+  extract: "openai/gpt-6-luna",
+  vision: "openai/gpt-6-luna",
+} as const;
+
+export type Job = keyof typeof models;
+
+export const settings = {
+  extract: {
+    provider: { only: ["openai"], allow_fallbacks: false },
+    reasoning: { enabled: false },
+  },
+  vision: {
+    provider: { only: ["openai"], allow_fallbacks: false },
+    reasoning: { effort: "low" },
+  },
+} as const;
+```
+
+Name only the jobs the repo does: `agent`, `extract`, `judge`, `reason`, `triage`, `vision`, `write` and `embed`. Deriving `Job` from the table makes a missing entry a type error.
+
+Settings carry only what the request needs, and only for jobs that need it. The provider pin is derived from the model's vendor with `allow_fallbacks: false`; name a second host only when the maker does not serve that build itself. Reasoning stays at the provider default unless a job measured better without it.
+
+Mastra takes a pick as `openrouter/${models.agent}`; AI SDK code passes the ID to `@openrouter/ai-sdk-provider`. Formguide holds the comparisons behind a pick, and the module's JSDoc records the date and the reason each pick won, so the next reader does not rediscover it.
 
 If the repo is doing CLI-model orchestration or needs stricter typed IO around agent calls:
 
@@ -193,7 +220,7 @@ Put substantial Mastra code in `packages/mastra`, not inside an app route. See [
 
 Use raw provider SDKs only behind a boundary:
 
-- model choice belongs in `@howells/ai`; OpenRouter is the one provider route
+- model choice lives in one repo-local `models.ts`; OpenRouter is the one provider route
 - app routes should call product services, not create raw OpenAI, Anthropic, or OpenRouter clients inline
 
 ## Runtime environment
@@ -210,7 +237,7 @@ Agent code lives in one package:
 - `packages/mcp` only for a standalone MCP server built on `@modelcontextprotocol/sdk` that serves read-only product tools without Mastra, as materialgraph's does. Serve it from an app route.
 - `packages/cli` when operations need a first-class command line.
 
-There is no `packages/ai`, `packages/agents`, `packages/ingestion` or `packages/enrichment`. Model choice belongs in `@howells/ai`; pipeline code belongs in a named domain package.
+There is no `packages/agents`, `packages/ingestion` or `packages/enrichment`. A `packages/ai` holds the model table and nothing else; pipeline code belongs in a named domain package.
 
 Use `zod` for tool and transport schemas. For browser and page-source extraction, use `@howells/srcfull` before building a fresh source-fetching layer.
 
@@ -235,7 +262,7 @@ For a new product app, use:
 - Neon
 - WorkOS by default; Clerk for a lighter existing or consumer-oriented app with a recorded reason
 - the Patternmode theme and components
-- `@howells/ai` plus Mastra/MCP packages when agent behavior is part of the product
+- a repo-local `models.ts` plus Mastra/MCP packages when agent behavior is part of the product
 - Envy if runtime env exists
 - Storybook only for complex shared UI
 - Fumadocs if the repo needs docs

@@ -286,7 +286,6 @@ AI-capable repos use this starting shape.
 Default package choices:
 
 - `ai` for the Vercel AI SDK surface
-- `@howells/ai` for the model to use for each job
 - Motif's SDK or CLI when image generation, image editing, media utilities, or agent-facing automation are part of the product
 - `zod` for structured model IO and tool schemas
 - `@mastra/core` and `mastra` when the repo needs agent orchestration, memory, observability, or workflow structure
@@ -295,9 +294,9 @@ Default package choices:
 
 ### Model access
 
-`@howells/ai` is a lookup: it names the model for each job (agent, extract, judge, vision, triage, write, reason, embed) as an OpenRouter model ID, with the request settings measured alongside it. It carries no provider code. Mastra takes a pick as `openrouter/${models.agent}`; AI SDK code passes it to `@openrouter/ai-sdk-provider`. Repos never write a model string of their own, so changing a pick is one edit and one release. Routerbase holds the comparisons behind each pick. `@howells/mastra` carries no model code of its own.
+Model picks are repo-local: one `models.ts` names the model for each job the repo does, as an OpenRouter model ID, with the request settings measured alongside it. Callers import it and never write a model string, so changing a pick is one edit. Mastra takes a pick as `openrouter/${models.agent}`; AI SDK code passes it to `@openrouter/ai-sdk-provider`. Formguide holds the comparisons behind each pick. [Architecture Defaults](./architecture-defaults.md) gives the module shape.
 
-OpenRouter is the only route. A direct `@ai-sdk/*` provider is the escape hatch for a capability OpenRouter lacks, and it still takes its model ID from the lookup.
+OpenRouter is the only route. A direct `@ai-sdk/*` provider is the escape hatch for a capability OpenRouter lacks, and it still takes its model ID from the repo's `models.ts`.
 
 Default boundaries:
 

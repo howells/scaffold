@@ -26,7 +26,7 @@ Default stack:
 - WorkOS by default; Clerk only when a lighter existing or consumer-oriented app has a concrete reason
 - the Patternmode theme and components
 - `@howells/envy` when runtime env exists
-- `@howells/ai`, Mastra, and MCP packages when agent behavior is product behavior
+- Mastra and MCP packages when agent behavior is product behavior, with the model table in `packages/ai` or `packages/mastra`
 
 Typical workspace:
 
@@ -42,7 +42,7 @@ packages/
   env/
   motion/
   auth/             # when auth is shared
-  ai/               # only for repo-specific model logic; picks come from @howells/ai
+  ai/               # only the model table for each job; no client or provider code
   mastra/           # when Mastra owns agent/workflow runtime behavior
   agents/           # when agent behavior is shared
   mcp/              # when the repo exposes MCP tools or resources
@@ -168,7 +168,6 @@ Default stack:
 - `tsx`
 - `zod`
 - `ai`
-- `@howells/ai`
 - Motif's SDK or agent-readable CLI when image generation, editing, media utilities, or creative automation are central
 - Mastra when the repo needs agent orchestration, workflow state, memory, or observability
 - `@modelcontextprotocol/sdk` when the repo exposes MCP tools or resources

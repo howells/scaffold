@@ -197,7 +197,6 @@ Every repo below publishes over OIDC from `.github/workflows/release.yml`, and e
 | `materialinstruments/sustainability` | `@instruments/sustainability` |
 | `materialinstruments/visual-grounding` | `@instruments/visual-grounding` |
 | `howells/lint` | `@howells/lint` |
-| `howells/ai` | `@howells/ai` |
 | `howells/boundaries` | `@howells/boundaries` |
 | `howells/envy` | `@howells/envy` |
 | `howells/husky` | `@howells/husky` |
@@ -226,7 +225,7 @@ Every repo below publishes over OIDC from `.github/workflows/release.yml`, and e
 
 The workflow is only half of it. These packages have the workflow and no trusted publisher, so their first publish through it will fail until someone sits down with a security key:
 
-`@instruments/taxonomy`, `@instruments/taxonomy-client`, `@instruments/sustainability`, `@instruments/visual-grounding`, `@howells/ai`, `@howells/boundaries`, `@howells/envy`, `@howells/husky`, `@howells/typescript-config`.
+`@instruments/taxonomy`, `@instruments/taxonomy-client`, `@instruments/sustainability`, `@instruments/visual-grounding`, `@howells/boundaries`, `@howells/envy`, `@howells/husky`, `@howells/typescript-config`.
 
 `@howells/husky` moved from `commoninstruments/husky` to `howells/husky` and its npm `repository` field still names the old one. Register it against **howells**.
 
