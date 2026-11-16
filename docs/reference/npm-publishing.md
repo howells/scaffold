@@ -213,7 +213,6 @@ Every repo below publishes over OIDC from `.github/workflows/release.yml`, and e
 | `howells/boubakikid` | `boubakikid` |
 | `howells/gauge` | `@howells/gauge` |
 | `howells/neon` | `@howells/neon` |
-| `howells/wiredeck` | `@howells/wiredeck` |
 | `howells/mastra` | `@howells/mastra` |
 | `howells/faceplacer` | `@howells/faceplacer` |
 | `howells/routerbase` | `@howells/routerbase-mcp` |
@@ -259,7 +258,7 @@ Each of these turned a green-looking release path into a broken one.
 
 **Removing a CI workflow can lock the branch.** A workflow that is a required status check leaves the requirement behind when the file goes, and every pull request then waits forever on a check that can never report. `stow` did this. Delete the requirement in the same change - branch protection or ruleset, whichever carries it.
 
-**A missing `repository` field fails the publish, and no dry run can tell you.** npm validates `repository.url` against the OIDC repository before it attaches a provenance attestation; absent reads as `""` and the publish 422s. A dry run never reaches Publish, so the gate is green right up to the moment it matters. Check every manifest that publishes: `@howells/srcfull`, `@howells/wiredeck` and `@howells/routerbase-mcp` all lacked one.
+**A missing `repository` field fails the publish, and no dry run can tell you.** npm validates `repository.url` against the OIDC repository before it attaches a provenance attestation; absent reads as `""` and the publish 422s. A dry run never reaches Publish, so the gate is green right up to the moment it matters. Check every manifest that publishes: `@howells/srcfull` and `@howells/routerbase-mcp` both lacked one.
 
 **A tag filter's `*` does not match `/`.** A monorepo pattern of `"*@[0-9]+.[0-9]+.[0-9]+"` can never fire for a scoped package - `@howells/stow-cli@3.2.1` contains a slash. Worse, an unscoped `stow-cli@3.2.1` _does_ match, starts a run, and the resolver then throws on a name no workspace package has. `**` matches `/`. Five workflows shipped with the broken pattern and nobody noticed, because no repo had ever pushed a tag.
 
